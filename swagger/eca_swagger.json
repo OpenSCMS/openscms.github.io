@@ -1,0 +1,1472 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Enrollment Certificate Authority (ECA)",
+        "description": "",
+        "license": {
+            "name": ""
+        },
+        "version": "0.1.0"
+    },
+    "paths": {
+        "/healthcheck": {
+            "get": {
+                "tags": [
+                    "crate"
+                ],
+                "summary": "Provide a health-check endpoint for the service",
+                "description": "Simply responds with an HTTP Status of 200",
+                "operationId": "healthcheck",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v3/enrollment-certificate": {
+            "post": {
+                "tags": [
+                    "Enrollment Certificates"
+                ],
+                "summary": "1609.2.1 SS 6.3.4.2 Enrollment certificate request",
+                "description": "Request Enrollment Certificate",
+                "operationId": "request_enrollment_certificate",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Bearer [access-token/AT]",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "EeEcaCertRequestSpdu",
+                    "content": {
+                        "application/octet-stream": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "EcaEeCertResponseSpdu",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "headers": {
+                            "Ieee-1609.2.1-Error": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "returned if 'scmsv3Error=fine'"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "headers": {
+                            "Ieee-1609.2.1-Error": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "returned if 'scmsv3Error=fine'"
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "408": {
+                        "description": "Request timeout"
+                    },
+                    "429": {
+                        "description": "Too many requests"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "503": {
+                        "description": "Service unavailable"
+                    }
+                }
+            }
+        },
+        "eca-public-key": {
+            "get": {
+                "tags": [
+                    "Public Key Downloads"
+                ],
+                "summary": "Download the ECA Public Key",
+                "operationId": "download_eca_public_key",
+                "responses": {
+                    "200": {
+                        "description": "ECA public key",
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "408": {
+                        "description": "Request timeout"
+                    },
+                    "416": {
+                        "description": "requested range not satisfiable: retry without HTTP Range"
+                    },
+                    "429": {
+                        "description": "Too many requests"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "503": {
+                        "description": "Service unavailable"
+                    }
+                }
+            }
+        },
+        "successor-enrollment-certificate": {
+            "post": {
+                "tags": [
+                    "Successor Enrollment Certificates"
+                ],
+                "summary": "Enpoint not specified by 1609.2 standard",
+                "description": "Called by RA to request C-OER encoded EcaEeCertResponseSpdu",
+                "operationId": "process_successor_enrollment_request",
+                "requestBody": {
+                    "description": "EeRaSuccessorEnrollmentCertRequestSpdu",
+                    "content": {
+                        "application/octet-stream": {
+                            "schema": {
+                                "type": "string",
+                                "format": "binary"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "202": {
+                        "description": "C-OER encoded EcaEeCertResponseSpdu",
+                        "headers": {
+                            "Content-Disposition": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "attachment filename"
+                            }
+                        },
+                        "content": {
+                            "application/octet-stream": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "binary"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "headers": {
+                            "Ieee-1609.2.1-Error": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Indicates the issue: 400-<error code>"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "headers": {
+                            "Ieee-1609.2.1-Error": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "description": "Indicates the issue: 403-<error code>"
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed"
+                    },
+                    "408": {
+                        "description": "Request timeout"
+                    },
+                    "429": {
+                        "description": "Too many requests"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    },
+                    "503": {
+                        "description": "Service unavailable"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CertificateConfigInfo": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "crypto_algorithm",
+                    "certificate_type",
+                    "start",
+                    "expiration",
+                    "in_use",
+                    "request_for_renewal",
+                    "concurrently_valid_certificates"
+                ],
+                "properties": {
+                    "certificate_type": {
+                        "$ref": "#/components/schemas/CertificateType"
+                    },
+                    "concurrently_valid_certificates": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "crypto_algorithm": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CryptoAlgorithmType"
+                        }
+                    },
+                    "expiration": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "in_use": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "request_for_renewal": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "CertificateType": {
+                "type": "string",
+                "enum": [
+                    "Explicit",
+                    "Implicit"
+                ]
+            },
+            "CocoonRequest": {
+                "type": "object",
+                "description": "There is one CocoonRequest for each Caterpillar (hence, for each EE request).",
+                "required": [
+                    "req_id",
+                    "eplv_pair",
+                    "i_index"
+                ],
+                "properties": {
+                    "eplv_pair": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Eplv"
+                        }
+                    },
+                    "i_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "private_key_info": {
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "pub_key_encrypt": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/VerifyingKey"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "pub_key_sign": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/VerifyingKey"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "req_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "CryptoAlgorithmType": {
+                "type": "string",
+                "enum": [
+                    "NistP256",
+                    "NistP384",
+                    "BrainpoolP256",
+                    "BrainpoolP384",
+                    "Sha256",
+                    "Sha384",
+                    "Aes128Ccm",
+                    "Sm2",
+                    "Sm3",
+                    "Sm4"
+                ]
+            },
+            "DeviceConfigInfo": {
+                "type": "object",
+                "required": [
+                    "ee_scms_v3_auth",
+                    "ee_ra_butterfly_type",
+                    "ee_download_url",
+                    "ee_support_psid_ssp",
+                    "ee_support_region",
+                    "ee_count_cert_pseudonym",
+                    "ee_heartbeat_interval"
+                ],
+                "properties": {
+                    "ee_count_cert_pseudonym": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ee_download_url": {
+                        "type": "string"
+                    },
+                    "ee_heartbeat_interval": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "ee_ra_butterfly_type": {
+                        "$ref": "#/components/schemas/RaButterflyType"
+                    },
+                    "ee_scms_v3_auth": {
+                        "$ref": "#/components/schemas/ScmsV3AuthConfig"
+                    },
+                    "ee_support_psid_ssp": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PsidConfigInfo"
+                        }
+                    },
+                    "ee_support_region": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SupportRegionConfigInfo"
+                        }
+                    }
+                }
+            },
+            "EeRegistrationDeviceType": {
+                "type": "string",
+                "enum": [
+                    "OBU",
+                    "RSU"
+                ]
+            },
+            "EeRegistrationRequestType": {
+                "type": "string",
+                "enum": [
+                    "NewEnrollment",
+                    "UpdateSuccessorEnrollment",
+                    "UpdateBlockStatus"
+                ]
+            },
+            "Eplv": {
+                "type": "object",
+                "description": "This struct represents the encrypted value version of the Plv.",
+                "required": [
+                    "enc_value",
+                    "public_key",
+                    "nonce",
+                    "i_index",
+                    "j_index"
+                ],
+                "properties": {
+                    "enc_value": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "i_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "j_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "nonce": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "public_key": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            },
+            "ExpansionType": {
+                "type": "string",
+                "enum": [
+                    "Original",
+                    "Unified",
+                    "Compact",
+                    "OriginalAcpc",
+                    "UnifiedAcpc",
+                    "NonButterfly",
+                    "NonButterflyEncrypted"
+                ]
+            },
+            "GlobalConfigInfo": {
+                "type": "object",
+                "required": [
+                    "quorum_count",
+                    "ctl_series_id",
+                    "crypto_algorithm",
+                    "cert_elector",
+                    "cert_root_ca",
+                    "cert_ica",
+                    "cert_eca",
+                    "cert_aca",
+                    "cert_pca",
+                    "cert_crl_signer",
+                    "cert_ra",
+                    "cert_la",
+                    "cert_la1",
+                    "cert_la2",
+                    "cert_ma",
+                    "cert_pg",
+                    "cert_dc",
+                    "cert_enrollment",
+                    "cert_pseudonym",
+                    "cert_identification",
+                    "support_region",
+                    "support_psid_ssp",
+                    "url_domain",
+                    "eca_hostname",
+                    "ra_hostname",
+                    "dc_hostname",
+                    "dcm_hostname",
+                    "eca_url",
+                    "ra_url",
+                    "dc_url",
+                    "dcm_url",
+                    "time_i_period",
+                    "time_i_period_epoch",
+                    "time_i_period_init",
+                    "time_i_period_length",
+                    "time_overlap",
+                    "time_base_cert_number",
+                    "time_overlap_cert_number",
+                    "session_scms_auth",
+                    "session_ee_auth",
+                    "web_api_name",
+                    "web_api_ee_auth",
+                    "scms_v3_ee_auth",
+                    "scms_v3_error",
+                    "scms_v3_options",
+                    "eca_max_age",
+                    "eca_max_reqs",
+                    "eca_max_wait",
+                    "eca_min_wait",
+                    "ra_acpc_support",
+                    "ra_butterfly_type",
+                    "ra_max_age",
+                    "ra_max_gen_delay",
+                    "ra_max_reqs",
+                    "ra_max_preload_time",
+                    "ra_min_wait",
+                    "download_max_age",
+                    "download_max_reqs",
+                    "download_min_wait",
+                    "time_identification_cert_length",
+                    "time_identification_cert_overlap",
+                    "time_leap_seconds",
+                    "web_api_connection_retries",
+                    "web_api_between_retries",
+                    "web_api_between_retries_info_status",
+                    "web_api_tolerance_time",
+                    "next_update_time_default",
+                    "support_region_obu_default",
+                    "support_region_rsu_default",
+                    "support_psid_ssp_obu_default",
+                    "support_psid_ssp_rsu_default",
+                    "scms_v3_ee_auth_default",
+                    "ra_butterfly_type_default",
+                    "ra_encryption_key_default",
+                    "download_url_default",
+                    "count_cert_pseudonym_default",
+                    "count_cert_identification_default",
+                    "ee_heartbeat_interval"
+                ],
+                "properties": {
+                    "cert_aca": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_crl_signer": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_dc": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_eca": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_elector": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_enrollment": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_ica": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_identification": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_la": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_la1": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_la2": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_ma": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_pca": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_pg": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_pseudonym": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_ra": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "cert_root_ca": {
+                        "$ref": "#/components/schemas/CertificateConfigInfo"
+                    },
+                    "count_cert_identification_default": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "count_cert_pseudonym_default": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "crypto_algorithm": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CryptoAlgorithmType"
+                        }
+                    },
+                    "ctl_series_id": {
+                        "type": "string"
+                    },
+                    "dc_hostname": {
+                        "type": "string"
+                    },
+                    "dc_url": {
+                        "type": "string"
+                    },
+                    "dcm_hostname": {
+                        "type": "string"
+                    },
+                    "dcm_url": {
+                        "type": "string"
+                    },
+                    "download_max_age": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "download_max_reqs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "download_min_wait": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "download_url_default": {
+                        "type": "string"
+                    },
+                    "eca_hostname": {
+                        "type": "string"
+                    },
+                    "eca_max_age": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "eca_max_reqs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "eca_max_wait": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "eca_min_wait": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "eca_url": {
+                        "type": "string"
+                    },
+                    "ee_heartbeat_interval": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "next_update_time_default": {
+                        "$ref": "#/components/schemas/NextUpdateTimeDefault"
+                    },
+                    "quorum_count": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_acpc_support": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "ra_butterfly_type": {
+                        "$ref": "#/components/schemas/RaButterflyTypeConfig"
+                    },
+                    "ra_butterfly_type_default": {
+                        "$ref": "#/components/schemas/RaButterflyType"
+                    },
+                    "ra_encryption_key_default": {
+                        "type": "string"
+                    },
+                    "ra_hostname": {
+                        "type": "string"
+                    },
+                    "ra_max_age": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_max_gen_delay": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_max_preload_time": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_max_reqs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_min_wait": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "ra_url": {
+                        "type": "string"
+                    },
+                    "scms_v3_ee_auth": {
+                        "$ref": "#/components/schemas/ScmsV3AuthConfig"
+                    },
+                    "scms_v3_ee_auth_default": {
+                        "$ref": "#/components/schemas/ScmsV3AuthConfig"
+                    },
+                    "scms_v3_error": {
+                        "$ref": "#/components/schemas/ScmsErrorLevel"
+                    },
+                    "scms_v3_options": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "session_ee_auth": {
+                        "$ref": "#/components/schemas/WebApiEeAuth"
+                    },
+                    "session_scms_auth": {
+                        "type": "string"
+                    },
+                    "support_psid_ssp": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PsidConfigInfo"
+                        }
+                    },
+                    "support_psid_ssp_obu_default": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PsidConfigInfo"
+                        }
+                    },
+                    "support_psid_ssp_rsu_default": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PsidConfigInfo"
+                        }
+                    },
+                    "support_region": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RegionConfigInfo"
+                        }
+                    },
+                    "support_region_obu_default": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SupportRegionConfigInfo"
+                        }
+                    },
+                    "support_region_rsu_default": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SupportRegionConfigInfo"
+                        }
+                    },
+                    "time_base_cert_number": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_i_period": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_i_period_epoch": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_i_period_init": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_i_period_length": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_identification_cert_length": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_identification_cert_overlap": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_leap_seconds": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_overlap": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "time_overlap_cert_number": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "url_domain": {
+                        "type": "string"
+                    },
+                    "web_api_between_retries": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "web_api_between_retries_info_status": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "web_api_connection_retries": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "web_api_ee_auth": {
+                        "$ref": "#/components/schemas/WebApiEeAuth"
+                    },
+                    "web_api_name": {
+                        "type": "string"
+                    },
+                    "web_api_tolerance_time": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "NextUpdateTimeDefault": {
+                "type": "object",
+                "required": [
+                    "full_hash_crl",
+                    "delta_hash_crl",
+                    "full_linked_crl",
+                    "delta_linked_crl",
+                    "full_root_ctl",
+                    "delta_root_ctl",
+                    "full_domain_ctl",
+                    "delta_domain_ctl"
+                ],
+                "properties": {
+                    "delta_domain_ctl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "delta_hash_crl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "delta_linked_crl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "delta_root_ctl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "full_domain_ctl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "full_hash_crl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "full_linked_crl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "full_root_ctl": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PayloadCertRequest": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "nid",
+                    "validity_duration_years"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "nid": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "validity_duration_years": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PayloadCertResponse": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "nid",
+                    "validity_duration_years",
+                    "start",
+                    "expiry",
+                    "request_for_renewal",
+                    "certificate_hash",
+                    "encoded_certificate",
+                    "public_key",
+                    "private_key"
+                ],
+                "properties": {
+                    "certificate_hash": {
+                        "type": "string"
+                    },
+                    "enc_private_key": {
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "enc_public_key": {
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "encoded_certificate": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "expiry": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nid": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "private_key": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "public_key": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "request_for_renewal": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "start": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    },
+                    "validity_duration_years": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PayloadEePatchStatus": {
+                "type": "object",
+                "required": [
+                    "canonical_id",
+                    "status"
+                ],
+                "properties": {
+                    "canonical_id": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PayloadEeRegistration": {
+                "type": "object",
+                "required": [
+                    "device_type",
+                    "canonical_public_key"
+                ],
+                "properties": {
+                    "canonical_public_key": {
+                        "type": "string"
+                    },
+                    "device_type": {
+                        "$ref": "#/components/schemas/EeRegistrationDeviceType"
+                    }
+                }
+            },
+            "PayloadEeRegistrationResponse": {
+                "type": "object",
+                "required": [
+                    "canonical_id",
+                    "device_id",
+                    "device_type",
+                    "public_key",
+                    "status",
+                    "version",
+                    "created_time",
+                    "updated_time",
+                    "device_policy"
+                ],
+                "properties": {
+                    "canonical_id": {
+                        "type": "string"
+                    },
+                    "created_time": {
+                        "type": "string"
+                    },
+                    "device_id": {
+                        "type": "string"
+                    },
+                    "device_policy": {
+                        "$ref": "#/components/schemas/DeviceConfigInfo"
+                    },
+                    "device_type": {
+                        "$ref": "#/components/schemas/EeRegistrationDeviceType"
+                    },
+                    "public_key": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "updated_time": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PayloadLaToRa": {
+                "type": "object",
+                "description": "There is one PayloadLaToRa per LA.\nPotentially inside the RA it needs to handle two PaylodLaToRa objects.",
+                "required": [
+                    "request_id",
+                    "plv_payloads"
+                ],
+                "properties": {
+                    "plv_payloads": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PlvPayload"
+                        }
+                    },
+                    "request_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PayloadRaToAca": {
+                "type": "object",
+                "required": [
+                    "exp_type",
+                    "certificate_type",
+                    "ra_id",
+                    "cocoon_requests"
+                ],
+                "properties": {
+                    "certificate_type": {
+                        "$ref": "#/components/schemas/CertificateType"
+                    },
+                    "cocoon_requests": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CocoonRequest"
+                        }
+                    },
+                    "exp_type": {
+                        "$ref": "#/components/schemas/ExpansionType"
+                    },
+                    "non_butterfly_request": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/NonButterflyRequest"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "ra_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PayloadRaToLa": {
+                "type": "object",
+                "required": [
+                    "request_id",
+                    "plv_reqs"
+                ],
+                "properties": {
+                    "plv_reqs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PlvReq"
+                        }
+                    },
+                    "request_id": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Plv": {
+                "type": "object",
+                "required": [
+                    "value",
+                    "i_index",
+                    "j_index"
+                ],
+                "properties": {
+                    "i_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "j_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "value": {
+                        "type": "string",
+                        "format": "binary"
+                    }
+                }
+            },
+            "PlvPayload": {
+                "type": "object",
+                "description": "This struct is used to just bundle the req_id with a list of EPLVs.\nThe req_id identifies just one caterpillar.\nHence each caterpillar is associated with one list of EPLVs (per LA).\nIf we have two LAs, then the RA needs to deal with two list of EPLVs for each caterpillar.\nAnd each caterpillar is associated with one EE request.",
+                "required": [
+                    "req_id",
+                    "eplvs"
+                ],
+                "properties": {
+                    "eplvs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Eplv"
+                        }
+                    },
+                    "req_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PlvReq": {
+                "type": "object",
+                "required": [
+                    "req_id",
+                    "ra_id",
+                    "i_min",
+                    "i_max",
+                    "j_max"
+                ],
+                "properties": {
+                    "i_max": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "i_min": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "j_max": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "ra_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "req_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "PsidConfigInfo": {
+                "type": "object",
+                "required": [
+                    "all"
+                ],
+                "properties": {
+                    "all": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "RaButterflyTypeConfig": {
+                "type": "object",
+                "required": [
+                    "original",
+                    "unified",
+                    "compact_unified"
+                ],
+                "properties": {
+                    "compact_unified": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "original": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "unified": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "RegionConfigInfo": {
+                "type": "object",
+                "required": [
+                    "country",
+                    "country_and_region",
+                    "country_and_region_and_sub_region",
+                    "circle"
+                ],
+                "properties": {
+                    "circle": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "country": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "country_and_region": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "country_and_region_and_sub_region": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ScmsV3AuthConfig": {
+                "type": "object",
+                "required": [
+                    "enrollment_certificate",
+                    "authorization_certificate_request",
+                    "authorization_certificate_download",
+                    "authorization_certificate_download_filename",
+                    "ccf_ctl",
+                    "composite_crl_ctl",
+                    "ca_certificate",
+                    "crl",
+                    "ctl",
+                    "ra_certificate",
+                    "certificate_management_info_status",
+                    "successor_enrollment_certificate_request",
+                    "successor_enrollment_certificate_download",
+                    "misbehavior_report",
+                    "ma_certificate"
+                ],
+                "properties": {
+                    "authorization_certificate_download": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "authorization_certificate_download_filename": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "authorization_certificate_request": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "ca_certificate": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "ccf_ctl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "certificate_management_info_status": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "composite_crl_ctl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "crl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "ctl": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "enrollment_certificate": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "ma_certificate": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "misbehavior_report": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "ra_certificate": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "successor_enrollment_certificate_download": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    },
+                    "successor_enrollment_certificate_request": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ScmsEeAuth"
+                        }
+                    }
+                }
+            },
+            "SupportRegionConfigInfo": {
+                "type": "object",
+                "required": [
+                    "region"
+                ],
+                "properties": {
+                    "region": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/RegionConfigInfo"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

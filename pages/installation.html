@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Installation Guide - Setup with Minikube">
+    <title>Installation Guide - OpenSCMS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">OpenSCMS</h1>
+            <p class="subtitle">Open source implementation of SCMS IEEE1609.2.1</p>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <div class="container">
+            <ul class="tabs">
+                <li class="tab"><a href="../index.html">About</a></li>
+                <li class="tab"><a href="source.html">Source Code</a></li>
+                <li class="tab active"><a href="documentation.html">Documentation</a></li>
+                <li class="tab"><a href="team.html">Team</a></li>
+                <li class="tab"><a href="license.html">License</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="content-section">
+                <h2>Installation Guide</h2>
+                <p>Setting up your environment for working with Minikube</p>
+                
+                <div class="architecture-info">
+                    <h3>Install the Tools</h3>
+                    <p>We use <code>binenv</code> to manage the installed versions of all the kubernetes related tools. To install <code>binenv</code> follow the instructions at <a href="https://github.com/devops-works/binenv?tab=readme-ov-file#user-install" target="_blank">github.com/devops-works/binenv</a> which boil down to the following:</p>
+                    
+                    <pre><code>wget -q -O binenv https://github.com/devops-works/binenv/releases/download/v0.19.0/binenv_linux_amd64
+chmod +x ./binenv
+./binenv update
+./binenv install binenv
+rm ./binenv
+echo 'export PATH=$HOME/.binenv:$PATH' >> $HOME/.bashrc
+echo 'source <(binenv completion bash)'
+exec $SHELL</code></pre>
+                    
+                    <p>Next install the tools we use. The versions can be seen in <code>.binenv.lock</code> in the repository root.</p>
+                    
+                    <pre><code>binenv install -l</code></pre>
+                    
+                    <p>From this point, anytime you enter the directory these tools will be in your path at the selected versions.</p>
+                    
+                    <h3>Configure Minikube</h3>
+                    <p>We use the docker driver for <code>minikube</code>, and this should be configured permanently by editing (or creating) <code>~/.minikube/config/config.json</code> to contain the following:</p>
+                    
+                    <pre><code>{
+  "vm-driver": "docker"
+}</code></pre>
+                    
+                    <p>Now install the <code>krew</code> plugin manager for <code>kubectl</code>:</p>
+                    
+                    <pre><code>(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+echo 'export PATH="$HOME/.krew/bin:$PATH"' >> $HOME/.bashrc
+exec $SHELL</code></pre>
+                    
+                    <p>Test the installation with the command:</p>
+                    
+                    <pre><code>kubectl krew --help</code></pre>
+                    
+                    <p>Finally install a plugin to make configuring <code>RabbitMQ</code> easier:</p>
+                    
+                    <pre><code>kubectl krew install rabbitmq</code></pre>
+                    
+                    <h3>Start up Minikube and Check Configuration</h3>
+                    <p>To start minikube, enter the command:</p>
+                    
+                    <pre><code>minikube start</code></pre>
+                    
+                    <p>This will take a while the first time as it downloads some large images. Once it completes, do a test deployment of the SCMS.</p>
+                    
+                    <p>From the repository root enter the following, which will deploy the app and then close it down again:</p>
+                    
+                    <pre><code>skaffold run && skaffold delete</code></pre>
+                    
+                    <p>When this completes, we can check that the <code>RabbitMQ</code> extensions were installed during deployment with the following:</p>
+                    
+                    <pre><code>kubectl get ns</code></pre>
+                    
+                    <p>Which should list a namespace called <code>rabbitmq-system</code>.</p>
+                    
+                    <h3>Setup a Hostname for Accessing Minikube</h3>
+                    <p><code>Minikube</code> exposes services via ports on an IP address. This IP address can be found by the command <code>minikube ip</code>. For convenience, you may wish to add a line to your <code>/etc/hosts</code> file to allow it to be accessed easily from the command line and scripts.</p>
+                    
+                    <pre><code>sudo echo "$(minikube ip) minikube" >>/etc/hosts
+ping minikube</code></pre>
+                    
+                    <h3>Next Steps</h3>
+                    <p>After completing the installation, you can:</p>
+                    <ul>
+                        <li>Review the <a href="architecture.html">Architecture Overview</a> to understand the system components</li>
+                        <li>Check the <a href="assumptions.html">Assumptions & Limitations</a> for important considerations</li>
+                        <li>Visit the <a href="source.html">Source Code</a> page to access the repository</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 OpenSCMS Project. Open Source under Apache License 2.0.</p>
+            <p>IEEE 1609.2.1 SCMS Implementation</p>
+        </div>
+    </footer>
+</body>
+</html>

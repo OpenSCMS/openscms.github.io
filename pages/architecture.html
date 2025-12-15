@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Architecture Overview - System components and design">
+    <title>Architecture Overview - OpenSCMS</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">OpenSCMS</h1>
+            <p class="subtitle">Open source implementation of SCMS IEEE1609.2.1</p>
+        </div>
+    </header>
+
+    <nav class="nav-tabs">
+        <div class="container">
+            <ul class="tabs">
+                <li class="tab"><a href="../index.html">About</a></li>
+                <li class="tab"><a href="source.html">Source Code</a></li>
+                <li class="tab active"><a href="documentation.html">Documentation</a></li>
+                <li class="tab"><a href="team.html">Team</a></li>
+                <li class="tab"><a href="license.html">License</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="content-section">
+                <h2>Architecture Overview</h2>
+                
+                <div class="architecture-info">
+                    <h3>System Roles & Data Stores</h3>
+                    <ul>
+                        <li><strong>Registration Authority (RA):</strong> EE registration, authorization-certificate request/ack/download, and successor enrollment orchestration. Stores state in <strong>RA DB</strong>.</li>
+                        <li><strong>Enrollment Certificate Authority (ECA):</strong> Enrollment certificates and successor enrollment responses. Stores state in <strong>ECA DB</strong>.</li>
+                        <li><strong>Authorization Certificate Authority (ACA):</strong> Authorization certificate issuance. Stores state in <strong>ACA DB</strong>.</li>
+                        <li><strong>Linkage Authority (LA):</strong> PLV/LS operations for linkage values. Stores state in <strong>LA DB</strong>.</li>
+                    </ul>
+                    <p><em>Each component maintains its own local database.</em></p>
+                    
+                    <h3>1. EE Registration (Fully Synchronous)</h3>
+                    <p>The system registers an "EE" entity, and it must be the first interaction between the client and OpenSCMS. The client sends the public key it requests to use as canonical information. Based on this public key, the server generates a canonical ID and device ID for this client.</p>
+                    <p><strong>Public API (RA):</strong></p>
+                    <ul>
+                        <li><code>POST /dcms/device/na</code> — Returns canonicalId, deviceId, and device policy</li>
+                        <li><code>GET /dcms/device/na</code> — Lookup by canonicalId/deviceId</li>
+                        <li><code>PATCH /dcms/device/na</code> — Update device status</li>
+                    </ul>
+                    
+                    <h3>2. Enrollment Request (Synchronous)</h3>
+                    <p>The client initiates an enrollment process. The server handles request decoding, capturing the applicant's canonical ID for identity verification. Based on the canonical ID, the ECA verifies the message signature and creates the certificate.</p>
+                    <p><strong>Public API (ECA):</strong></p>
+                    <ul>
+                        <li><code>POST /v3/enrollment-certificate</code> → Returns EcaEeCertResponseSpdu (binary C‑OER)</li>
+                    </ul>
+                    
+                    <h3>3. Successor Enrollment Request and Download (Asynchronous)</h3>
+                    <p>Handles successor enrollment for an already‑registered entity. This process is asynchronous and goes through the RA. The RA receives the request, creates a working task, and places it in the Celery task queue. An RA worker processes the request by forwarding it to the ECA.</p>
+                    <p><strong>Public APIs:</strong></p>
+                    <ul>
+                        <li><strong>RA</strong> <code>POST /v3/successor-enrollment-certificate</code> — Returns acknowledgment</li>
+                        <li><strong>RA</strong> <code>GET /v3/successor-enrollment-certificate</code> — Download certificate</li>
+                        <li><strong>ECA</strong> <code>POST successor-enrollment-certificate</code> — RA to ECA communication</li>
+                    </ul>
+                    
+                    <h3>4. Authorization Certificate — Request & Download (Async)</h3>
+                    <p>This is the main flow of OpenSCMS. The client asks the server to create authorization certificates. The server immediately acknowledges and performs the work asynchronously via Celery workers. The process involves interaction between the ACA and LA components to create the linked values and generate the batch of certificates.</p>
+                    <p><strong>Public API (RA):</strong></p>
+                    <ul>
+                        <li><code>POST /v3/authorization-certificate</code> — Returns RaEeCertAckSpdu with download time</li>
+                        <li><code>GET /v3/authorization-certificate</code> — Returns zip file with all generated certificates</li>
+                    </ul>
+                    
+                    <h3>System Design</h3>
+                    <p>The system is designed with modularity and scalability in mind. Asynchronous processing is handled via Celery task queues, allowing each component to operate independently while maintaining secure communication channels between all entities.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
+            <p>IEEE 1609.2.1 SCMS Implementation</p>
+        </div>
+    </footer>
+</body>
+</html>
