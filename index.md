@@ -1,10 +1,10 @@
 # About 
 
-TODO
+
 
 # OpenSCMS Architecture Overview
 
-This document describes the architecture and execution flows of OpenSCMS focusing on four end‑to‑end journeys:
+This section describes the architecture and execution paths of OpenSCMS focusing on four end‑to‑end journeys:
 1) **Authorization Certificate — Request & Download**
 2) **EE Registration**
 3) **Enrollment Request**
@@ -21,7 +21,6 @@ The goal is to clarify component responsibilities, and narrate how data moves th
 Each component maintains its **own local database**.
 
 ---
-![EE Register and Enrollment](img/register_enrollment_successor_enrollment.jpg "EE Register, Enrollment and Successor Enrollment")
 
 ## 1) EE Registration (Fully Synchronous)
 
@@ -88,8 +87,6 @@ Handles successor enrollment for an already‑registered entity. This process is
 4. Client later calls **RA GET** to download the **C‑OER EcaEeCertResponseSpdu**.
 
 ---
-
-![Authorization Request and Download](img/auth_request_download.jpg "Authorization Request and Download")
 
 ## 4) Authorization Certificate — Request & Download (Async with Ack + Download)
 
