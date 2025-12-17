@@ -30,47 +30,49 @@
     <main class="main-content">
         <div class="container">
             <section class="content-section">
-                <h2>About OpenSCMS</h2>
+                <div class="source-info">
+                    <h2>About OpenSCMS</h2>
 
-                <p>
-                    <strong>OpenSCMS</strong> is an open-source implementation of a
-                    <strong>Security Credential Management System (SCMS)</strong> compliant
-                    with <strong>IEEE&nbsp;1609.2.1</strong>. The project focuses on providing
-                    a practical, modular, and deployable realization of the standard,
-                    covering its main architectural and functional components.
-                </p>
+                    <p>
+                        <strong>OpenSCMS</strong> is an open-source implementation of a
+                        <strong>Security Credential Management System (SCMS)</strong> compliant
+                        with <strong>IEEE&nbsp;1609.2.1</strong>. The project focuses on providing
+                        a practical, modular, and deployable realization of the standard,
+                        covering its main architectural and functional components.
+                    </p>
 
-                <p>
-                    OpenSCMS implements the core elements defined by IEEE&nbsp;1609.2.1 with
-                    an emphasis on efficiency and scalability, leveraging task parallelism
-                    to support high-throughput operation across different deployment sizes
-                    and scenarios.
-                </p>
+                    <p>
+                        OpenSCMS implements the core elements defined by IEEE&nbsp;1609.2.1 with
+                        an emphasis on efficiency and scalability, leveraging task parallelism
+                        to support high-throughput operation across different deployment sizes
+                        and scenarios.
+                    </p>
 
-                <p>
-                    A central part of the project is a low-level core library that implements
-                    cryptographic primitives and ASN.1 structure manipulation. This library
-                    is intentionally decoupled from the SCMS logic, allowing it to be reused
-                    independently, integrated into other SCMS implementations, or used in
-                    isolation for simulations, testing, and experimentation.
-                </p>
+                    <p>
+                        A central part of the project is a low-level core library that implements
+                        cryptographic primitives and ASN.1 structure manipulation. This library
+                        is intentionally decoupled from the SCMS logic, allowing it to be reused
+                        independently, integrated into other SCMS implementations, or used in
+                        isolation for simulations, testing, and experimentation.
+                    </p>
 
-                <p>
-                    The project includes a complete deployment setup based on
-                    <strong>Docker</strong> and <strong>Kubernetes</strong>, enabling
-                    containerized service orchestration, monitoring, and lifecycle
-                    management. This supports both local testing environments (for example,
-                    using Minikube) and production deployments on servers or clusters.
-                </p>
+                    <p>
+                        The project includes a complete deployment setup based on
+                        <strong>Docker</strong> and <strong>Kubernetes</strong>, enabling
+                        containerized service orchestration, monitoring, and lifecycle
+                        management. This supports both local testing environments (for example,
+                        using Minikube) and production deployments on servers or clusters.
+                    </p>
 
-                <p>
-                    OpenSCMS also provides auxiliary scripts for generating supporting
-                    artifacts such as CTL and CCF payloads, certificates, and cryptographic
-                    keys for electors and root CAs. Additional features, including logging,
-                    parameter customization, and fault recovery mechanisms, are included to
-                    improve robustness, observability, and operational flexibility.
-                </p>
-                
+                    <p>
+                        OpenSCMS also provides auxiliary scripts for generating supporting
+                        artifacts such as CTL and CCF payloads, certificates, and cryptographic
+                        keys for electors and root CAs. Additional features, including logging,
+                        parameter customization, and fault recovery mechanisms, are included to
+                        improve robustness, observability, and operational flexibility.
+                    </p>
+                </div>
+
                 <div class="features">
                     <div class="feature-card">
                         <h3>IEEE 1609.2.1 Compliant</h3>

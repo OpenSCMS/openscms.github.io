@@ -3,90 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OpenSCMS Architecture Overview - System components and design">
+    <meta name="description" content="OpenSCMS architecture overview, components, and execution flows">
     <title>Architecture Overview - OpenSCMS</title>
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <h1 class="logo">OpenSCMS</h1>
-            <p class="subtitle">Open source implementation of SCMS IEEE1609.2.1</p>
-        </div>
-    </header>
 
-    <nav class="nav-tabs">
-        <div class="container">
-            <ul class="tabs">
-                <li class="tab"><a href="../index.html">About</a></li>
-                <li class="tab"><a href="source.html">Source Code</a></li>
-                <li class="tab active"><a href="documentation.html">Documentation</a></li>
-                <li class="tab"><a href="team.html">Team</a></li>
-                <li class="tab"><a href="license.html">License</a></li>
-            </ul>
-        </div>
-    </nav>
+<header class="header">
+    <div class="container">
+        <h1 class="logo">OpenSCMS</h1>
+        <p class="subtitle">Open Source Implementation of IEEE 1609.2.1 SCMS</p>
+    </div>
+</header>
 
-    <main class="main-content">
-        <div class="container">
-            <section class="content-section">
+<nav class="nav-tabs">
+    <div class="container">
+        <ul class="tabs">
+            <li class="tab"><a href="../index.html">About</a></li>
+            <li class="tab"><a href="source.html">Source Code</a></li>
+            <li class="tab active"><a href="documentation.html">Documentation</a></li>
+            <li class="tab"><a href="team.html">Team</a></li>
+            <li class="tab"><a href="license.html">License</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div class="container">
+
+        <!-- Overview -->
+        <section class="content-section">
+            <div class="source-info">
                 <h2>Architecture Overview</h2>
-                
-                <div class="architecture-info">
-                    <h3>System Roles & Data Stores</h3>
-                    <ul>
-                        <li><strong>Registration Authority (RA):</strong> EE registration, authorization-certificate request/ack/download, and successor enrollment orchestration. Stores state in <strong>RA DB</strong>.</li>
-                        <li><strong>Enrollment Certificate Authority (ECA):</strong> Enrollment certificates and successor enrollment responses. Stores state in <strong>ECA DB</strong>.</li>
-                        <li><strong>Authorization Certificate Authority (ACA):</strong> Authorization certificate issuance. Stores state in <strong>ACA DB</strong>.</li>
-                        <li><strong>Linkage Authority (LA):</strong> PLV/LS operations for linkage values. Stores state in <strong>LA DB</strong>.</li>
-                    </ul>
-                    <p><em>Each component maintains its own local database.</em></p>
-                    
-                    <h3>1. EE Registration (Fully Synchronous)</h3>
-                    <p>The system registers an "EE" entity, and it must be the first interaction between the client and OpenSCMS. The client sends the public key it requests to use as canonical information. Based on this public key, the server generates a canonical ID and device ID for this client.</p>
-                    <p><strong>Public API (RA):</strong></p>
-                    <ul>
-                        <li><code>POST /dcms/device/na</code> — Returns canonicalId, deviceId, and device policy</li>
-                        <li><code>GET /dcms/device/na</code> — Lookup by canonicalId/deviceId</li>
-                        <li><code>PATCH /dcms/device/na</code> — Update device status</li>
-                    </ul>
-                    
-                    <h3>2. Enrollment Request (Synchronous)</h3>
-                    <p>The client initiates an enrollment process. The server handles request decoding, capturing the applicant's canonical ID for identity verification. Based on the canonical ID, the ECA verifies the message signature and creates the certificate.</p>
-                    <p><strong>Public API (ECA):</strong></p>
-                    <ul>
-                        <li><code>POST /v3/enrollment-certificate</code> → Returns EcaEeCertResponseSpdu (binary C‑OER)</li>
-                    </ul>
-                    
-                    <h3>3. Successor Enrollment Request and Download (Asynchronous)</h3>
-                    <p>Handles successor enrollment for an already‑registered entity. This process is asynchronous and goes through the RA. The RA receives the request, creates a working task, and places it in the Celery task queue. An RA worker processes the request by forwarding it to the ECA.</p>
-                    <p><strong>Public APIs:</strong></p>
-                    <ul>
-                        <li><strong>RA</strong> <code>POST /v3/successor-enrollment-certificate</code> — Returns acknowledgment</li>
-                        <li><strong>RA</strong> <code>GET /v3/successor-enrollment-certificate</code> — Download certificate</li>
-                        <li><strong>ECA</strong> <code>POST successor-enrollment-certificate</code> — RA to ECA communication</li>
-                    </ul>
-                    
-                    <h3>4. Authorization Certificate — Request & Download (Async)</h3>
-                    <p>This is the main flow of OpenSCMS. The client asks the server to create authorization certificates. The server immediately acknowledges and performs the work asynchronously via Celery workers. The process involves interaction between the ACA and LA components to create the linked values and generate the batch of certificates.</p>
-                    <p><strong>Public API (RA):</strong></p>
-                    <ul>
-                        <li><code>POST /v3/authorization-certificate</code> — Returns RaEeCertAckSpdu with download time</li>
-                        <li><code>GET /v3/authorization-certificate</code> — Returns zip file with all generated certificates</li>
-                    </ul>
-                    
-                    <h3>System Design</h3>
-                    <p>The system is designed with modularity and scalability in mind. Asynchronous processing is handled via Celery task queues, allowing each component to operate independently while maintaining secure communication channels between all entities.</p>
-                </div>
-            </section>
-        </div>
-    </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
-            <p>IEEE 1609.2.1 SCMS Implementation</p>
-        </div>
-    </footer>
+                <p>
+                    This page describes the OpenSCMS architecture and explains how its core components
+                    interact across the main system workflows.
+                </p>
+
+                <p>
+                    The architecture is presented through four end-to-end flows that represent the
+                    primary interactions between an EE and the system:
+                </p>
+
+                <ol>
+                    <li><strong>Authorization Certificate — Request &amp; Download</strong></li>
+                    <li><strong>EE Registration</strong></li>
+                    <li><strong>Enrollment Request</strong></li>
+                    <li><strong>Successor Enrollment Request</strong></li>
+                </ol>
+
+                <p>
+                    Each section below outlines the responsibilities of the involved components
+                    and shows how data moves through OpenSCMS.
+                </p>
+            </div>
+        </section>
+
+        <!-- System Roles -->
+        <section class="content-section">
+            <div class="source-info">
+                <h2>System Roles and Data Stores</h2>
+
+                <ul>
+                    <li>
+                        <strong>Registration Authority (RA)</strong><br>
+                        Handles EE registration, authorization certificate request, acknowledgment,
+                        certificate download, and successor enrollment orchestration.
+                        <br><em>State is stored in the RA database.</em>
+                    </li>
+                    <li>
+                        <strong>Enrollment Certificate Authority (ECA)</strong><br>
+                        Responsible for issuing enrollment certificates and successor enrollment responses.
+                        <br><em>State is stored in the ECA database.</em>
+                    </li>
+                    <li>
+                        <strong>Authorization Certificate Authority (ACA)</strong><br>
+                        Responsible for issuing authorization certificates.
+                        <br><em>State is stored in the ACA database.</em>
+                    </li>
+                    <li>
+                        <strong>Linkage Authority (LA)</strong><br>
+                        Performs PLV and LS operations required for linkage value generation.
+                        <br><em>State is stored in the LA database.</em>
+                    </li>
+                </ul>
+
+                <p><em>Each component operates independently and maintains its own local database.</em></p>
+            </div>
+        </section>
+
+        <!-- EE Registration -->
+        <section class="content-section">
+            <div class="source-info">
+                <h2>1. EE Registration</h2>
+                <p class="section-subtitle">Fully synchronous</p>
+
+                <img src="../img/register_enrollment_successor_enrollment.jpg"
+                    alt="EE Registration, Enrollment and Successor Enrollment"
+                    class="architecture-diagram"
+                    style="width: 100%; height: auto;">
+
+                <p>
+                    EE registration is the first required interaction between a client and OpenSCMS.
+                    It establishes the canonical identity used in all subsequent operations.
+                </p>
+
+                <p>
+                    The client submits a public key, which is used as canonical information.
+                    Based on this key, the Registration Authority generates a
+                    <strong>canonical ID</strong> and a <strong>device ID</strong>,
+                    both of which are persisted in the RA database.
+                </p>
+
+                <p>
+                    This registration data is consulted on every interaction between the EE and OpenSCMS
+                    to validate the entity’s current status.
+                </p>
+
+                <h3>Public API</h3>
+                <ul>
+                    <li><code>POST /dcms/device/na</code> — Returns canonicalId, deviceId, and device policy (200 JSON)</li>
+                    <li><code>GET /dcms/device/na</code> — Lookup by canonicalId or deviceId (200 JSON)</li>
+                    <li><code>PATCH /dcms/device/na</code> — Update device status (200)</li>
+                </ul>
+
+                <h3>Flow Summary</h3>
+                <ol>
+                    <li>The client submits an EE registration request.</li>
+                    <li>The RA generates identifiers and stores the public key.</li>
+                    <li>The RA responds synchronously with registration confirmation.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Enrollment -->
+        <section class="content-section">
+            <div class="source-info">
+                <h2>2. Enrollment Request</h2>
+                <p class="section-subtitle">Synchronous</p>
+
+                <p>
+                    After registration, the EE may request enrollment.
+                    The enrollment request includes the canonical ID, allowing identity verification.
+                </p>
+
+                <p>
+                    The Enrollment Certificate Authority validates the request signature and
+                    immediately generates the enrollment certificate.
+                </p>
+
+                <h3>Public API</h3>
+                <ul>
+                    <li><code>POST /v3/enrollment-certificate</code> — Returns EcaEeCertResponseSpdu (202, binary C-OER)</li>
+                </ul>
+
+                <h3>Flow Summary</h3>
+                <ol>
+                    <li>The client submits an enrollment request.</li>
+                    <li>The request is decoded and the canonical identity is verified.</li>
+                    <li>The enrollment certificate is generated and returned.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Successor Enrollment -->
+        <section class="content-section">
+            <div class="source-info">
+                <h2>3. Successor Enrollment Request and Download</h2>
+                <p class="section-subtitle">Asynchronous</p>
+
+                <p>
+                    Successor enrollment applies to entities that are already registered.
+                    This process is asynchronous and coordinated by the Registration Authority.
+                </p>
+
+                <h3>Public APIs</h3>
+                <ul>
+                    <li><strong>RA</strong> <code>POST /v3/successor-enrollment-certificate</code> — Acknowledgment (202)</li>
+                    <li><strong>RA</strong> <code>GET /v3/successor-enrollment-certificate</code> — Certificate download (202, C-OER)</li>
+                    <li><strong>ECA</strong> <code>POST successor-enrollment-certificate</code> — RA to ECA request</li>
+                </ul>
+
+                <h3>Flow Summary</h3>
+                <ol>
+                    <li>The client submits a successor enrollment request to the RA.</li>
+                    <li>The RA acknowledges the request and schedules background processing.</li>
+                    <li>An RA worker forwards the request to the ECA.</li>
+                    <li>The generated certificate is stored and made available for download.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Authorization Certificates -->
+        <section class="content-section">
+            <div class="source-info">
+                <h2>4. Authorization Certificate Request and Download</h2>
+                <p class="section-subtitle">Asynchronous</p>
+
+                <img src="../img/auth_request_download.jpg"
+                    alt="Authorization Certificate Request and Download"
+                    class="architecture-diagram"
+                    style="width: 100%; height: auto;">
+
+                <p>
+                    Authorization certificate generation is the primary OpenSCMS workflow.
+                    The process is asynchronous and involves coordination between the RA, ACA, and LA.
+                </p>
+
+                <h3>Public API</h3>
+                <ul>
+                    <li><code>POST /v3/authorization-certificate</code> — Acknowledgment with download time (202)</li>
+                    <li><code>GET /v3/authorization-certificate</code> — Download generated certificates (200, ZIP)</li>
+                </ul>
+
+                <h3>Components Involved</h3>
+                <ul>
+                    <li>Request decoding and EE identity validation</li>
+                    <li>Caterpillar work item creation and persistence</li>
+                    <li>Asynchronous task execution via Celery workers</li>
+                    <li>Certificate generation by the ACA</li>
+                    <li>Linkage value generation by the LA</li>
+                    <li>Certificate storage and download handling</li>
+                </ul>
+
+                <h3>Flow Summary</h3>
+                <ol>
+                    <li>The client submits an authorization certificate request.</li>
+                    <li>The RA validates the EE and acknowledges the request.</li>
+                    <li>Background workers generate and store the certificates.</li>
+                    <li>The client downloads the generated certificates.</li>
+                </ol>
+            </div>
+        </section>
+
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
+        <p>IEEE 1609.2.1 SCMS Implementation</p>
+    </div>
+</footer>
+
 </body>
 </html>
