@@ -18,8 +18,8 @@ class ComponentLoader {
         if (path.includes('/pages/docs/guides/') || path.includes('/pages/docs/components/') || path.includes('/pages/docs/bridge/')) {
             return '../../../';
         }
-        // Se estamos em uma subpasta mais profunda (pages/docs/), o base path é ../../
-        if (path.includes('/pages/docs/')) {
+        // Se estamos em uma subpasta mais profunda (pages/docs/ ou pages/about/), o base path é ../../
+        if (path.includes('/pages/docs/') || path.includes('/pages/about/')) {
             return '../../';
         }
         // Se estamos em uma subpasta (pages/), o base path é ../
@@ -41,10 +41,15 @@ class ComponentLoader {
         const pageMap = {
             'index': 'index',
             '': 'index',
+            'about': 'about',
+            'overview': path.includes('/about/') ? 'about' : 'documentation',
+            'openscms': 'about',
+            'governance': 'about',
+            'release-notes': 'about',
+            'blog': 'blog',
             'source': 'source',
             'docs': 'documentation',
             'documentation': 'documentation',
-            'overview': 'documentation',
             'guides': 'documentation',
             'getting-started': 'documentation',
             'architecture': 'documentation',
@@ -77,24 +82,23 @@ class ComponentLoader {
             <header class="header">
                 <div class="container header-container">
                     <div class="header-left">
-                        <img src="${this.basePath}assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+                        <a href="${this.basePath}index.html" style="display: block; line-height: 0;">
+                            <img src="${this.basePath}assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+                        </a>
                     </div>
                     <nav class="header-nav">
                         <ul class="header-menu">
-                            <li class="menu-item ${this.currentPage === 'index' ? 'active' : ''}">
-                                <a href="${this.basePath}index.html">About</a>
-                            </li>
-                            <li class="menu-item ${this.currentPage === 'source' ? 'active' : ''}">
-                                <a href="${this.basePath}pages/source.html">Source Code</a>
+                            <li class="menu-item ${this.currentPage === 'about' ? 'active' : ''}">
+                                <a href="${this.basePath}pages/about.html">About</a>
                             </li>
                             <li class="menu-item ${this.currentPage === 'documentation' ? 'active' : ''}">
                                 <a href="${this.basePath}pages/docs.html">Docs</a>
                             </li>
+                            <li class="menu-item ${this.currentPage === 'blog' ? 'active' : ''}">
+                                <a href="${this.basePath}pages/blog.html">Blog</a>
+                            </li>
                             <li class="menu-item">
                                 <a href="https://github.com/OpenSCMS/OpenSCMS" target="_blank" rel="noopener noreferrer">Community</a>
-                            </li>
-                            <li class="menu-item ${this.currentPage === 'license' ? 'active' : ''}">
-                                <a href="${this.basePath}pages/license.html">License</a>
                             </li>
                         </ul>
                     </nav>

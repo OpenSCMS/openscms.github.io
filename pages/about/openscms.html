@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The openSCMS Implementation">
+    <title>The openSCMS - About OpenSCMS</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Background</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#introduction" class="sidebar-nav-link">Introduction</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#challenges" class="sidebar-nav-link">Challenges of Secure V2X</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#role-scms" class="sidebar-nav-link">Role of SCMS</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#interaction-flows" class="sidebar-nav-link">Core Interaction Flows</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#architectural-challenges" class="sidebar-nav-link">Architectural Challenges</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">The openSCMS</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="#overview" class="sidebar-nav-link active">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#architecture" class="sidebar-nav-link">Architecture</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#root-of-trust" class="sidebar-nav-link">Root of Trust</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#deployment" class="sidebar-nav-link">Deployment</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Governance & Licensing</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#governance" class="sidebar-nav-link">Governance Model</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#developer-grant" class="sidebar-nav-link">Developer Grant and CLA</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#license" class="sidebar-nav-link">Apache License 2.0</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#faq" class="sidebar-nav-link">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Release Notes</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="release-notes.html#release-notes" class="sidebar-nav-link">OpenSCMS 1.0.0</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>The openSCMS</h2>
+                    
+                    <h3 id="overview">Overview</h3>
+                    
+                    <p>The challenges outlined above—ranging from cryptographic correctness and privacy preservation to scalability, system coordination, and operational complexity—highlight the need for an SCMS implementation that is both architecturally sound and practically usable. The openSCMS project was designed specifically to address these challenges by providing a clean, modular, and validated implementation of the core IEEE 1609.2.1 SCMS workflows.</p>
+                    
+                    <p>Rather than attempting to replicate every optional component defined in the standard, openSCMS focuses on delivering a compact yet complete architecture that correctly implements the essential interaction flows between end entities and the SCMS. This approach ensures correctness and interoperability while significantly lowering the barrier to adoption for both industrial and academic users.</p>
+                    
+                    <p>A key design goal of openSCMS is to remain faithful to the logical structure and security guarantees of the standard, while simplifying deployment, experimentation, and extension. This balance is achieved through clear component boundaries, explicit interfaces, and a strong separation between protocol logic, cryptographic processing, and system orchestration.</p>
+                    
+                    <p>These design choices directly influence the architectural decisions presented in the next section, which describes how openSCMS realizes these concepts through a layered and distributed implementation.</p>
+                    
+                    <h3 id="architecture">Compact yet Complete SCMS Architecture</h3>
+                    
+                    <p>openSCMS implements the two fundamental EE interaction flows defined by IEEE 1609.2.1: enrollment certificate provisioning and authorization certificate provisioning. These flows are supported through direct interaction between the EE and the Enrollment Certificate Authority (ECA) and Registration Authority (RA), respectively.</p>
+                    
+                    <p>To reduce architectural overhead while preserving functional correctness, openSCMS does not implement certain auxiliary components defined in the standard, such as the Device Configuration Manager (DCM), the Location Obscurer Proxy (LOP), and the Supplementary Authorization Server (SAS). Instead, the system enables the correct execution of both provisioning flows through a streamlined architecture in which:</p>
+                    
+                    <ul>
+                        <li>End entities interact directly with the ECA for enrollment certificate provisioning.</li>
+                        <li>End entities interact directly with the RA for authorization certificate provisioning.</li>
+                        <li>The RA additionally exposes endpoints responsible for certificate distribution, effectively subsuming the role of the Distribution Center (DC).</li>
+                        <li>Essential bootstrapping functionality for end entities—traditionally associated with the DCM—is provided directly by openSCMS.</li>
+                    </ul>
+                    
+                    <p>This design preserves the security and privacy properties mandated by the standard while avoiding unnecessary complexity. As a result, openSCMS provides a practical foundation that can be deployed, tested, and extended without requiring a full-scale SCMS deployment.</p>
+                    
+                    <p>Importantly, the correctness of these flows has not been validated solely through specification compliance, but also through end-to-end integration with a conformant EE client. The client implements the IEEE 1609.2.1 protocol exactly as specified and successfully completes enrollment and authorization provisioning flows against openSCMS, demonstrating protocol-level interoperability and validating the architectural choices made by the project.</p>
+                    
+                    <h3 id="root-of-trust">Establishing the Root of Trust</h3>
+                    
+                    <p>Before an EE can securely interact with the SCMS, it must establish a root of trust by being provisioned with certificates for electors, root certificate authorities (root CAs), or both. The IEEE 1609.2.1 standard explicitly leaves the mechanisms and security requirements for this provisioning outside its scope.</p>
+                    
+                    <p>openSCMS addresses this gap by providing a flexible and extensible mechanism for initializing trust anchors. During system startup, openSCMS loads Certificate Chain Files (CCFs) and Certificate Trust Lists (CTLs), which define the trust relationships used throughout the system.</p>
+                    
+                    <p>To support testing, experimentation, and rapid deployment, openSCMS includes a standalone utility, <code>scms-manager</code>, implemented on top of the oscms-codecs-bridge library. This tool enables the generation of elector and root CA key pairs and certificates, as well as the creation of CCF and CTL artifacts. These generated payloads can be directly consumed by openSCMS during initialization.</p>
+                    
+                    <p>While scms-manager serves as a reference and support tool, openSCMS does not impose a fixed trust model. Users remain free to generate and manage trust anchors according to their own operational and security requirements, ensuring that the system can be adapted to a wide range of deployment scenarios.</p>
+                    
+                    <h3 id="deployment">Deployment and Operational Considerations</h3>
+                    
+                    <p>In addition to protocol correctness and cryptographic soundness, openSCMS was designed with operational practicality in mind. Secure infrastructure must be deployable, observable, and maintainable in real-world environments.</p>
+                    
+                    <p>To this end, openSCMS provides a unified deployment strategy based on <strong>Docker, Kubernetes, and Skaffold</strong>. This setup enables reproducible builds, simplified deployment and redeployment workflows, and seamless integration with modern container orchestration and monitoring ecosystems.</p>
+                    
+                    <p>By adopting cloud-native deployment practices, openSCMS supports scalable experimentation, automated testing, and continuous integration workflows. This operational flexibility further reinforces the project's goal of serving as a practical foundation for both research and industrial prototyping.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Highlight sidebar item on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -66%'
+            });
+            
+            document.querySelectorAll('.docs-content h2[id], .docs-content h3[id], .docs-content h4[id]').forEach(heading => {
+                observer.observe(heading);
+            });
+        });
+    </script>
+</body>
+</html>

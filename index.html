@@ -12,90 +12,153 @@
     <div id="header-placeholder"></div>
 
     <main class="main-content">
-        <div class="container">
-            <section class="content-section">
-                <div class="source-info">
-                    <h2>About OpenSCMS</h2>
-
-                    <p>
-                        <strong>OpenSCMS</strong> is an open-source implementation of a
-                        <strong>Security Credential Management System (SCMS)</strong> compliant
-                        with <strong>IEEE&nbsp;1609.2.1</strong>. The project focuses on providing
-                        a practical, modular, and deployable realization of the standard,
-                        covering its main architectural and functional components.
-                    </p>
-
-                    <p>
-                        OpenSCMS implements the core elements defined by IEEE&nbsp;1609.2.1 with
-                        an emphasis on efficiency and scalability, leveraging task parallelism
-                        to support high-throughput operation across different deployment sizes
-                        and scenarios.
-                    </p>
-
-                    <p>
-                        A central part of the project is a low-level core library that implements
-                        cryptographic primitives and ASN.1 structure manipulation. This library
-                        is intentionally decoupled from the SCMS logic, allowing it to be reused
-                        independently, integrated into other SCMS implementations, or used in
-                        isolation for simulations, testing, and experimentation.
-                    </p>
-
-                    <p>
-                        The project includes a complete deployment setup based on
-                        <strong>Docker</strong> and <strong>Kubernetes</strong>, enabling
-                        containerized service orchestration, monitoring, and lifecycle
-                        management. This supports both local testing environments (for example,
-                        using Minikube) and production deployments on servers or clusters.
-                    </p>
-
-                    <p>
-                        OpenSCMS also provides auxiliary scripts for generating supporting
-                        artifacts such as CTL and CCF payloads, certificates, and cryptographic
-                        keys for electors and root CAs. Additional features, including logging,
-                        parameter customization, and fault recovery mechanisms, are included to
-                        improve robustness, observability, and operational flexibility.
-                    </p>
-                </div>
-
-                <div class="features">
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Compliance Icon" class="feature-icon">
-                        <h3>IEEE 1609.2.1 Compliant</h3>
-                        <p>Full implementation of the SCMS standard covering all main architectural and functional components.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Modular Icon" class="feature-icon">
-                        <h3>Modular & Reusable</h3>
-                        <p>Decoupled core library for cryptographic primitives and ASN.1 structures, ready for independent use.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Performance Icon" class="feature-icon">
-                        <h3>High Performance</h3>
-                        <p>Efficient task parallelism design supporting high-throughput operations across different deployment scales.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Production Icon" class="feature-icon">
-                        <h3>Production Ready</h3>
-                        <p>Complete Docker and Kubernetes deployment setup for local testing and production environments.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Tooling Icon" class="feature-icon">
-                        <h3>Comprehensive Tooling</h3>
-                        <p>Auxiliary scripts for CTL, CCF, certificates, and key generation.</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <img src="assets/icon_dark.png" alt="Flexibility Icon" class="feature-icon">
-                        <h3>Observable & Flexible</h3>
-                        <p>Enhanced logging, parameter customization, and monitoring capabilities for operational excellence.</p>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <p class="hero-badge">OPEN SOURCE • V2X PKI • IEEE 1609.2.1</p>
+                        <h1 class="hero-title">OpenSCMS</h1>
+                        <p class="hero-subtitle">
+                            An open-source, deployable <strong>Security Credential Management System (SCMS)</strong> 
+                            aligned with <strong>IEEE 1609.2.1 (2022)</strong>—built for modularity, observability, and real-world scale.
+                        </p>
+                        <div class="hero-tags">
+                            <span class="tag">RA / ECA / ACA services</span>
+                            <span class="tag">Docker + Kubernetes</span>
+                            <span class="tag">OpenAPI specs</span>
+                            <span class="tag">1609.2-style (non-X.509) certs</span>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
+
+        <!-- Two Column Section -->
+        <section class="two-column-section">
+            <div class="container">
+                <div class="two-columns">
+                    <!-- Left Column: Key Capabilities -->
+                    <div class="column">
+                        <h2>Key Capabilities</h2>
+                        <p class="column-intro">
+                            OpenSCMS implements core SCMS workflows with a focus on efficiency, scalability, and 
+                            deployability. It supports provisioning certificates for both OBU and RSU clients, including 
+                            pseudonym certificate issuance.
+                        </p>
+
+                        <div class="capability-item">
+                            <h3>◆ Standards-Aligned APIs</h3>
+                            <p>Implements IEEE 1609.2.1 endpoint semantics per component, published as OpenAPI v3 specs.</p>
+                        </div>
+
+                        <div class="capability-item">
+                            <h3>◆ High-Throughput Workflows</h3>
+                            <p>Uses task parallelism and asynchronous processing where required (e.g., authorization certificate generation).</p>
+                        </div>
+
+                        <div class="capability-item">
+                            <h3>◆ OBU / RSU Provisioning</h3>
+                            <p>OBUs can request pseudonym or identification/application certificates. RSUs can request identification certificates.</p>
+                        </div>
+
+                        <div class="capability-item">
+                            <h3>◆ Implicit & Explicit Pseudonyms</h3>
+                            <p>Supports implicit (EC25V, smaller payloads) and explicit (ECDSA P-256) pseudonym certificates.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Deployment & API Highlights -->
+                    <div class="column">
+                        <div class="highlight-box">
+                            <h2>Deployment & Ops</h2>
+                            <ul class="highlight-list">
+                                <li><strong>Docker + Kubernetes</strong> deployment (local Minikube or production clusters)</li>
+                                <li><strong>Operational features:</strong> logging, parameter customization, and fault recovery mechanisms</li>
+                                <li><strong>Auxiliary scripts</strong> for bootstrapping artifacts: CTL, CCF payloads, elector/root CA keys</li>
+                            </ul>
+                            <p class="highlight-note">Designed to be deployable, observable, and scalable across different deployment sizes.</p>
+                        </div>
+
+                        <div class="highlight-box">
+                            <h2>API Highlights</h2>
+                            <ul class="highlight-list">
+                                <li><strong>RA:</strong> registration, authorization cert request/download, CTL/CCF, CRLs, CA cert download</li>
+                                <li><strong>ECA:</strong> enrollment cert issuance, successor enrollment responses</li>
+                                <li><strong>ACA:</strong> authorization support operations</li>
+                            </ul>
+                            <p class="highlight-note">Many payloads are exchanged as binary encodings aligned with IEEE 1609.2.1 conventions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Architecture Section -->
+        <section class="architecture-section">
+            <div class="container">
+                <h2>Architecture at a Glance</h2>
+                <p class="section-intro">
+                    Each component maintains its own state (local database). Public APIs are exposed per role and described via OpenAPI.
+                </p>
+                <div class="architecture-diagram">
+                    <img src="assets/brochure.png" alt="OpenSCMS Architecture Overview" class="brochure-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Grid Section -->
+        <section class="features-grid-section">
+            <div class="container">
+                <h2>Additional Highlights</h2>
+                <div class="features-grid">
+                    <div class="feature-box">
+                        <h3>Certificates</h3>
+                        <ul>
+                            <li>OBU: pseudonym + identification/app</li>
+                            <li>RSU: identification</li>
+                            <li>Implicit (EC25V) & explicit (ECDSA P-256)</li>
+                            <li>1609.2 format (non-X.509)</li>
+                        </ul>
+                        <p class="feature-note">Designed for modularity: the ASN.1 codec layer is independent and can be swapped for alternative implementations.</p>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>Independent ASN.1 Codec</h3>
+                        <p>OpenSCMS uses an <strong>independent ASN.1 codec library</strong> for IEEE 1609.2 encoding/decoding that will be released as open source.</p>
+                        <ul>
+                            <li><strong>License:</strong> Apache License 2.0</li>
+                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust migration)</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-box">
+                        <h3>Open Source</h3>
+                        <ul>
+                            <li><strong>License:</strong> Apache License 2.0</li>
+                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust migration)</li>
+                            <li><strong>Contribute:</strong> issues, PRs, and bilingual copyright discussions welcome</li>
+                        </ul>
+                        <p class="feature-note">Goal: make SCMS implementations more transparent, reproducible, and easier to deploy and evaluate.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Get Started with OpenSCMS</h2>
+                    <p>Explore the documentation, try a deployment, or contribute to the project.</p>
+                    <div class="cta-buttons">
+                        <a href="pages/docs.html" class="btn-primary">View Documentation</a>
+                        <a href="https://github.com/OpenSCMS/OpenSCMS" class="btn-secondary" target="_blank">View on GitHub</a>
+                        <a href="pages/about.html" class="btn-secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Footer Component -->

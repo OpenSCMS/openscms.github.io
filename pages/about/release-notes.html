@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Release Notes">
+    <title>Release Notes - About OpenSCMS</title>
+    <link rel="stylesheet" href="../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Background</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#introduction" class="sidebar-nav-link">Introduction</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#challenges" class="sidebar-nav-link">Challenges of Secure V2X</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#role-scms" class="sidebar-nav-link">Role of SCMS</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#interaction-flows" class="sidebar-nav-link">Core Interaction Flows</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#architectural-challenges" class="sidebar-nav-link">Architectural Challenges</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">The openSCMS</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="openscms.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="openscms.html#architecture" class="sidebar-nav-link">Architecture</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="openscms.html#root-of-trust" class="sidebar-nav-link">Root of Trust</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="openscms.html#deployment" class="sidebar-nav-link">Deployment</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Governance & Licensing</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#governance" class="sidebar-nav-link">Governance Model</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#developer-grant" class="sidebar-nav-link">Developer Grant and CLA</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#license" class="sidebar-nav-link">Apache License 2.0</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="governance.html#faq" class="sidebar-nav-link">FAQ</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Release Notes</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="#release-notes" class="sidebar-nav-link active">OpenSCMS 1.0.0</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2 id="release-notes">Release Notes</h2>
+                    
+                    <h3>OpenSCMS 1.0.0</h3>
+                    
+                    <p><em>TODO: Add release notes for version 1.0.0.</em></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Highlight sidebar item on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -66%'
+            });
+            
+            document.querySelectorAll('.docs-content h2[id], .docs-content h3[id], .docs-content h4[id]').forEach(heading => {
+                observer.observe(heading);
+            });
+        });
+    </script>
+</body>
+</html>
