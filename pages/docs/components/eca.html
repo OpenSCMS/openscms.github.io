@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Enrollment Certificate Authority (ECA)">
+    <title>Enrollment Certificate Authority - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Core Components</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Registration Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal Organization</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#authorization-flow" class="sidebar-nav-link">Authorization Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#successor-enrollment" class="sidebar-nav-link">Successor Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#ee-registration" class="sidebar-nav-link">EE Registration</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#trust-artifacts" class="sidebar-nav-link">Trust Artifacts</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#lifecycle-management" class="sidebar-nav-link">Lifecycle Management</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Enrollment CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="#overview" class="sidebar-nav-link active">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#initial-enrollment" class="sidebar-nav-link">Initial Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Authorization CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#role" class="sidebar-nav-link">Role in Certificate Flows</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#issuance-flow" class="sidebar-nav-link">Issuance Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Linkage Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="la.html" class="sidebar-nav-link">Linkage Authority</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Enrollment Certificate Authority (ECA)</h2>
+                    
+                    <h3 id="overview">Overview</h3>
+                    
+                    <p>The Enrollment Certificate Authority (ECA) is responsible for issuing enrollment certificates, which establish the long-term cryptographic identity of an End Entity (EE) within the SCMS. Enrollment certificates bind sensitive device identity information to cryptographic material and serve as the foundation for all subsequent authorization and provisioning flows.</p>
+                    
+                    <p>Within the OpenSCMS architecture, the ECA participates directly in the EE lifecycle by transitioning devices from the <code>Registered</code> state to the <code>Enrolled</code> state, and by issuing renewed enrollment certificates during successor enrollment. The ECA does not maintain EE state locally; instead, it relies on the Registration Authority (RA) as the authoritative source of lifecycle information. Before issuing any enrollment certificate, the ECA queries the RA to validate that the EE is in a state compatible with the requested operation.</p>
+                    
+                    <p>The ECA exposes REST endpoints for enrollment-related operations, but their usage is tightly constrained by lifecycle and policy checks enforced in coordination with the RA. This design minimizes the ECA's exposure surface while preserving a clear separation of responsibilities between identity issuance and lifecycle control.</p>
+                    
+                    <h3 id="initial-enrollment">Initial Enrollment Certificate Flow</h3>
+                    
+                    <p>The initial enrollment flow is responsible for issuing the first enrollment certificate for an EE. This operation represents a critical trust boundary within the SCMS, as enrollment certificates embed long-term identity attributes that are later used to authorize all other certificate provisioning activities.</p>
+                    
+                    <p>From a cryptographic perspective, the initial enrollment request establishes the first authenticated link between the End Entity (EE) and the SCMS. The enrollment request submitted by the client must be digitally signed using the EE's <em>canonical private key</em>. This key corresponds to the canonical public key previously provided during the EE registration process and stored by the Registration Authority (RA).</p>
+                    
+                    <p>Upon receiving an enrollment request, the ECA does not directly trust the cryptographic identity asserted by the client. Instead, the ECA queries the RA to retrieve the canonical information associated with the requesting EE, including the canonical public key. Using this information, the ECA verifies the digital signature of the enrollment request, ensuring that the request originates from the registered EE and has not been tampered with.</p>
+                    
+                    <p>If signature verification succeeds and all lifecycle and policy preconditions are satisfied, the ECA issues an explicit IEEE 1609.2.1 enrollment certificate. This certificate is signed by the ECA and binds the EE's canonical identity to a new cryptographic credential that will be used for all subsequent interactions with the SCMS.</p>
+                    
+                    <p>The enrollment certificate represents the transition from an unauthenticated registration context to an authenticated operational context. Once issued, it becomes the primary credential used by the EE to authenticate future protocol messages. For example, when the RA receives an authorization certificate request, it first validates the enrollment certificate by verifying its signature using the ECA certificate. Only after the enrollment certificate is validated does the RA verify the digital signature of the incoming request using the public key contained in the enrollment certificate.</p>
+                    
+                    <h4>Enrollment Certificate Request</h4>
+                    
+                    <pre><code>POST /v3/enrollment-certificate
+
+Description:
+  Submits a request for an initial enrollment certificate.
+
+Input:
+  An IEEE 1609.2.1 Enrollment Certificate Request SPDU containing canonical
+  identity information and cryptographic material, signed using the EE's
+  canonical private key.
+
+Output:
+  A response SPDU containing the newly issued enrollment certificate.
+
+Errors:
+  Requests originating from EEs in invalid lifecycle states, malformed
+  SPDUs, signature verification failures, or cryptographic validation
+  errors result in protocol-defined error responses.</code></pre>
+                    
+                    <h3 id="security">Security and Trust Considerations</h3>
+                    
+                    <p>The ECA operates on highly sensitive identity data and is therefore designed to remain narrowly scoped. It does not perform EE registration, lifecycle persistence, or authorization policy enforcement directly. These responsibilities are delegated to the RA, which acts as the single source of truth for EE state and eligibility.</p>
+                    
+                    <p>By enforcing strict preconditions through RA coordination and limiting direct client interaction, the ECA ensures that enrollment certificates are issued only under well-defined, auditable conditions, preserving the security and privacy guarantees of the SCMS.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Highlight sidebar item on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -66%'
+            });
+            
+            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
+                observer.observe(heading);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Getting Started with OpenSCMS">
+    <title>Getting Started - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Getting Started</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="getting-started.html" class="sidebar-nav-link active">The OpenSCMS</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Architecture</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="architecture.html" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="architecture.html#high-level-layers" class="sidebar-nav-link">High-Level Layers</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="architecture.html#technology-choices" class="sidebar-nav-link">Technology Choices</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Code Structure</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html#workspace" class="sidebar-nav-link">Workspace Organization</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html#service-crate" class="sidebar-nav-link">Service Crate Structure</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html#scmscommon" class="sidebar-nav-link">scmscommon</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html#oscms-bridge" class="sidebar-nav-link">oscms_bridge</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="code-structure.html#dependencies" class="sidebar-nav-link">Dependency Model</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Setup & Deployment</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="setup.html" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="setup.html#build-dependencies" class="sidebar-nav-link">Build Dependencies</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="setup.html#certificates" class="sidebar-nav-link">Certificates & Keys</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="setup.html#manual-deployment" class="sidebar-nav-link">Manual Deployment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="setup.html#kubernetes" class="sidebar-nav-link">Docker & Kubernetes</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Reference</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html" class="sidebar-nav-link">Assumptions & Limitations</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Getting Started</h2>
+                    
+                    <h3 id="the-openscms">The OpenSCMS</h3>
+                    
+                    <p>The <strong>OpenSCMS</strong> project is an open-source implementation of a Security Credential Management System (SCMS) compliant with the IEEE 1609.2 and IEEE 1609.2.1 standards for V2X communication.</p>
+                    
+                    <p>Unlike traditional PKI systems, an SCMS must simultaneously satisfy strict cryptographic correctness, large-scale performance, and strong privacy requirements. In particular, the SCMS must enable authenticated and authorized communication between V2X end entities while preventing long-term tracking of vehicles and infrastructure nodes.</p>
+                    
+                    <p>The OpenSCMS addresses this challenge by providing a "minimum complete" implementation of the core SCMS workflows defined by IEEE 1609.2.1. The system supports enrollment certificate provisioning and authorization certificate provisioning, including butterfly key expansion to compose pseudonym certificate generation.</p>
+                    
+                    <h4>Engineering Perspective</h4>
+                    
+                    <p>From an engineering perspective, OpenSCMS is designed as a distributed, microservice-based system implemented primarily in Rust, with a dedicated cryptographic and protocol engine implemented in C. This separation allows the system to combine strong safety and concurrency guarantees at the service level with precise control over cryptographic operations and ASN.1 codecs operation at the protocol level.</p>
+                    
+                    <h4>Documentation Purpose</h4>
+                    
+                    <p>This technical documentation complements the OpenSCMS White Paper by focusing on implementation details, repository structure, deployment procedures, APIs, and contribution guidelines, with the goal of enabling engineers to understand, execute, extend, and contribute to the OpenSCMS codebase.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

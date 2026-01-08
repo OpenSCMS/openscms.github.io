@@ -1,0 +1,208 @@
+/**
+ * Component Loader - Versão para Sites Estáticos
+ * Carrega componentes reutilizáveis (header e footer) em todas as páginas
+ */
+
+class ComponentLoader {
+    constructor() {
+        this.basePath = this.getBasePath();
+        this.currentPage = this.getCurrentPage();
+    }
+
+    /**
+     * Determina o caminho base baseado na localização da página
+     */
+    getBasePath() {
+        const path = window.location.pathname;
+        // Se estamos em uma subpasta ainda mais profunda (pages/docs/guides/, pages/docs/components/, pages/docs/bridge/), o base path é ../../../
+        if (path.includes('/pages/docs/guides/') || path.includes('/pages/docs/components/') || path.includes('/pages/docs/bridge/')) {
+            return '../../../';
+        }
+        // Se estamos em uma subpasta mais profunda (pages/docs/), o base path é ../../
+        if (path.includes('/pages/docs/')) {
+            return '../../';
+        }
+        // Se estamos em uma subpasta (pages/), o base path é ../
+        if (path.includes('/pages/')) {
+            return '../';
+        }
+        // Se estamos na raiz
+        return './';
+    }
+
+    /**
+     * Identifica a página atual para marcar o item ativo no menu
+     */
+    getCurrentPage() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop().replace('.html', '') || 'index';
+        
+        // Mapeamento de páginas para identificadores
+        const pageMap = {
+            'index': 'index',
+            '': 'index',
+            'source': 'source',
+            'docs': 'documentation',
+            'documentation': 'documentation',
+            'overview': 'documentation',
+            'guides': 'documentation',
+            'getting-started': 'documentation',
+            'architecture': 'documentation',
+            'code-structure': 'documentation',
+            'setup': 'documentation',
+            'assumptions': 'documentation',
+            'scms-components': 'documentation',
+            'ra': 'documentation',
+            'eca': 'documentation',
+            'aca': 'documentation',
+            'la': 'documentation',
+            'codecs-bridge': 'documentation',
+            'build': 'documentation',
+            'library-layers': 'documentation',
+            'utilities': 'documentation',
+            'development': 'documentation',
+            'installation': 'documentation',
+            'api-reference': 'documentation',
+            'license': 'license'
+        };
+
+        return pageMap[filename] || 'index';
+    }
+
+    /**
+     * Retorna o template do header
+     */
+    getHeaderTemplate() {
+        return `
+            <header class="header">
+                <div class="container header-container">
+                    <div class="header-left">
+                        <img src="${this.basePath}assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+                    </div>
+                    <nav class="header-nav">
+                        <ul class="header-menu">
+                            <li class="menu-item ${this.currentPage === 'index' ? 'active' : ''}">
+                                <a href="${this.basePath}index.html">About</a>
+                            </li>
+                            <li class="menu-item ${this.currentPage === 'source' ? 'active' : ''}">
+                                <a href="${this.basePath}pages/source.html">Source Code</a>
+                            </li>
+                            <li class="menu-item ${this.currentPage === 'documentation' ? 'active' : ''}">
+                                <a href="${this.basePath}pages/docs.html">Docs</a>
+                            </li>
+                            <li class="menu-item">
+                                <a href="https://github.com/OpenSCMS/OpenSCMS" target="_blank" rel="noopener noreferrer">Community</a>
+                            </li>
+                            <li class="menu-item ${this.currentPage === 'license' ? 'active' : ''}">
+                                <a href="${this.basePath}pages/license.html">License</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+        `;
+    }
+
+    /**
+     * Retorna o template do footer
+     */
+    getFooterTemplate() {
+        return `
+            <footer class="footer">
+                <div class="container">
+                    <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
+                    <p>IEEE 1609.2.1 SCMS Implementation</p>
+                </div>
+            </footer>
+        `;
+    }
+
+    /**
+     * Retorna o template do submenu de documentação
+     */
+    getDocsSubmenuTemplate() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop().replace('.html', '');
+        
+        // Determina o base path para os links do submenu
+        let docsBasePath = './';
+        if (path.includes('/pages/docs/components/')) {
+            docsBasePath = '../';
+        } else if (path.includes('/pages/docs/guides/')) {
+            docsBasePath = '../';
+        } else if (path.includes('/pages/docs/bridge/')) {
+            docsBasePath = '../';
+        } else if (path.includes('/pages/docs/')) {
+            docsBasePath = './';
+        } else if (path.includes('/pages/')) {
+            docsBasePath = 'docs/';
+        }
+        
+        // Determina se estamos em alguma página de guides
+        const isGuidesPage = filename === 'guides' || filename === 'getting-started' || 
+                           filename === 'architecture' || filename === 'code-structure' || 
+                           filename === 'setup' || filename === 'assumptions';
+        
+        // Determina se estamos em alguma página de components
+        const isComponentsPage = filename === 'scms-components' || filename === 'ra' || 
+                               filename === 'eca' || filename === 'aca' || filename === 'la' ||
+                               (filename === 'overview' && path.includes('/components/'));
+        
+        // Determina se estamos em alguma página de bridge
+        const isBridgePage = filename === 'codecs-bridge' || filename === 'build' || 
+                           filename === 'library-layers' || filename === 'utilities' || 
+                           filename === 'development' ||
+                           (filename === 'overview' && path.includes('/bridge/'));
+        
+        return `
+            <nav class="docs-submenu">
+                <div class="container">
+                    <ul class="submenu-tabs">
+                        <li class="submenu-tab ${filename === 'overview' && !path.includes('/components/') && !path.includes('/bridge/') ? 'active' : ''}">
+                            <a href="${docsBasePath}overview.html">Overview</a>
+                        </li>
+                        <li class="submenu-tab ${isGuidesPage ? 'active' : ''}">
+                            <a href="${docsBasePath}guides.html">Guides</a>
+                        </li>
+                        <li class="submenu-tab ${isComponentsPage ? 'active' : ''}">
+                            <a href="${docsBasePath}scms-components.html">SCMS Components</a>
+                        </li>
+                        <li class="submenu-tab ${isBridgePage ? 'active' : ''}">
+                            <a href="${docsBasePath}codecs-bridge.html">Codecs Bridge</a>
+                        </li>
+                        <li class="submenu-tab ${filename === 'api-reference' ? 'active' : ''}">
+                            <a href="${docsBasePath}api-reference.html">API Reference</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        `;
+    }
+
+    /**
+     * Injeta os componentes na página
+     */
+    init() {
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+        const docsSubmenuPlaceholder = document.getElementById('docs-submenu-placeholder');
+
+        if (headerPlaceholder) {
+            headerPlaceholder.innerHTML = this.getHeaderTemplate();
+        }
+
+        if (footerPlaceholder) {
+            footerPlaceholder.innerHTML = this.getFooterTemplate();
+        }
+
+        if (docsSubmenuPlaceholder) {
+            docsSubmenuPlaceholder.innerHTML = this.getDocsSubmenuTemplate();
+        }
+    }
+}
+
+// Inicializa quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    const loader = new ComponentLoader();
+    loader.init();
+});

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Core Components Overview">
+    <title>SCMS Components Overview - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Core Components</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="#overview" class="sidebar-nav-link active">Overview</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Registration Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal Organization</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#authorization-flow" class="sidebar-nav-link">Authorization Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#successor-enrollment" class="sidebar-nav-link">Successor Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#ee-registration" class="sidebar-nav-link">EE Registration</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#trust-artifacts" class="sidebar-nav-link">Trust Artifacts</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#lifecycle-management" class="sidebar-nav-link">Lifecycle Management</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Enrollment CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#initial-enrollment" class="sidebar-nav-link">Initial Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Authorization CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#role" class="sidebar-nav-link">Role in Certificate Flows</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#issuance-flow" class="sidebar-nav-link">Issuance Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="aca.html#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Linkage Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="la.html" class="sidebar-nav-link">Linkage Authority</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Core SCMS Components</h2>
+                    
+                    <h3 id="overview">Overview</h3>
+                    
+                    <p>OpenSCMS implements the core functional entities defined by the IEEE 1609.2.1 Secure Credential Management System (SCMS) architecture. Each entity is realized as an independent Rust crate, deployed as a microservice, and responsible for a well-defined subset of the SCMS protocol flows.</p>
+                    
+                    <p>The primary SCMS components implemented in OpenSCMS are:</p>
+                    
+                    <ul>
+                        <li><strong>Registration Authority (RA)</strong></li>
+                        <li><strong>Enrollment Certificate Authority (ECA)</strong></li>
+                        <li><strong>Authorization Certificate Authority (ACA)</strong></li>
+                        <li><strong>Linkage Authority (LA)</strong></li>
+                    </ul>
+                    
+                    <p>Among these components, the RA and ECA expose external REST APIs and act as ingress points for V2X clients. The ACA and LA are internal infrastructure services that do not expose public APIs and are accessed exclusively by other SCMS components.</p>
+                    
+                    <p>For each component, this section describes its architectural role, its responsibilities within the SCMS protocol, and the main operational flows in which it participates. The discussion starts with the Registration Authority (RA), which serves as the primary entry point into the SCMS ecosystem.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Highlight sidebar item on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -66%'
+            });
+            
+            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
+                observer.observe(heading);
+            });
+        });
+    </script>
+</body>
+</html>

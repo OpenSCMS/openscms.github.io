@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Authorization Certificate Authority (ACA)">
+    <title>Authorization Certificate Authority - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <aside class="docs-sidebar">
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Core Components</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="overview.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Registration Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal Organization</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#authorization-flow" class="sidebar-nav-link">Authorization Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#successor-enrollment" class="sidebar-nav-link">Successor Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#ee-registration" class="sidebar-nav-link">EE Registration</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#trust-artifacts" class="sidebar-nav-link">Trust Artifacts</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="ra.html#lifecycle-management" class="sidebar-nav-link">Lifecycle Management</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Enrollment CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#overview" class="sidebar-nav-link">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#initial-enrollment" class="sidebar-nav-link">Initial Enrollment</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="eca.html#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Authorization CA</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="#overview" class="sidebar-nav-link active">Overview</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#role" class="sidebar-nav-link">Role in Certificate Flows</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#issuance-flow" class="sidebar-nav-link">Issuance Flow</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="#security" class="sidebar-nav-link">Security Considerations</a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3 class="sidebar-section-title">Linkage Authority</h3>
+                        <ul class="sidebar-nav">
+                            <li class="sidebar-nav-item">
+                                <a href="la.html" class="sidebar-nav-link">Linkage Authority</a>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Authorization Certificate Authority (ACA)</h2>
+                    
+                    <h3 id="overview">Overview</h3>
+                    
+                    <p>The Authorization Certificate Authority (ACA) is responsible for issuing authorization certificates, also referred to as pseudonym certificates, which are used by End Entities (EEs) to authenticate and sign V2X application-layer messages while preserving privacy.</p>
+                    
+                    <p>In the OpenSCMS architecture, the ACA does not interact directly with clients. Instead, it is invoked exclusively by the Registration Authority (RA) as part of the authorization certificate provisioning flows. This design ensures that all client-facing validation, lifecycle checks, and policy enforcement are centralized in the RA, while the ACA remains narrowly focused on certificate generation.</p>
+                    
+                    <p>As with other SCMS components, the ACA relies on the shared low-level cryptographic and protocol implementation provided by the C-based <code>oscms-codecs-bridge</code>. All certificate generation logic, including ASN.1 handling, IEEE 1609.2.1 encoding, and cryptographic operations, is performed via this shared library.</p>
+                    
+                    <h3 id="role">Role in Authorization Certificate Flows</h3>
+                    
+                    <p>Authorization certificate issuance is always initiated by the RA. When the RA receives an authorization certificate request from an EE, it validates the request, verifies the enrollment certificate, checks the EE lifecycle state, and extracts all parameters required for certificate issuance. The RA then constructs an internal task and forwards the relevant authorization issuance parameters to the ACA.</p>
+                    
+                    <p>Before invoking the ACA, the RA interacts with the Linkage Authority (LA) to obtain the linkage values required for authorization certificate generation. These linkage values are used to enable misbehavior resolution and certificate revocation while preserving unlinkability during normal operation. Once the linkage values are available, the RA invokes the ACA to generate the authorization certificates.</p>
+                    
+                    <p>The ACA generates the requested batch of authorization certificates and returns them to the RA. The RA persists the resulting certificates and makes them available to the client through the authorization download flow.</p>
+                    
+                    <h4>Explicit and Implicit Certificates</h4>
+                    
+                    <p>OpenSCMS supports the generation of both explicit and implicit authorization certificates, as defined by IEEE 1609.2.1.</p>
+                    
+                    <p>Explicit certificates contain full public key material and signatures based on standard ECDSA over the P-256 curve. Implicit certificates rely on ECQV-style key derivation, significantly reducing certificate size by eliminating the need to transmit full public keys. Implicit certificates reduce the certificate size by approximately 64 bytes compared to their explicit counterparts.</p>
+                    
+                    <p>The choice between explicit and implicit certificates is driven by policy and configuration parameters evaluated by the RA and passed to the ACA as part of the issuance request.</p>
+                    
+                    <h4>Butterfly Key Expansion Mechanisms</h4>
+                    
+                    <p>Authorization certificate issuance in OpenSCMS supports multiple butterfly key expansion mechanisms, which allow efficient generation of large batches of pseudonym certificates from compact input material.</p>
+                    
+                    <p>The following butterfly mechanisms are supported:</p>
+                    
+                    <ul>
+                        <li><strong>Original Butterfly Keys (OBK)</strong></li>
+                        <li><strong>Unified Butterfly Keys (UBK)</strong></li>
+                        <li><strong>Compact Unified Butterfly Keys (CUBK)</strong></li>
+                    </ul>
+                    
+                    <p>In addition to the butterfly expansion mechanisms, OpenSCMS supports both unencrypted and encrypted non-butterfly variants. For encrypted inputs, the encryption key used to protect the butterfly material is the public encryption key of the RA. This ensures that only the RA is capable of decrypting sensitive key material received from the EE before it is forwarded for certificate generation.</p>
+                    
+                    <h3 id="issuance-flow">Authorization Certificate Issuance Flow</h3>
+                    
+                    <p>During authorization certificate issuance, the ACA receives a request from the RA containing:</p>
+                    
+                    <ul>
+                        <li>the selected certificate type (explicit or implicit),</li>
+                        <li>the butterfly key expansion parameters,</li>
+                        <li>linkage values obtained from the LA,</li>
+                        <li>validity and permission constraints derived from policy.</li>
+                    </ul>
+                    
+                    <p>Using this input, the ACA invokes the low-level C cryptographic engine to generate a batch of IEEE 1609.2.1 authorization certificates. All cryptographic operations, including key expansion, signature generation, and ASN.1 encoding, are performed within the C library to ensure consistency and correctness across components.</p>
+                    
+                    <p>Once certificate generation completes, the ACA returns the resulting certificate batch to the RA. The ACA itself does not persist certificates or maintain client state.</p>
+                    
+                    <h3 id="security">Security and Architectural Considerations</h3>
+                    
+                    <p>The ACA is intentionally designed as a stateless and narrowly scoped service. It does not maintain EE lifecycle information, does not perform policy evaluation, and does not expose any externally accessible APIs. All trust decisions are delegated to the RA, which acts as the system's control plane.</p>
+                    
+                    <p>By centralizing cryptographic implementation in a shared low-level library and limiting the ACA's responsibilities to certificate generation, OpenSCMS reduces implementation complexity, minimizes the attack surface, and facilitates auditing and reuse of the cryptographic core across all SCMS components.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/components.js"></script>
+    
+    <!-- Documentation Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sidebar navigation - smooth scroll and active state
+            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = e.target.getAttribute('href');
+                    
+                    // Para links internos da mesma página
+                    if (href && href.startsWith('#')) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        
+                        if (targetElement) {
+                            targetElement.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Sidebar section collapse/expand
+            document.querySelectorAll('.sidebar-section-title').forEach(title => {
+                title.addEventListener('click', (e) => {
+                    const section = e.target.closest('.sidebar-section');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Highlight sidebar item on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, {
+                rootMargin: '-150px 0px -66%'
+            });
+            
+            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
+                observer.observe(heading);
+            });
+        });
+    </script>
+</body>
+</html>
