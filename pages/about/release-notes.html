@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <title>Release Notes - About OpenSCMS</title>
     <link rel="stylesheet" href="../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -29,16 +31,18 @@
                                 <a href="overview.html#role-scms" class="sidebar-nav-link">Role of SCMS</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="overview.html#interaction-flows" class="sidebar-nav-link">Core Interaction Flows</a>
+                                <a href="overview.html#interaction-flows" class="sidebar-nav-link">Core Interaction
+                                    Flows</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="overview.html#architectural-challenges" class="sidebar-nav-link">Architectural Challenges</a>
+                                <a href="overview.html#architectural-challenges" class="sidebar-nav-link">Architectural
+                                    Challenges</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
-                        <h3 class="sidebar-section-title">The openSCMS</h3>
+                        <h3 class="sidebar-section-title">The OpenSCMS</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
                                 <a href="openscms.html#overview" class="sidebar-nav-link">Overview</a>
@@ -54,7 +58,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Governance & Licensing</h3>
                         <ul class="sidebar-nav">
@@ -62,7 +66,8 @@
                                 <a href="governance.html#governance" class="sidebar-nav-link">Governance Model</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="governance.html#developer-grant" class="sidebar-nav-link">Developer Grant and CLA</a>
+                                <a href="governance.html#developer-grant" class="sidebar-nav-link">Developer Grant and
+                                    CLA</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="governance.html#license" class="sidebar-nav-link">Apache License 2.0</a>
@@ -72,7 +77,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Release Notes</h3>
                         <ul class="sidebar-nav">
@@ -82,13 +87,13 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2 id="release-notes">Release Notes</h2>
-                    
+
                     <h3>OpenSCMS 1.0.0</h3>
-                    
+
                     <p><em>TODO: Add release notes for version 1.0.0.</em></p>
                 </div>
             </div>
@@ -100,7 +105,7 @@
 
     <!-- Component Loader -->
     <script src="../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -108,13 +113,13 @@
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -124,7 +129,7 @@
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -132,7 +137,7 @@
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -149,11 +154,12 @@
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h2[id], .docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>
