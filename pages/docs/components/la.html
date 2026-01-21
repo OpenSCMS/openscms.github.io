@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>Linkage Authority - OpenSCMS</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -27,7 +37,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Registration Authority</h3>
                         <ul class="sidebar-nav">
@@ -35,7 +45,8 @@
                                 <a href="ra.html#overview" class="sidebar-nav-link">Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal Organization</a>
+                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal
+                                    Organization</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="ra.html#authorization-flow" class="sidebar-nav-link">Authorization Flow</a>
@@ -54,7 +65,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Enrollment CA</h3>
                         <ul class="sidebar-nav">
@@ -69,7 +80,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Authorization CA</h3>
                         <ul class="sidebar-nav">
@@ -87,7 +98,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Linkage Authority</h3>
                         <ul class="sidebar-nav">
@@ -97,30 +108,50 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Linkage Authority (LA)</h2>
-                    
+
                     <h3 id="overview">Overview</h3>
-                    
-                    <p>The Linkage Authority (LA) is a critical SCMS component responsible for generating and managing linkage values that enable privacy-preserving misbehavior resolution. The LA provides the linkage seeds and values used during authorization certificate generation, allowing authorized SCMS entities to link multiple pseudonym certificates to the same End Entity when necessary for security investigations, while preserving unlinkability during normal operations.</p>
-                    
-                    <p>In the OpenSCMS architecture, the LA operates as an internal service that is invoked exclusively by the Registration Authority (RA) during authorization certificate provisioning flows. The LA does not expose any external APIs to V2X clients and does not participate directly in client-facing protocol interactions.</p>
-                    
+
+                    <p>The Linkage Authority (LA) is a critical SCMS component responsible for generating and managing
+                        linkage values that enable privacy-preserving misbehavior resolution. The LA provides the
+                        linkage seeds and values used during authorization certificate generation, allowing authorized
+                        SCMS entities to link multiple pseudonym certificates to the same End Entity when necessary for
+                        security investigations, while preserving unlinkability during normal operations.</p>
+
+                    <p>In the OpenSCMS architecture, the LA operates as an internal service that is invoked exclusively
+                        by the Registration Authority (RA) during authorization certificate provisioning flows. The LA
+                        does not expose any external APIs to V2X clients and does not participate directly in
+                        client-facing protocol interactions.</p>
+
                     <h3>Role in Authorization Certificate Provisioning</h3>
-                    
-                    <p>During the authorization certificate provisioning flow, the RA queries the LA to obtain the linkage values required for a specific batch of authorization certificates. These linkage values are embedded into the certificates by the Authorization Certificate Authority (ACA) and enable privacy-preserving revocation and misbehavior detection.</p>
-                    
-                    <p>The LA maintains linkage seeds and derives linkage values based on cryptographic parameters and time periods defined by SCMS policy. The linkage values are designed such that certificates from the same End Entity can be linked by authorized misbehavior investigators without revealing the EE's identity during normal V2X communication.</p>
-                    
+
+                    <p>During the authorization certificate provisioning flow, the RA queries the LA to obtain the
+                        linkage values required for a specific batch of authorization certificates. These linkage values
+                        are embedded into the certificates by the Authorization Certificate Authority (ACA) and enable
+                        privacy-preserving revocation and misbehavior detection.</p>
+
+                    <p>The LA maintains linkage seeds and derives linkage values based on cryptographic parameters and
+                        time periods defined by SCMS policy. The linkage values are designed such that certificates from
+                        the same End Entity can be linked by authorized misbehavior investigators without revealing the
+                        EE's identity during normal V2X communication.</p>
+
                     <h3>Security and Privacy Considerations</h3>
-                    
-                    <p>The LA is a highly sensitive component within the SCMS architecture. Compromise of the LA's cryptographic material or linkage seeds could enable unauthorized tracking of End Entities, undermining the privacy guarantees of the SCMS.</p>
-                    
-                    <p>To minimize risk, the LA is designed as a narrowly scoped, stateless service with no external API exposure. All interactions with the LA occur through internal service-to-service calls initiated by the RA, and all linkage computations are performed using the shared cryptographic engine provided by <code>oscms-codecs-bridge</code>.</p>
-                    
-                    <p>By isolating the LA behind the RA and limiting its responsibilities to linkage value generation, OpenSCMS ensures that the LA operates under strict architectural constraints, reducing the attack surface and facilitating security auditing.</p>
+
+                    <p>The LA is a highly sensitive component within the SCMS architecture. Compromise of the LA's
+                        cryptographic material or linkage seeds could enable unauthorized tracking of End Entities,
+                        undermining the privacy guarantees of the SCMS.</p>
+
+                    <p>To minimize risk, the LA is designed as a narrowly scoped, stateless service with no external API
+                        exposure. All interactions with the LA occur through internal service-to-service calls initiated
+                        by the RA, and all linkage computations are performed using the shared cryptographic engine
+                        provided by <code>oscms-codecs-bridge</code>.</p>
+
+                    <p>By isolating the LA behind the RA and limiting its responsibilities to linkage value generation,
+                        OpenSCMS ensures that the LA operates under strict architectural constraints, reducing the
+                        attack surface and facilitating security auditing.</p>
                 </div>
             </div>
         </div>
@@ -131,7 +162,7 @@
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -139,13 +170,13 @@
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -155,7 +186,7 @@
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -163,7 +194,7 @@
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -180,11 +211,12 @@
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>

@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>OpenSCMS - Open Source SCMS Implementation</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -20,8 +30,9 @@
                         <p class="hero-badge">OPEN SOURCE • V2X PKI • IEEE 1609.2.1</p>
                         <h1 class="hero-title">OpenSCMS</h1>
                         <p class="hero-subtitle">
-                            An open-source, deployable <strong>Security Credential Management System (SCMS)</strong> 
-                            aligned with <strong>IEEE 1609.2.1 (2022)</strong>—built for modularity, observability, and real-world scale.
+                            An open-source, deployable <strong>Security Credential Management System (SCMS)</strong>
+                            aligned with <strong>IEEE 1609.2.1 (2022)</strong>—built for modularity, observability, and
+                            real-world scale.
                         </p>
                         <div class="hero-tags">
                             <span class="tag">RA / ECA / ACA services</span>
@@ -42,29 +53,33 @@
                     <div class="column">
                         <h2>Key Capabilities</h2>
                         <p class="column-intro">
-                            OpenSCMS implements core SCMS workflows with a focus on efficiency, scalability, and 
-                            deployability. It supports provisioning certificates for both OBU and RSU clients, including 
+                            OpenSCMS implements core SCMS workflows with a focus on efficiency, scalability, and
+                            deployability. It supports provisioning certificates for both OBU and RSU clients, including
                             pseudonym certificate issuance.
                         </p>
 
                         <div class="capability-item">
                             <h3>◆ Standards-Aligned APIs</h3>
-                            <p>Implements IEEE 1609.2.1 endpoint semantics per component, published as OpenAPI v3 specs.</p>
+                            <p>Implements IEEE 1609.2.1 endpoint semantics per component, published as OpenAPI v3 specs.
+                            </p>
                         </div>
 
                         <div class="capability-item">
                             <h3>◆ High-Throughput Workflows</h3>
-                            <p>Uses task parallelism and asynchronous processing where required (e.g., authorization certificate generation).</p>
+                            <p>Uses task parallelism and asynchronous processing where required (e.g., authorization
+                                certificate generation).</p>
                         </div>
 
                         <div class="capability-item">
                             <h3>◆ OBU / RSU Provisioning</h3>
-                            <p>OBUs can request pseudonym or identification/application certificates. RSUs can request identification certificates.</p>
+                            <p>OBUs can request pseudonym or identification/application certificates. RSUs can request
+                                identification certificates.</p>
                         </div>
 
                         <div class="capability-item">
                             <h3>◆ Implicit & Explicit Pseudonyms</h3>
-                            <p>Supports implicit (EC25V, smaller payloads) and explicit (ECDSA P-256) pseudonym certificates.</p>
+                            <p>Supports implicit (EC25V, smaller payloads) and explicit (ECDSA P-256) pseudonym
+                                certificates.</p>
                         </div>
                     </div>
 
@@ -73,21 +88,27 @@
                         <div class="highlight-box">
                             <h2>Deployment & Ops</h2>
                             <ul class="highlight-list">
-                                <li><strong>Docker + Kubernetes</strong> deployment (local Minikube or production clusters)</li>
-                                <li><strong>Operational features:</strong> logging, parameter customization, and fault recovery mechanisms</li>
-                                <li><strong>Auxiliary scripts</strong> for bootstrapping artifacts: CTL, CCF payloads, elector/root CA keys</li>
+                                <li><strong>Docker + Kubernetes</strong> deployment (local Minikube or production
+                                    clusters)</li>
+                                <li><strong>Operational features:</strong> logging, parameter customization, and fault
+                                    recovery mechanisms</li>
+                                <li><strong>Auxiliary scripts</strong> for bootstrapping artifacts: CTL, CCF payloads,
+                                    elector/root CA keys</li>
                             </ul>
-                            <p class="highlight-note">Designed to be deployable, observable, and scalable across different deployment sizes.</p>
+                            <p class="highlight-note">Designed to be deployable, observable, and scalable across
+                                different deployment sizes.</p>
                         </div>
 
                         <div class="highlight-box">
                             <h2>API Highlights</h2>
                             <ul class="highlight-list">
-                                <li><strong>RA:</strong> registration, authorization cert request/download, CTL/CCF, CRLs, CA cert download</li>
+                                <li><strong>RA:</strong> registration, authorization cert request/download, CTL/CCF,
+                                    CRLs, CA cert download</li>
                                 <li><strong>ECA:</strong> enrollment cert issuance, successor enrollment responses</li>
                                 <li><strong>ACA:</strong> authorization support operations</li>
                             </ul>
-                            <p class="highlight-note">Many payloads are exchanged as binary encodings aligned with IEEE 1609.2.1 conventions.</p>
+                            <p class="highlight-note">Many payloads are exchanged as binary encodings aligned with IEEE
+                                1609.2.1 conventions.</p>
                         </div>
                     </div>
                 </div>
@@ -99,7 +120,8 @@
             <div class="container">
                 <h2>Architecture at a Glance</h2>
                 <p class="section-intro">
-                    Each component maintains its own state (local database). Public APIs are exposed per role and described via OpenAPI.
+                    Each component maintains its own state (local database). Public APIs are exposed per role and
+                    described via OpenAPI.
                 </p>
                 <div class="architecture-diagram">
                     <img src="assets/brochure.png" alt="OpenSCMS Architecture Overview" class="brochure-img">
@@ -120,15 +142,18 @@
                             <li>Implicit (EC25V) & explicit (ECDSA P-256)</li>
                             <li>1609.2 format (non-X.509)</li>
                         </ul>
-                        <p class="feature-note">Designed for modularity: the ASN.1 codec layer is independent and can be swapped for alternative implementations.</p>
+                        <p class="feature-note">Designed for modularity: the ASN.1 codec layer is independent and can be
+                            swapped for alternative implementations.</p>
                     </div>
 
                     <div class="feature-box">
                         <h3>Independent ASN.1 Codec</h3>
-                        <p>OpenSCMS uses an <strong>independent ASN.1 codec library</strong> for IEEE 1609.2 encoding/decoding that will be released as open source.</p>
+                        <p>OpenSCMS uses an <strong>independent ASN.1 codec library</strong> for IEEE 1609.2
+                            encoding/decoding that will be released as open source.</p>
                         <ul>
                             <li><strong>License:</strong> Apache License 2.0</li>
-                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust migration)</li>
+                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust
+                                migration)</li>
                         </ul>
                     </div>
 
@@ -136,10 +161,13 @@
                         <h3>Open Source</h3>
                         <ul>
                             <li><strong>License:</strong> Apache License 2.0</li>
-                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust migration)</li>
-                            <li><strong>Contribute:</strong> issues, PRs, and bilingual copyright discussions welcome</li>
+                            <li><strong>Org:</strong> GitHub organization with multiple repos (services = C/Rust
+                                migration)</li>
+                            <li><strong>Contribute:</strong> issues, PRs, and bilingual copyright discussions welcome
+                            </li>
                         </ul>
-                        <p class="feature-note">Goal: make SCMS implementations more transparent, reproducible, and easier to deploy and evaluate.</p>
+                        <p class="feature-note">Goal: make SCMS implementations more transparent, reproducible, and
+                            easier to deploy and evaluate.</p>
                     </div>
                 </div>
             </div>
@@ -153,7 +181,8 @@
                     <p>Explore the documentation, try a deployment, or contribute to the project.</p>
                     <div class="cta-buttons">
                         <a href="pages/docs.html" class="btn-primary">View Documentation</a>
-                        <a href="https://github.com/OpenSCMS/OpenSCMS" class="btn-secondary" target="_blank">View on GitHub</a>
+                        <a href="https://github.com/OpenSCMS/OpenSCMS" class="btn-secondary" target="_blank">View on
+                            GitHub</a>
                         <a href="pages/about.html" class="btn-secondary">Learn More</a>
                     </div>
                 </div>
@@ -167,4 +196,5 @@
     <!-- Component Loader -->
     <script src="js/components.js"></script>
 </body>
+
 </html>

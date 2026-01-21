@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>Architecture - OpenSCMS Guides</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -27,7 +37,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Architecture</h3>
                         <ul class="sidebar-nav">
@@ -42,7 +52,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Code Structure</h3>
                         <ul class="sidebar-nav">
@@ -50,10 +60,12 @@
                                 <a href="code-structure.html" class="sidebar-nav-link">Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="code-structure.html#workspace" class="sidebar-nav-link">Workspace Organization</a>
+                                <a href="code-structure.html#workspace" class="sidebar-nav-link">Workspace
+                                    Organization</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="code-structure.html#service-crate" class="sidebar-nav-link">Service Crate Structure</a>
+                                <a href="code-structure.html#service-crate" class="sidebar-nav-link">Service Crate
+                                    Structure</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="code-structure.html#scmscommon" class="sidebar-nav-link">scmscommon</a>
@@ -66,7 +78,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Setup & Deployment</h3>
                         <ul class="sidebar-nav">
@@ -87,7 +99,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Reference</h3>
                         <ul class="sidebar-nav">
@@ -97,46 +109,78 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Architecture</h2>
-                    
+
                     <h3 id="overview">Overview</h3>
-                    
-                    <p>OpenSCMS follows a layered and service-oriented architecture aligned with the logical decomposition proposed by IEEE 1609.2.1. Each SCMS component is implemented as an independent Rust crate following microservices design, allowing clear separation of responsibilities, independent scaling, and reduced trust concentration. Based on that, V2X end entities (OBUs, RSUs, and test clients) can interact with the SCMS via IEEE 1609.2.1-defined REST interfaces.</p>
-                    
+
+                    <p>OpenSCMS follows a layered and service-oriented architecture aligned with the logical
+                        decomposition proposed by IEEE 1609.2.1. Each SCMS component is implemented as an independent
+                        Rust crate following microservices design, allowing clear separation of responsibilities,
+                        independent scaling, and reduced trust concentration. Based on that, V2X end entities (OBUs,
+                        RSUs, and test clients) can interact with the SCMS via IEEE 1609.2.1-defined REST interfaces.
+                    </p>
+
                     <h3 id="high-level-layers">High-Level Layers</h3>
-                    
+
                     <p>The system can be viewed as four primary layers:</p>
-                    
+
                     <ul>
-                        <li><strong>Service Layer</strong>: Rust-based microservices implementing SCMS components such as RA, ECA, ACA, and LA.</li>
-                        <li><strong>Messaging and Persistence Layer</strong>: Asynchronous task coordination via RabbitMQ (implemented in components that receive a higher load of frequent requests, such as RA) and persistent storage using relational databases (MySQL).</li>
-                        <li><strong>Cryptographic and Protocol Layer</strong>: The <code>oscms-codecs-bridge</code> C library, responsible for cryptography, ASN.1 encoding/decoding, and SPDU parsing and construction.</li>
+                        <li><strong>Service Layer</strong>: Rust-based microservices implementing SCMS components such
+                            as RA, ECA, ACA, and LA.</li>
+                        <li><strong>Messaging and Persistence Layer</strong>: Asynchronous task coordination via
+                            RabbitMQ (implemented in components that receive a higher load of frequent requests, such as
+                            RA) and persistent storage using relational databases (MySQL).</li>
+                        <li><strong>Cryptographic and Protocol Layer</strong>: The <code>oscms-codecs-bridge</code> C
+                            library, responsible for cryptography, ASN.1 encoding/decoding, and SPDU parsing and
+                            construction.</li>
                     </ul>
-                    
+
                     <h3 id="technology-choices">Technology Choices</h3>
-                    
+
                     <h4 id="rust-backend">Rust Backend</h4>
-                    
-                    <p>Rust is used for all SCMS services due to its strong guarantees around memory safety, concurrency, and performance properties that are essential for security-critical, highly concurrent systems handling sensitive cryptographic material.</p>
-                    
-                    <p>An additional and decisive factor in this choice is Rust's clean and explicit integration model with C through Foreign Function Interfaces (FFI). This allows OpenSCMS to safely and efficiently interface with the <code>oscms-codecs-bridge</code>, a low-level C library that implements the core cryptographic and IEEE 1609.2.1 protocol logic. Rust bindings provide a clear boundary between high-level service orchestration and low-level cryptographic operations, enabling strong type safety, well-defined ownership semantics, and controlled memory management across the language boundary.</p>
-                    
+
+                    <p>Rust is used for all SCMS services due to its strong guarantees around memory safety,
+                        concurrency, and performance properties that are essential for security-critical, highly
+                        concurrent systems handling sensitive cryptographic material.</p>
+
+                    <p>An additional and decisive factor in this choice is Rust's clean and explicit integration model
+                        with C through Foreign Function Interfaces (FFI). This allows OpenSCMS to safely and efficiently
+                        interface with the <code>oscms-codecs-bridge</code>, a low-level C library that implements the
+                        core cryptographic and IEEE 1609.2.1 protocol logic. Rust bindings provide a clear boundary
+                        between high-level service orchestration and low-level cryptographic operations, enabling strong
+                        type safety, well-defined ownership semantics, and controlled memory management across the
+                        language boundary.</p>
+
                     <h4 id="c-cryptographic-bridge">C Cryptographic Bridge</h4>
-                    
-                    <p>The <code>oscms-codecs-bridge</code> is implemented in C to provide fine-grained control over memory layout, cryptographic operations and libraries, and ASN.1 processing. The bridge library is codec-agnostic and abstracts the underlying ASN.1 transpiler behind a stable API, avoiding dependency on proprietary tooling.</p>
-                    
+
+                    <p>The <code>oscms-codecs-bridge</code> is implemented in C to provide fine-grained control over
+                        memory layout, cryptographic operations and libraries, and ASN.1 processing. The bridge library
+                        is codec-agnostic and abstracts the underlying ASN.1 transpiler behind a stable API, avoiding
+                        dependency on proprietary tooling.</p>
+
                     <h4 id="microservices-messaging">Microservices and Messaging</h4>
-                    
-                    <p>The IEEE 1609.2.1 standard defines client vs SCMS interactions primarily through REST-based endpoints, making a microservice-oriented architecture a natural and practical design choice for OpenSCMS. By mapping each logical SCMS role to an independent service, the system closely mirrors the structure and interaction model prescribed by the standard.</p>
-                    
-                    <p>Task parallelism is achieved through asynchronous messaging, enabling services to decouple request ingestion from computationally expensive cryptographic and certificate generation workflows. This design allows OpenSCMS to process large volumes of certificate requests without blocking synchronous API endpoints.</p>
-                    
-                    <p>This approach is particularly important for high-demand components such as the Registration Authority (RA), where V2X clients frequently request batches of authorization or pseudonym certificates to support credential rotation. By offloading long-running tasks to message queues, the RA can scale horizontally, handle burst traffic efficiently, and maintain predictable response behavior even under heavy load.</p>
-                    
-                    <p>This architecture ensures that no single component can compromise system-wide privacy guarantees while remaining practical for real-world deployments.</p>
+
+                    <p>The IEEE 1609.2.1 standard defines client vs SCMS interactions primarily through REST-based
+                        endpoints, making a microservice-oriented architecture a natural and practical design choice for
+                        OpenSCMS. By mapping each logical SCMS role to an independent service, the system closely
+                        mirrors the structure and interaction model prescribed by the standard.</p>
+
+                    <p>Task parallelism is achieved through asynchronous messaging, enabling services to decouple
+                        request ingestion from computationally expensive cryptographic and certificate generation
+                        workflows. This design allows OpenSCMS to process large volumes of certificate requests without
+                        blocking synchronous API endpoints.</p>
+
+                    <p>This approach is particularly important for high-demand components such as the Registration
+                        Authority (RA), where V2X clients frequently request batches of authorization or pseudonym
+                        certificates to support credential rotation. By offloading long-running tasks to message queues,
+                        the RA can scale horizontally, handle burst traffic efficiently, and maintain predictable
+                        response behavior even under heavy load.</p>
+
+                    <p>This architecture ensures that no single component can compromise system-wide privacy guarantees
+                        while remaining practical for real-world deployments.</p>
                 </div>
             </div>
         </div>
@@ -147,7 +191,7 @@
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -155,18 +199,18 @@
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
-                            
+
                             document.querySelectorAll('.sidebar-nav-link').forEach(l => {
                                 l.classList.remove('active');
                             });
@@ -175,7 +219,7 @@
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -183,7 +227,7 @@
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -200,11 +244,12 @@
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>

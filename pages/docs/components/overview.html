@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>SCMS Components Overview - OpenSCMS</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -27,7 +37,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Registration Authority</h3>
                         <ul class="sidebar-nav">
@@ -35,7 +45,8 @@
                                 <a href="ra.html#overview" class="sidebar-nav-link">Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal Organization</a>
+                                <a href="ra.html#internal-organization" class="sidebar-nav-link">Internal
+                                    Organization</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="ra.html#authorization-flow" class="sidebar-nav-link">Authorization Flow</a>
@@ -54,7 +65,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Enrollment CA</h3>
                         <ul class="sidebar-nav">
@@ -69,7 +80,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Authorization CA</h3>
                         <ul class="sidebar-nav">
@@ -87,7 +98,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Linkage Authority</h3>
                         <ul class="sidebar-nav">
@@ -97,27 +108,35 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Core SCMS Components</h2>
-                    
+
                     <h3 id="overview">Overview</h3>
-                    
-                    <p>OpenSCMS implements the core functional entities defined by the IEEE 1609.2.1 Secure Credential Management System (SCMS) architecture. Each entity is realized as an independent Rust crate, deployed as a microservice, and responsible for a well-defined subset of the SCMS protocol flows.</p>
-                    
+
+                    <p>OpenSCMS implements the core functional entities defined by the IEEE 1609.2.1 Secure Credential
+                        Management System (SCMS) architecture. Each entity is realized as an independent Rust crate,
+                        deployed as a microservice, and responsible for a well-defined subset of the SCMS protocol
+                        flows.</p>
+
                     <p>The primary SCMS components implemented in OpenSCMS are:</p>
-                    
+
                     <ul>
                         <li><strong>Registration Authority (RA)</strong></li>
                         <li><strong>Enrollment Certificate Authority (ECA)</strong></li>
                         <li><strong>Authorization Certificate Authority (ACA)</strong></li>
                         <li><strong>Linkage Authority (LA)</strong></li>
                     </ul>
-                    
-                    <p>Among these components, the RA and ECA expose external REST APIs and act as ingress points for V2X clients. The ACA and LA are internal infrastructure services that do not expose public APIs and are accessed exclusively by other SCMS components.</p>
-                    
-                    <p>For each component, this section describes its architectural role, its responsibilities within the SCMS protocol, and the main operational flows in which it participates. The discussion starts with the Registration Authority (RA), which serves as the primary entry point into the SCMS ecosystem.</p>
+
+                    <p>Among these components, the RA and ECA expose external REST APIs and act as ingress points for
+                        V2X clients. The ACA and LA are internal infrastructure services that do not expose public APIs
+                        and are accessed exclusively by other SCMS components.</p>
+
+                    <p>For each component, this section describes its architectural role, its responsibilities within
+                        the SCMS protocol, and the main operational flows in which it participates. The discussion
+                        starts with the Registration Authority (RA), which serves as the primary entry point into the
+                        SCMS ecosystem.</p>
                 </div>
             </div>
         </div>
@@ -128,7 +147,7 @@
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -136,13 +155,13 @@
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -152,7 +171,7 @@
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -160,7 +179,7 @@
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -177,11 +196,12 @@
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>

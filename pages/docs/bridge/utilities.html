@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>Library Utilities - OpenSCMS Codecs Bridge</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -26,35 +36,40 @@
                                 <a href="overview.html#overview" class="sidebar-nav-link">Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="overview.html#architecture" class="sidebar-nav-link">High-Level Architecture</a>
+                                <a href="overview.html#architecture" class="sidebar-nav-link">High-Level
+                                    Architecture</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Build & Structure</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and Installation</a>
+                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and
+                                    Installation</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository Structure</a>
+                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository
+                                    Structure</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Library Layers</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec Abstraction Layer</a>
+                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec
+                                    Abstraction Layer</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge Layer</a>
+                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge
+                                    Layer</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Utilities</h3>
                         <ul class="sidebar-nav">
@@ -62,7 +77,8 @@
                                 <a href="#memory-management" class="sidebar-nav-link active">Memory Management</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="#cryptographic-primitives" class="sidebar-nav-link">Cryptographic Primitives</a>
+                                <a href="#cryptographic-primitives" class="sidebar-nav-link">Cryptographic
+                                    Primitives</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="#logging" class="sidebar-nav-link">Logging and Diagnostics</a>
@@ -72,7 +88,7 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Development</h3>
                         <ul class="sidebar-nav">
@@ -80,7 +96,8 @@
                                 <a href="development.html#overview" class="sidebar-nav-link">Development Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="development.html#language-standard" class="sidebar-nav-link">C Standard & Tooling</a>
+                                <a href="development.html#language-standard" class="sidebar-nav-link">C Standard &
+                                    Tooling</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="development.html#header-files" class="sidebar-nav-link">Header Files</a>
@@ -97,37 +114,43 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Library Utilities</h2>
-                    
+
                     <h3 id="memory-management">Memory Management Utilities</h3>
-                    
-                    <p>To ensure consistent and safe memory handling across the library, the API defines shared abstractions for buffers and sequences.</p>
-                    
+
+                    <p>To ensure consistent and safe memory handling across the library, the API defines shared
+                        abstractions for buffers and sequences.</p>
+
                     <h4>Octet Buffers</h4>
-                    
-                    <p>The <code>OscmsOctetBuffer</code> type encapsulates a pointer-length pair and provides a unified interface for allocation, duplication, copying, and deallocation. This avoids error-prone handling of raw pointers and lengths.</p>
-                    
+
+                    <p>The <code>OscmsOctetBuffer</code> type encapsulates a pointer-length pair and provides a unified
+                        interface for allocation, duplication, copying, and deallocation. This avoids error-prone
+                        handling of raw pointers and lengths.</p>
+
                     <pre><code>OscmsOctetBuffer *oscms_octet_buffer_new_from_buffer(
     const uint8_t *buffer, size_t length);
 
 void oscms_free_octet_buffer(OscmsOctetBuffer *buffer);</code></pre>
-                    
+
                     <h4>Sequences</h4>
-                    
-                    <p>The <code>OscmsSequence</code> type provides a dynamic array abstraction similar to ASN.1 <code>SEQUENCE OF</code>. It is used to represent ordered collections of protocol elements while centralizing allocation and cleanup.</p>
-                    
+
+                    <p>The <code>OscmsSequence</code> type provides a dynamic array abstraction similar to ASN.1
+                        <code>SEQUENCE OF</code>. It is used to represent ordered collections of protocol elements while
+                        centralizing allocation and cleanup.</p>
+
                     <pre><code>typedef struct OscmsSequence {
     size_t count;
     void **data;
 } OscmsSequence;</code></pre>
-                    
+
                     <h3 id="cryptographic-primitives">Cryptographic Primitives</h3>
-                    
-                    <p>All cryptographic operations are implemented within the bridge layer using OpenSSL primitives. These include:</p>
-                    
+
+                    <p>All cryptographic operations are implemented within the bridge layer using OpenSSL primitives.
+                        These include:</p>
+
                     <ul>
                         <li>ECDSA signing and verification,</li>
                         <li>ECIES encryption and decryption,</li>
@@ -135,34 +158,42 @@ void oscms_free_octet_buffer(OscmsOctetBuffer *buffer);</code></pre>
                         <li>implicit certificate key reconstruction,</li>
                         <li>elliptic curve point compression and expansion.</li>
                     </ul>
-                    
+
                     <p>For example, message signing is exposed via a simple API:</p>
-                    
+
                     <pre><code>int ec_sign_message(
     const OscmsOctetBuffer *message,
     EVP_PKEY *private_key,
     OscmsHashAlgorithm hash_algorithm,
     uint8_t *signature);</code></pre>
-                    
-                    <p>These primitives are used uniformly by all SCMS components, ensuring consistent cryptographic behavior across the system.</p>
-                    
+
+                    <p>These primitives are used uniformly by all SCMS components, ensuring consistent cryptographic
+                        behavior across the system.</p>
+
                     <h3 id="logging">Logging and Diagnostics</h3>
-                    
-                    <p>The library provides a lightweight logging abstraction that allows callers to integrate with their preferred logging system or fall back to standard output or syslog.</p>
-                    
+
+                    <p>The library provides a lightweight logging abstraction that allows callers to integrate with
+                        their preferred logging system or fall back to standard output or syslog.</p>
+
                     <pre><code>void oscms_log_set_logger(
     oscms_log_function_ptr func,
     int log_level);
 
 void oscms_log(int level, const char *fmt, ...);</code></pre>
-                    
-                    <p>This allows the Rust backend to redirect all C-level logs into its own structured logging pipeline.</p>
-                    
+
+                    <p>This allows the Rust backend to redirect all C-level logs into its own structured logging
+                        pipeline.</p>
+
                     <h3 id="rust-integration">Integration with Rust</h3>
-                    
-                    <p>Integration with the Rust backend is achieved through the <code>oscms_bridge</code> Rust crate, which compiles the C library and generates bindings at build time using <code>bindgen</code>. This makes the C API available as safe Rust interfaces, while preserving the performance and security properties of the native implementation.</p>
-                    
-                    <p>From the perspective of Rust service developers, all cryptographic and ASN.1 processing is accessed via normal Rust function calls, without requiring knowledge of the underlying C implementation.</p>
+
+                    <p>Integration with the Rust backend is achieved through the <code>oscms_bridge</code> Rust crate,
+                        which compiles the C library and generates bindings at build time using <code>bindgen</code>.
+                        This makes the C API available as safe Rust interfaces, while preserving the performance and
+                        security properties of the native implementation.</p>
+
+                    <p>From the perspective of Rust service developers, all cryptographic and ASN.1 processing is
+                        accessed via normal Rust function calls, without requiring knowledge of the underlying C
+                        implementation.</p>
                 </div>
             </div>
         </div>
@@ -173,7 +204,7 @@ void oscms_log(int level, const char *fmt, ...);</code></pre>
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -181,13 +212,13 @@ void oscms_log(int level, const char *fmt, ...);</code></pre>
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -197,7 +228,7 @@ void oscms_log(int level, const char *fmt, ...);</code></pre>
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -205,7 +236,7 @@ void oscms_log(int level, const char *fmt, ...);</code></pre>
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -222,11 +253,12 @@ void oscms_log(int level, const char *fmt, ...);</code></pre>
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>
