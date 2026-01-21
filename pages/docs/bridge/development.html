@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>Development Guidelines - OpenSCMS Codecs Bridge</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -26,53 +36,61 @@
                                 <a href="overview.html#overview" class="sidebar-nav-link">Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="overview.html#architecture" class="sidebar-nav-link">High-Level Architecture</a>
+                                <a href="overview.html#architecture" class="sidebar-nav-link">High-Level
+                                    Architecture</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Build & Structure</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and Installation</a>
+                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and
+                                    Installation</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository Structure</a>
+                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository
+                                    Structure</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Library Layers</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec Abstraction Layer</a>
+                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec
+                                    Abstraction Layer</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge Layer</a>
+                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge
+                                    Layer</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Utilities</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#memory-management" class="sidebar-nav-link">Memory Management</a>
+                                <a href="utilities.html#memory-management" class="sidebar-nav-link">Memory
+                                    Management</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#cryptographic-primitives" class="sidebar-nav-link">Cryptographic Primitives</a>
+                                <a href="utilities.html#cryptographic-primitives" class="sidebar-nav-link">Cryptographic
+                                    Primitives</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="utilities.html#logging" class="sidebar-nav-link">Logging and Diagnostics</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#rust-integration" class="sidebar-nav-link">Integration with Rust</a>
+                                <a href="utilities.html#rust-integration" class="sidebar-nav-link">Integration with
+                                    Rust</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Development</h3>
                         <ul class="sidebar-nav">
@@ -97,84 +115,98 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Development Guidelines</h2>
-                    
+
                     <h3 id="overview">Development Overview</h3>
-                    
-                    <p>The <code>oscms-codecs-bridge</code> library follows a clean and consistent development style adapted from the Google C++ Style Guide. The C codebase is formatted with <code>clang-format</code> and structured to be readable, maintainable, and portable.</p>
-                    
+
+                    <p>The <code>oscms-codecs-bridge</code> library follows a clean and consistent development style
+                        adapted from the Google C++ Style Guide. The C codebase is formatted with
+                        <code>clang-format</code> and structured to be readable, maintainable, and portable.</p>
+
                     <h3 id="language-standard">C Language Standard and Tooling</h3>
-                    
+
                     <ul>
                         <li><strong>Standard:</strong> C11 with POSIX extensions where applicable.</li>
                         <li><strong>Compiler:</strong> GCC 11+ or Clang 12+.</li>
                         <li><strong>Build system:</strong> CMake 3.15+.</li>
-                        <li><strong>Formatting:</strong> <code>clang-format</code> with project-provided <code>.clang-format</code> file.</li>
+                        <li><strong>Formatting:</strong> <code>clang-format</code> with project-provided
+                            <code>.clang-format</code> file.</li>
                     </ul>
-                    
+
                     <h3 id="header-files">Header Files</h3>
-                    
+
                     <h4>Self-Contained Headers</h4>
-                    
-                    <p>Every header file must be self-contained (able to compile on its own). If a header declares types or functions that depend on other headers, it must include those dependencies. All public headers in <code>include/public/</code> must compile in isolation.</p>
-                    
+
+                    <p>Every header file must be self-contained (able to compile on its own). If a header declares types
+                        or functions that depend on other headers, it must include those dependencies. All public
+                        headers in <code>include/public/</code> must compile in isolation.</p>
+
                     <h4>The #define Guard</h4>
-                    
-                    <p>All headers use traditional include guards with a consistent naming pattern derived from the full path:</p>
-                    
+
+                    <p>All headers use traditional include guards with a consistent naming pattern derived from the full
+                        path:</p>
+
                     <pre><code>#ifndef OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H
 #define OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H
 
 // declarations
 
 #endif  // OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H</code></pre>
-                    
+
                     <h4>Include Ordering</h4>
-                    
+
                     <p>To minimize hidden dependencies, includes are ordered as follows:</p>
-                    
+
                     <ol>
                         <li>Related header (for .c files)</li>
                         <li>C system headers</li>
                         <li>Project headers</li>
                         <li>Third-party library headers (e.g., asn1c, OpenSSL)</li>
                     </ol>
-                    
+
                     <h3 id="scoping">Scoping</h3>
-                    
+
                     <h4>Namespaces</h4>
-                    
+
                     <p>C does not have namespaces, so function and type names use prefixes to organize scope:</p>
-                    
+
                     <ul>
-                        <li>All public API functions and types are prefixed with <code>Oscms</code> or <code>oscms_</code>.</li>
-                        <li>Internal symbols are either declared <code>static</code> or prefixed with the module name to avoid symbol collisions (e.g., <code>codec_internal_parse_point()</code>).</li>
+                        <li>All public API functions and types are prefixed with <code>Oscms</code> or
+                            <code>oscms_</code>.</li>
+                        <li>Internal symbols are either declared <code>static</code> or prefixed with the module name to
+                            avoid symbol collisions (e.g., <code>codec_internal_parse_point()</code>).</li>
                     </ul>
-                    
+
                     <h4>Internal Linkage</h4>
-                    
-                    <p>Helper functions, constants, and types used only within a single translation unit should be declared <code>static</code> to limit their scope:</p>
-                    
+
+                    <p>Helper functions, constants, and types used only within a single translation unit should be
+                        declared <code>static</code> to limit their scope:</p>
+
                     <pre><code>static int parse_internal_type(const uint8_t *buffer) {
     // ...
 }</code></pre>
-                    
+
                     <h4>Local and Static Variables</h4>
-                    
-                    <p>Declare variables in the smallest scope possible, ideally at first use. Static variables are used sparingly and never for mutable state unless explicitly required by an initialization context.</p>
-                    
+
+                    <p>Declare variables in the smallest scope possible, ideally at first use. Static variables are used
+                        sparingly and never for mutable state unless explicitly required by an initialization context.
+                    </p>
+
                     <h3 id="structs">Structs</h3>
-                    
+
                     <h4>Opaque vs. Exposed Structs</h4>
-                    
+
                     <ul>
-                        <li><strong>Opaque types</strong> are forward-declared in public headers, with definitions hidden in private headers or source files. This ensures ABI stability and encapsulation.</li>
-                        <li><strong>Exposed types</strong> are fully defined in public headers when their layout must be known to callers (e.g., <code>OscmsSequence</code>).</li>
+                        <li><strong>Opaque types</strong> are forward-declared in public headers, with definitions
+                            hidden in private headers or source files. This ensures ABI stability and encapsulation.
+                        </li>
+                        <li><strong>Exposed types</strong> are fully defined in public headers when their layout must be
+                            known to callers (e.g., <code>OscmsSequence</code>).</li>
                     </ul>
-                    
+
                     <pre><code>// Opaque (declared but not defined publicly)
 typedef struct OscmsIeee1609Dot2Data OscmsIeee1609Dot2Data;
 
@@ -183,18 +215,19 @@ typedef struct {
     size_t count;
     void **data;
 } OscmsSequence;</code></pre>
-                    
+
                     <h4>Struct Initialization</h4>
-                    
-                    <p>Initialize structs using designated initializers when possible to make initialization explicit and maintainable:</p>
-                    
+
+                    <p>Initialize structs using designated initializers when possible to make initialization explicit
+                        and maintainable:</p>
+
                     <pre><code>OscmsPoint point = {
     .x = 0x01,
     .y = 0x02
 };</code></pre>
-                    
+
                     <h3 id="naming">Naming Conventions</h3>
-                    
+
                     <table>
                         <thead>
                             <tr>
@@ -231,11 +264,12 @@ typedef struct {
                             </tr>
                         </tbody>
                     </table>
-                    
+
                     <h4>Extensibility Considerations</h4>
-                    
-                    <p>The codec abstraction layer is designed to remain independent of <code>asn1c</code> or any specific ASN.1 transpiler. When designing new abstractions:</p>
-                    
+
+                    <p>The codec abstraction layer is designed to remain independent of <code>asn1c</code> or any
+                        specific ASN.1 transpiler. When designing new abstractions:</p>
+
                     <ul>
                         <li>Do not expose transpiler-generated struct layouts in public headers.</li>
                         <li>Use opaque types and accessor functions to isolate internal representation changes.</li>
@@ -251,7 +285,7 @@ typedef struct {
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -259,13 +293,13 @@ typedef struct {
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -275,7 +309,7 @@ typedef struct {
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -283,7 +317,7 @@ typedef struct {
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -300,11 +334,12 @@ typedef struct {
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>

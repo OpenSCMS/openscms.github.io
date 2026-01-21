@@ -1,5 +1,14 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +16,7 @@
     <title>Codecs Bridge Overview - OpenSCMS</title>
     <link rel="stylesheet" href="../../../css/styles.css">
 </head>
+
 <body>
     <!-- Header Component -->
     <div id="header-placeholder"></div>
@@ -30,49 +40,56 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Build & Structure</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and Installation</a>
+                                <a href="build.html#build-installation" class="sidebar-nav-link">Build and
+                                    Installation</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository Structure</a>
+                                <a href="build.html#repository-structure" class="sidebar-nav-link">Repository
+                                    Structure</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Library Layers</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec Abstraction Layer</a>
+                                <a href="library-layers.html#codec-abstraction" class="sidebar-nav-link">Codec
+                                    Abstraction Layer</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge Layer</a>
+                                <a href="library-layers.html#protocol-bridge" class="sidebar-nav-link">Protocol Bridge
+                                    Layer</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Utilities</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#memory-management" class="sidebar-nav-link">Memory Management</a>
+                                <a href="utilities.html#memory-management" class="sidebar-nav-link">Memory
+                                    Management</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#cryptographic-primitives" class="sidebar-nav-link">Cryptographic Primitives</a>
+                                <a href="utilities.html#cryptographic-primitives" class="sidebar-nav-link">Cryptographic
+                                    Primitives</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="utilities.html#logging" class="sidebar-nav-link">Logging and Diagnostics</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="utilities.html#rust-integration" class="sidebar-nav-link">Integration with Rust</a>
+                                <a href="utilities.html#rust-integration" class="sidebar-nav-link">Integration with
+                                    Rust</a>
                             </li>
                         </ul>
                     </div>
-                    
+
                     <div class="sidebar-section">
                         <h3 class="sidebar-section-title">Development</h3>
                         <ul class="sidebar-nav">
@@ -80,7 +97,8 @@
                                 <a href="development.html#overview" class="sidebar-nav-link">Development Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="development.html#language-standard" class="sidebar-nav-link">C Standard & Tooling</a>
+                                <a href="development.html#language-standard" class="sidebar-nav-link">C Standard &
+                                    Tooling</a>
                             </li>
                             <li class="sidebar-nav-item">
                                 <a href="development.html#header-files" class="sidebar-nav-link">Header Files</a>
@@ -97,31 +115,41 @@
                         </ul>
                     </div>
                 </aside>
-                
+
                 <!-- Main Content -->
                 <div class="docs-content">
                     <h2>Codecs Bridge - The C Library</h2>
-                    
+
                     <h3 id="overview">Overview</h3>
-                    
-                    <p>The <code>oscms-codecs-bridge</code> library is the low-level cryptographic and protocol core of OpenSCMS. It is implemented in C and provides all security-critical functionality, including cryptographic operations, ASN.1 encoding and decoding, and construction and verification of IEEE 1609.2.1 SPDUs.</p>
-                    
-                    <p>This library is designed as a standalone component, independent of the Rust backend and SCMS service logic. Integration with the Rust-based services is performed transparently through Rust bindings generated using <code>bindgen</code>. From the perspective of a Rust developer, the library appears as a native Rust module, while all cryptographic and protocol complexity remains encapsulated in C.</p>
-                    
+
+                    <p>The <code>oscms-codecs-bridge</code> library is the low-level cryptographic and protocol core of
+                        OpenSCMS. It is implemented in C and provides all security-critical functionality, including
+                        cryptographic operations, ASN.1 encoding and decoding, and construction and verification of IEEE
+                        1609.2.1 SPDUs.</p>
+
+                    <p>This library is designed as a standalone component, independent of the Rust backend and SCMS
+                        service logic. Integration with the Rust-based services is performed transparently through Rust
+                        bindings generated using <code>bindgen</code>. From the perspective of a Rust developer, the
+                        library appears as a native Rust module, while all cryptographic and protocol complexity remains
+                        encapsulated in C.</p>
+
                     <h3 id="architecture">High-Level Architecture</h3>
-                    
-                    <p>The architecture of <code>oscms-codecs-bridge</code> is layered to clearly separate codec-specific logic from protocol processing and cryptographic operations.</p>
-                    
+
+                    <p>The architecture of <code>oscms-codecs-bridge</code> is layered to clearly separate
+                        codec-specific logic from protocol processing and cryptographic operations.</p>
+
                     <p>At a high level, the library consists of:</p>
-                    
+
                     <ul>
                         <li><strong>A codec abstraction layer (API)</strong></li>
                         <li><strong>A concrete ASN.1 codec implementation (asn1c-based)</strong></li>
                         <li><strong>A protocol bridge layer implementing IEEE 1609.2.1 semantics</strong></li>
                         <li><strong>Cryptographic utilities and primitives</strong></li>
                     </ul>
-                    
-                    <p>This separation allows the library to remain codec-agnostic at higher layers, making it possible to support alternative ASN.1 transpilers in the future without modifying protocol or cryptographic logic.</p>
+
+                    <p>This separation allows the library to remain codec-agnostic at higher layers, making it possible
+                        to support alternative ASN.1 transpilers in the future without modifying protocol or
+                        cryptographic logic.</p>
                 </div>
             </div>
         </div>
@@ -132,7 +160,7 @@
 
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
-    
+
     <!-- Documentation Navigation Script -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -140,13 +168,13 @@
             document.querySelectorAll('.sidebar-nav-link').forEach(link => {
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
-                    
+
                     // Para links internos da mesma página
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);
                         const targetElement = document.getElementById(targetId);
-                        
+
                         if (targetElement) {
                             targetElement.scrollIntoView({
                                 behavior: 'smooth',
@@ -156,7 +184,7 @@
                     }
                 });
             });
-            
+
             // Sidebar section collapse/expand
             document.querySelectorAll('.sidebar-section-title').forEach(title => {
                 title.addEventListener('click', (e) => {
@@ -164,7 +192,7 @@
                     section.classList.toggle('collapsed');
                 });
             });
-            
+
             // Highlight sidebar item on scroll
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -181,11 +209,12 @@
             }, {
                 rootMargin: '-150px 0px -66%'
             });
-            
+
             document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
                 observer.observe(heading);
             });
         });
     </script>
 </body>
+
 </html>
