@@ -27,12 +27,8 @@ class ComponentLoader {
     this.currentPage = this.getCurrentPage();
   }
 
-  /**
-   * Determina o caminho base baseado na localização da página
-   */
   getBasePath() {
     const path = window.location.pathname;
-    // Se estamos em uma subpasta ainda mais profunda (pages/docs/guides/, pages/docs/components/, pages/docs/bridge/), o base path é ../../../
     if (
       path.includes("/pages/docs/guides/") ||
       path.includes("/pages/docs/components/") ||
@@ -40,26 +36,22 @@ class ComponentLoader {
     ) {
       return "../../../";
     }
-    // Se estamos em uma subpasta mais profunda (pages/docs/ ou pages/about/), o base path é ../../
+
     if (path.includes("/pages/docs/") || path.includes("/pages/about/")) {
       return "../../";
     }
-    // Se estamos em uma subpasta (pages/), o base path é ../
+
     if (path.includes("/pages/")) {
       return "../";
     }
-    // Se estamos na raiz
+
     return "./";
   }
 
-  /**
-   * Identifica a página atual para marcar o item ativo no menu
-   */
   getCurrentPage() {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "") || "index";
 
-    // Mapeamento de páginas para identificadores
     const pageMap = {
       index: "index",
       "": "index",
@@ -96,49 +88,33 @@ class ComponentLoader {
     return pageMap[filename] || "index";
   }
 
-  /**
-   * Retorna o template do header
-   */
   getHeaderTemplate() {
     return `
             <header class="header">
                 <div class="container header-container">
                     <div class="header-left">
-                        <a href="${
-                          this.basePath
-                        }index.html" style="display: block; line-height: 0;">
-                            <img src="${
-                              this.basePath
-                            }assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+                        <a href="${this.basePath
+      }index.html" style="display: block; line-height: 0;">
+                            <img src="${this.basePath
+      }assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
                         </a>
                     </div>
                     <nav class="header-nav">
                         <ul class="header-menu">
-                            <li class="menu-item ${
-                              this.currentPage === "about" ? "active" : ""
-                            }">
-                                <a href="${
-                                  this.basePath
-                                }pages/about.html">About</a>
+                            <li class="menu-item ${this.currentPage === "about" ? "active" : ""
+      }">
+                                <a href="${this.basePath
+      }pages/about.html">About</a>
                             </li>
-                            <li class="menu-item ${
-                              this.currentPage === "documentation"
-                                ? "active"
-                                : ""
-                            }">
-                                <a href="${
-                                  this.basePath
-                                }pages/docs.html">Docs</a>
-                            </li>
-                            <li class="menu-item ${
-                              this.currentPage === "blog" ? "active" : ""
-                            }">
-                                <a href="${
-                                  this.basePath
-                                }pages/blog.html">Blog</a>
+                            <li class="menu-item ${this.currentPage === "documentation"
+        ? "active"
+        : ""
+      }">
+                                <a href="${this.basePath
+      }pages/docs.html">Docs</a>
                             </li>
                             <li class="menu-item">
-                                <a href="https://github.com/OpenSCMS/OpenSCMS" target="_blank" rel="noopener noreferrer">Community</a>
+                                <a href="https://github.com/orgs/OpenSCMS/discussions" target="_blank" rel="noopener noreferrer">Community</a>
                             </li>
                         </ul>
                     </nav>
@@ -147,9 +123,6 @@ class ComponentLoader {
         `;
   }
 
-  /**
-   * Retorna o template do footer
-   */
   getFooterTemplate() {
     return `
             <footer class="footer">
@@ -161,14 +134,11 @@ class ComponentLoader {
         `;
   }
 
-  /**
-   * Retorna o template do submenu de documentação
-   */
+
   getDocsSubmenuTemplate() {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
 
-    // Determina o base path para os links do submenu
     let docsBasePath = "./";
     if (path.includes("/pages/docs/components/")) {
       docsBasePath = "../";
@@ -182,7 +152,6 @@ class ComponentLoader {
       docsBasePath = "docs/";
     }
 
-    // Determina se estamos em alguma página de guides
     const isGuidesPage =
       filename === "guides" ||
       filename === "getting-started" ||
@@ -191,7 +160,6 @@ class ComponentLoader {
       filename === "setup" ||
       filename === "assumptions";
 
-    // Determina se estamos em alguma página de components
     const isComponentsPage =
       filename === "scms-components" ||
       filename === "ra" ||
@@ -200,7 +168,6 @@ class ComponentLoader {
       filename === "la" ||
       (filename === "overview" && path.includes("/components/"));
 
-    // Determina se estamos em alguma página de bridge
     const isBridgePage =
       filename === "codecs-bridge" ||
       filename === "build" ||
@@ -213,29 +180,26 @@ class ComponentLoader {
             <nav class="docs-submenu">
                 <div class="container">
                     <ul class="submenu-tabs">
-                        <li class="submenu-tab ${
-                          filename === "overview" &&
-                          !path.includes("/components/") &&
-                          !path.includes("/bridge/")
-                            ? "active"
-                            : ""
-                        }">
+                        <li class="submenu-tab ${filename === "overview" &&
+        !path.includes("/components/") &&
+        !path.includes("/bridge/")
+        ? "active"
+        : ""
+      }">
                             <a href="${docsBasePath}overview.html">Overview</a>
                         </li>
                         <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
                             <a href="${docsBasePath}guides.html">Guides</a>
                         </li>
-                        <li class="submenu-tab ${
-                          isComponentsPage ? "active" : ""
-                        }">
+                        <li class="submenu-tab ${isComponentsPage ? "active" : ""
+      }">
                             <a href="${docsBasePath}scms-components.html">SCMS Components</a>
                         </li>
                         <li class="submenu-tab ${isBridgePage ? "active" : ""}">
                             <a href="${docsBasePath}codecs-bridge.html">Codecs Bridge</a>
                         </li>
-                        <li class="submenu-tab ${
-                          filename === "api-reference" ? "active" : ""
-                        }">
+                        <li class="submenu-tab ${filename === "api-reference" ? "active" : ""
+      }">
                             <a href="${docsBasePath}api-reference.html">API Reference</a>
                         </li>
                     </ul>
@@ -244,9 +208,6 @@ class ComponentLoader {
         `;
   }
 
-  /**
-   * Injeta os componentes na página
-   */
   init() {
     const headerPlaceholder = document.getElementById("header-placeholder");
     const footerPlaceholder = document.getElementById("footer-placeholder");
@@ -268,7 +229,6 @@ class ComponentLoader {
   }
 }
 
-// Inicializa quando o DOM estiver pronto
 document.addEventListener("DOMContentLoaded", () => {
   const loader = new ComponentLoader();
   loader.init();
