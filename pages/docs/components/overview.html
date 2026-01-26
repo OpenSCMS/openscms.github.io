@@ -156,7 +156,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 link.addEventListener('click', (e) => {
                     const href = e.target.getAttribute('href');
 
-                    // Para links internos da mesma página
+                    // For internal links on the same page
                     if (href && href.startsWith('#')) {
                         e.preventDefault();
                         const targetId = href.substring(1);

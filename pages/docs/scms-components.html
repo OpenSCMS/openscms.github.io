@@ -123,26 +123,26 @@ http://www.apache.org/licenses/LICENSE-2.0.
             link.addEventListener('click', (e) => {
                 const href = e.target.getAttribute('href');
 
-                // Se é um link interno (#), fazer smooth scroll
+                // If it's an internal link (#), do smooth scroll
                 if (href && href.startsWith('#')) {
                     e.preventDefault();
                     const targetId = href.substring(1);
                     const targetElement = document.getElementById(targetId);
 
                     if (targetElement) {
-                        // Scroll suave até o elemento
+                        // Smooth scroll to element
                         targetElement.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
                         });
 
-                        // Atualiza o estado ativo
+                        // Update active state
                         document.querySelectorAll('.sidebar-nav-link, .sidebar-subnav-link').forEach(l => {
                             l.classList.remove('active');
                         });
                         e.target.classList.add('active');
 
-                        // Atualiza a URL
+                        // Update URL
                         history.pushState(null, '', href);
                     }
                 }
@@ -179,7 +179,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
             rootMargin: '-150px 0px -66%'
         });
 
-        // Observar todos os headings com ID
         document.querySelectorAll('.docs-content h3[id]').forEach(heading => {
             observer.observe(heading);
         });

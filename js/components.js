@@ -16,10 +16,6 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 */
 
-/**
- * Component Loader - Versão para Sites Estáticos
- * Carrega componentes reutilizáveis (header e footer) em todas as páginas
- */
 
 class ComponentLoader {
   constructor() {
