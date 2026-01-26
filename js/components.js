@@ -62,6 +62,7 @@ class ComponentLoader {
       "release-notes": "about",
       blog: "blog",
       source: "source",
+      faq: "faq",
       docs: "documentation",
       documentation: "documentation",
       guides: "documentation",
@@ -112,6 +113,11 @@ class ComponentLoader {
       }">
                                 <a href="${this.basePath
       }pages/docs.html">Docs</a>
+                            </li>
+                            <li class="menu-item ${this.currentPage === "faq" ? "active" : ""
+      }">
+                                <a href="${this.basePath
+      }pages/faq.html">FAQ</a>
                             </li>
                             <li class="menu-item">
                                 <a href="https://github.com/orgs/OpenSCMS/discussions" target="_blank" rel="noopener noreferrer">Community</a>
