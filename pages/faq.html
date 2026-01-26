@@ -25,20 +25,20 @@ http://www.apache.org/licenses/LICENSE-2.0.
         <div class="container">
             <!-- Main Content -->
             <div class="docs-content">
-                    <h1>Frequently Asked Questions</h1>
+                <h1>Frequently Asked Questions</h1>
 
-                    <div>
-                        <h2 id="what-is-openscms">Q. What is OpenSCMS?</h2>
+                <div>
+                    <h3 id="what-is-openscms">Q. What is OpenSCMS?</h2>
                         <p>
                             OpenSCMS is an open-source, server-side implementation of the core
                             components defined by the IEEE 1609.2.1 Secure Credential Management
                             System (SCMS). It provides certificate lifecycle management,
                             cryptographic services, and protocol handling for V2X ecosystems.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="ieee-compliant">Q. Is OpenSCMS compliant with IEEE 1609.2.1?</h2>
+                <div>
+                    <h3 id="ieee-compliant">Q. Is OpenSCMS compliant with IEEE 1609.2.1?</h2>
                         <p>
                             Yes. OpenSCMS implements the core server-side flows and data structures
                             defined by IEEE 1609.2.1, including enrollment, authorization,
@@ -46,84 +46,84 @@ http://www.apache.org/licenses/LICENSE-2.0.
                             performed using unit tests and end-to-end testing with a certified
                             V2X client.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="v2x-client">Q. Does OpenSCMS include a V2X client SDK?</h2>
+                <div>
+                    <h3 id="v2x-client">Q. Does OpenSCMS include a V2X client SDK?</h2>
                         <p>
                             No. OpenSCMS is a server-side implementation only. It is designed to
                             interoperate with external V2X clients that implement IEEE 1609.2.1.
                             Client SDKs are outside the scope of the project.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="components">Q. Which SCMS components are implemented?</h2>
+                <div>
+                    <h3 id="components">Q. Which SCMS components are implemented?</h2>
                         <p>
                             OpenSCMS v1.0.0 includes the Registration Authority (RA), Enrollment
                             Certificate Authority (ECA), Authorization Certificate Authority (ACA),
                             Linkage Authority (LA), and certificate and trust distribution services
                             such as CTL, CCF, CRL, and CMIS.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="certificates">Q. What types of certificates are supported?</h2>
+                <div>
+                    <h3 id="certificates">Q. What types of certificates are supported?</h2>
                         <p>
                             OpenSCMS supports both explicit and implicit certificates as defined
                             by IEEE 1609.2.1. Implicit certificates reduce payload size and are
                             supported across enrollment and authorization flows.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="butterfly-keys">Q. Which butterfly key mechanisms are supported?</h2>
+                <div>
+                    <h3 id="butterfly-keys">Q. Which butterfly key mechanisms are supported?</h2>
                         <p>
                             The supported butterfly key mechanisms are Original Butterfly Keys
                             (OBK), Unified Butterfly Keys (UBK), and Compact Unified Butterfly
                             Keys (CUBK). Both encrypted and non-encrypted flows are supported.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="cryptographic-operations">Q. How are cryptographic operations implemented?</h2>
+                <div>
+                    <h3 id="cryptographic-operations">Q. How are cryptographic operations implemented?</h2>
                         <p>
                             All cryptographic operations and ASN.1 encoding/decoding are handled
                             by the standalone C library <strong>oscms-codecs-bridge</strong>,
                             which uses OpenSSL. The library is integrated into the Rust backend
                             using automatically generated bindings.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="rust-and-c">Q. Why does OpenSCMS use both Rust and C?</h2>
+                <div>
+                    <h3 id="rust-and-c">Q. Why does OpenSCMS use both Rust and C?</h2>
                         <p>
                             Rust is used for service orchestration, concurrency, and API handling,
                             while C is used for the cryptographic and ASN.1 codec core to ensure
                             performance and precise control. The integration between the two is
                             transparent for service developers.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="deployment">Q. How can I deploy OpenSCMS?</h2>
+                <div>
+                    <h3 id="deployment">Q. How can I deploy OpenSCMS?</h2>
                         <p>
                             OpenSCMS can be deployed using a unified Docker + Kubernetes +
                             Skaffold setup (recommended), or manually by running individual
                             components with externally managed dependencies such as MySQL
                             and RabbitMQ.
                         </p>
-                    </div>
+                </div>
 
-                    <div>
-                        <h2 id="production-ready">Q. Is OpenSCMS production-ready?</h2>
+                <div>
+                    <h3 id="production-ready">Q. Is OpenSCMS production-ready?</h2>
                         <p>
                             Version 1.0.0 is stable and suitable for development, testing, and
                             evaluation. Production deployments require environment-specific
                             hardening and operational tooling that are outside the scope of the
                             core project.
                         </p>
-                    </div>
+                </div>
             </div>
         </div>
     </main>
