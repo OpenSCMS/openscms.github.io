@@ -95,22 +95,15 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         <h3 class="sidebar-section-title">Development</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="#overview" class="sidebar-nav-link active">Development Overview</a>
+                                <a href="development.html#overview" class="sidebar-nav-link">Development Overview</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="#language-standard" class="sidebar-nav-link">C Standard & Tooling</a>
+                                <a href="development.html#language-standard" class="sidebar-nav-link">C Standard &
+                                    Tooling</a>
                             </li>
                             <li class="sidebar-nav-item">
-                                <a href="#header-files" class="sidebar-nav-link">Header Files</a>
-                            </li>
-                            <li class="sidebar-nav-item">
-                                <a href="#scoping" class="sidebar-nav-link">Scoping</a>
-                            </li>
-                            <li class="sidebar-nav-item">
-                                <a href="#structs" class="sidebar-nav-link">Structs</a>
-                            </li>
-                            <li class="sidebar-nav-item">
-                                <a href="#naming" class="sidebar-nav-link">Naming Conventions</a>
+                                <a href="development.html#extensibility-considerations"
+                                    class="sidebar-nav-link">Extensibility Considerations</a>
                             </li>
                         </ul>
                     </div>
@@ -129,146 +122,11 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <h3 id="language-standard">C Language Standard and Tooling</h3>
 
-                    <ul>
-                        <li><strong>Standard:</strong> C11 with POSIX extensions where applicable.</li>
-                        <li><strong>Compiler:</strong> GCC 11+ or Clang 12+.</li>
-                        <li><strong>Build system:</strong> CMake 3.15+.</li>
-                        <li><strong>Formatting:</strong> <code>clang-format</code> with project-provided
-                            <code>.clang-format</code> file.
-                        </li>
-                    </ul>
+                    Please consider checking the <a
+                        href="https://github.com/OpenSCMS/.github/blob/main/docs/C_CODING.md" target="_blank"
+                        rel="noopener noreferrer">Coding and Style Conventions </a>.
 
-                    <h3 id="header-files">Header Files</h3>
-
-                    <h4>Self-Contained Headers</h4>
-
-                    <p>Every header file must be self-contained (able to compile on its own). If a header declares types
-                        or functions that depend on other headers, it must include those dependencies. All public
-                        headers in <code>include/public/</code> must compile in isolation.</p>
-
-                    <h4>The #define Guard</h4>
-
-                    <p>All headers use traditional include guards with a consistent naming pattern derived from the full
-                        path:</p>
-
-                    <pre><code>#ifndef OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H
-#define OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H
-
-// declarations
-
-#endif  // OSCMS_INCLUDE_PUBLIC_PROTOCOL_BRIDGE_H</code></pre>
-
-                    <h4>Include Ordering</h4>
-
-                    <p>To minimize hidden dependencies, includes are ordered as follows:</p>
-
-                    <ol>
-                        <li>Related header (for .c files)</li>
-                        <li>C system headers</li>
-                        <li>Project headers</li>
-                        <li>Third-party library headers (e.g., asn1c, OpenSSL)</li>
-                    </ol>
-
-                    <h3 id="scoping">Scoping</h3>
-
-                    <h4>Namespaces</h4>
-
-                    <p>C does not have namespaces, so function and type names use prefixes to organize scope:</p>
-
-                    <ul>
-                        <li>All public API functions and types are prefixed with <code>Oscms</code> or
-                            <code>oscms_</code>.
-                        </li>
-                        <li>Internal symbols are either declared <code>static</code> or prefixed with the module name to
-                            avoid symbol collisions (e.g., <code>codec_internal_parse_point()</code>).</li>
-                    </ul>
-
-                    <h4>Internal Linkage</h4>
-
-                    <p>Helper functions, constants, and types used only within a single translation unit should be
-                        declared <code>static</code> to limit their scope:</p>
-
-                    <pre><code>static int parse_internal_type(const uint8_t *buffer) {
-    // ...
-}</code></pre>
-
-                    <h4>Local and Static Variables</h4>
-
-                    <p>Declare variables in the smallest scope possible, ideally at first use. Static variables are used
-                        sparingly and never for mutable state unless explicitly required by an initialization context.
-                    </p>
-
-                    <h3 id="structs">Structs</h3>
-
-                    <h4>Opaque vs. Exposed Structs</h4>
-
-                    <ul>
-                        <li><strong>Opaque types</strong> are forward-declared in public headers, with definitions
-                            hidden in private headers or source files. This ensures ABI stability and encapsulation.
-                        </li>
-                        <li><strong>Exposed types</strong> are fully defined in public headers when their layout must be
-                            known to callers (e.g., <code>OscmsSequence</code>).</li>
-                    </ul>
-
-                    <pre><code>// Opaque (declared but not defined publicly)
-typedef struct OscmsIeee1609Dot2Data OscmsIeee1609Dot2Data;
-
-// Exposed (definition visible)
-typedef struct {
-    size_t count;
-    void **data;
-} OscmsSequence;</code></pre>
-
-                    <h4>Struct Initialization</h4>
-
-                    <p>Initialize structs using designated initializers when possible to make initialization explicit
-                        and maintainable:</p>
-
-                    <pre><code>OscmsPoint point = {
-    .x = 0x01,
-    .y = 0x02
-};</code></pre>
-
-                    <h3 id="naming">Naming Conventions</h3>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Convention</th>
-                                <th>Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Functions</td>
-                                <td>snake_case</td>
-                                <td><code>oscms_spdu_construct()</code></td>
-                            </tr>
-                            <tr>
-                                <td>Variables</td>
-                                <td>snake_case</td>
-                                <td><code>octet_buffer</code></td>
-                            </tr>
-                            <tr>
-                                <td>Types</td>
-                                <td>PascalCase</td>
-                                <td><code>OscmsOctetBuffer</code></td>
-                            </tr>
-                            <tr>
-                                <td>Constants</td>
-                                <td>UPPER_SNAKE_CASE</td>
-                                <td><code>OSCMS_MAX_BUFFER_SIZE</code></td>
-                            </tr>
-                            <tr>
-                                <td>Enums</td>
-                                <td>PascalCase (type), UPPER_SNAKE_CASE (values)</td>
-                                <td><code>OscmsHashAlgorithm</code>, <code>OSCMS_HASH_SHA256</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h4>Extensibility Considerations</h4>
+                    <h3 id="extensibility-considerations">Extensibility Considerations</h3>
 
                     <p>The codec abstraction layer is designed to remain independent of <code>asn1c</code> or any
                         specific ASN.1 transpiler. When designing new abstractions:</p>
