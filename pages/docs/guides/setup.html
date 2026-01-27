@@ -104,10 +104,30 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </div>
 
                     <div class="sidebar-section">
-                        <h3 class="sidebar-section-title">Reference</h3>
+                        <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="assumptions.html" class="sidebar-nav-link">Assumptions & Limitations</a>
+                                <a href="assumptions.html#api-endpoints" class="sidebar-nav-link">API
+                                    Endpoints</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#certificate-types" class="sidebar-nav-link">Certificate
+                                    Types</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#asn1-version" class="sidebar-nav-link">ASN.1 Version</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#policy-files" class="sidebar-nav-link">Policy Files</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#bootstrapping" class="sidebar-nav-link">Bootstrapping</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#ctl-electors" class="sidebar-nav-link">CTL & Electors</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#misbehaviour" class="sidebar-nav-link">Misbehaviour & LA</a>
                             </li>
                         </ul>
                     </div>
@@ -161,7 +181,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <ul>
                         <li>Rust toolchain (<code>rustc</code>, <code>cargo</code>, <code>rustfmt</code>,
-                            <code>clippy</code>)</li>
+                            <code>clippy</code>)
+                        </li>
                         <li>CMake</li>
                         <li><code>libclang-dev</code></li>
                         <li><code>llvm-dev</code></li>
@@ -208,7 +229,8 @@ exec $SHELL</code></pre>
                         tools in the shell <code>PATH</code>.</p>
 
                     <p>A complete reference environment, including all required dependencies, is also documented in
-                        <code>docker/lgscms-ci.dockerfile</code>.</p>
+                        <code>docker/lgscms-ci.dockerfile</code>.
+                    </p>
 
                     <h3 id="certificates">Component Certificates and Keys</h3>
 
@@ -223,7 +245,8 @@ exec $SHELL</code></pre>
 
                     <p>To simplify certificate and key generation for development and testing deployments, OpenSCMS
                         provides the <code>scms_manager</code> utility. This tool is located within the C-based
-                        <code>oscms-codecs-bridge</code> project:</p>
+                        <code>oscms-codecs-bridge</code> project:
+                    </p>
 
                     <pre><code>openscms/oscms_bridge/oscms-codecs-bridge/scms_manager</code></pre>
 
@@ -235,7 +258,8 @@ exec $SHELL</code></pre>
                     <h4>Generating Certificates</h4>
 
                     <p>From the repository root, the following script can be used to invoke the
-                        <code>scms_manager</code> and populate the <code>certs/</code> directory automatically:</p>
+                        <code>scms_manager</code> and populate the <code>certs/</code> directory automatically:
+                    </p>
 
                     <pre><code>sh scripts/run_tests_scms_manager.sh</code></pre>
 
@@ -347,7 +371,8 @@ RABBITMQ_CONNECTION_STRING=amqp://rmqadmin:password@scmsrabbitmq:5672</code></pr
                     <p>This step compiles all Rust service crates as well as the C-based
                         <code>oscms-codecs-bridge</code>, and generates the required Rust bindings via
                         <code>bindgen</code>. Build failures at this stage typically indicate missing system
-                        dependencies or misconfigured toolchains.</p>
+                        dependencies or misconfigured toolchains.
+                    </p>
 
                     <p>To start the Registration Authority service, change into the RA crate directory and run:</p>
 
@@ -376,7 +401,8 @@ cargo run</code></pre>
 
                     <p><strong>Installing Required Tooling:</strong> All required tooling should be installed using
                         <code>binenv</code>, as described earlier. This ensures that consistent and compatible versions
-                        of all Kubernetes-related tools are used across different development environments.</p>
+                        of all Kubernetes-related tools are used across different development environments.
+                    </p>
 
                     <p><strong>Configuring Minikube:</strong> OpenSCMS uses the Docker driver for Minikube. This can be
                         configured permanently by editing (or creating) the Minikube configuration file with the
@@ -387,7 +413,8 @@ cargo run</code></pre>
 }</code></pre>
 
                     <p><strong>Installing kubectl Plugins:</strong> To simplify cluster management, install the
-                        <code>krew</code> plugin manager for <code>kubectl</code>:</p>
+                        <code>krew</code> plugin manager for <code>kubectl</code>:
+                    </p>
 
                     <pre><code>(
   set -x; cd "$(mktemp -d)" &&
@@ -441,7 +468,8 @@ exec $SHELL</code></pre>
                     <pre><code>minikube ip</code></pre>
 
                     <p>For convenience, this IP address can be mapped to a hostname by adding an entry to
-                        <code>/etc/hosts</code>:</p>
+                        <code>/etc/hosts</code>:
+                    </p>
 
                     <pre><code>sudo echo "$(minikube ip) minikube" >> /etc/hosts
 ping minikube</code></pre>
@@ -458,61 +486,7 @@ ping minikube</code></pre>
     <!-- Component Loader -->
     <script src="../../../js/components.js"></script>
 
-    <!-- Documentation Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = e.target.getAttribute('href');
-
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-
-                            document.querySelectorAll('.sidebar-nav-link').forEach(l => {
-                                l.classList.remove('active');
-                            });
-                            e.target.classList.add('active');
-                        }
-                    }
-                });
-            });
-
-            document.querySelectorAll('.sidebar-section-title').forEach(title => {
-                title.addEventListener('click', (e) => {
-                    const section = e.target.closest('.sidebar-section');
-                    section.classList.toggle('collapsed');
-                });
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '-150px 0px -66%'
-            });
-
-            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
-                observer.observe(heading);
-            });
-        });
-    </script>
+    <script src="../../js/navigation.js"></script>
 </body>
 
 </html>

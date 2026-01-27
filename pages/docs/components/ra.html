@@ -127,7 +127,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>The RA is internally organized into two deployment-time roles: the <em>RA Frontend</em> and the
                         <em>RA Worker</em>. The RA Frontend exposes the external REST interface and handles all
-                        client-facing protocol logic, while RA Workers execute SCMS operations asynchronously.</p>
+                        client-facing protocol logic, while RA Workers execute SCMS operations asynchronously.
+                    </p>
 
                     <p>The RA Frontend validates incoming SPDUs, verifies signatures, decrypts encrypted payloads when
                         required, and constructs internal tasks that are enqueued for processing. It responds
@@ -508,7 +509,8 @@ Output:
                     <p>For successor enrollment flows, the RA verifies that the EE is either in the
                         <code>Registered</code> or <code>Provisioning</code> state. Upon successful issuance of a
                         successor enrollment certificate, the lifecycle state is updated to
-                        <code>SuccessorEnrolled</code>.</p>
+                        <code>SuccessorEnrolled</code>.
+                    </p>
 
                     <h4>Lifecycle State Updates</h4>
 
@@ -534,7 +536,8 @@ Output:
                         <li>Enrollment certificate requests from EEs not in the <code>Registered</code> state.</li>
                         <li>Authorization certificate requests from EEs not in the <code>Enrolled</code> state.</li>
                         <li>Any SCMS operation originating from an EE in the <code>Blocked</code> or
-                            <code>Deleted</code> state.</li>
+                            <code>Deleted</code> state.
+                        </li>
                     </ul>
 
                     <p>By centralizing lifecycle state management and enforcement within the RA, OpenSCMS ensures
@@ -552,59 +555,7 @@ Output:
     <script src="../../../js/components.js"></script>
 
     <!-- Documentation Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Sidebar navigation - smooth scroll and active state
-            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = e.target.getAttribute('href');
-
-                    // For internal links on the same page
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    }
-                });
-            });
-
-            // Sidebar section collapse/expand
-            document.querySelectorAll('.sidebar-section-title').forEach(title => {
-                title.addEventListener('click', (e) => {
-                    const section = e.target.closest('.sidebar-section');
-                    section.classList.toggle('collapsed');
-                });
-            });
-
-            // Highlight sidebar item on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '-150px 0px -66%'
-            });
-
-            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
-                observer.observe(heading);
-            });
-        });
-    </script>
+    <script src="../../js/navigation.js"></script>
 </body>
 
 </html>
