@@ -101,14 +101,14 @@ class ComponentLoader {
                             <li class="menu-item ${this.currentPage === "about" ? "active" : ""
       }">
                                 <a href="${this.basePath
-      }pages/about.html">About</a>
+      }pages/about/overview.html">About</a>
                             </li>
                             <li class="menu-item ${this.currentPage === "documentation"
         ? "active"
         : ""
       }">
                                 <a href="${this.basePath
-      }pages/docs.html">Docs</a>
+      }pages/docs/overview.html">Docs</a>
                             </li>
                             <li class="menu-item ${this.currentPage === "faq" ? "active" : ""
       }">
@@ -191,14 +191,14 @@ class ComponentLoader {
                             <a href="${docsBasePath}overview.html">Overview</a>
                         </li>
                         <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
-                            <a href="${docsBasePath}guides.html">Guides</a>
+                            <a href="${docsBasePath}guides/getting-started.html">Guides</a>
                         </li>
                         <li class="submenu-tab ${isComponentsPage ? "active" : ""
       }">
-                            <a href="${docsBasePath}scms-components.html">SCMS Components</a>
+                            <a href="${docsBasePath}components/overview.html">SCMS Components</a>
                         </li>
                         <li class="submenu-tab ${isBridgePage ? "active" : ""}">
-                            <a href="${docsBasePath}codecs-bridge.html">Codecs Bridge</a>
+                            <a href="${docsBasePath}bridge/overview.html">Codecs Bridge</a>
                         </li>
                         <li class="submenu-tab ${filename === "api-reference" ? "active" : ""
       }">

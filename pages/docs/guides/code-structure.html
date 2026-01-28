@@ -101,10 +101,30 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </div>
 
                     <div class="sidebar-section">
-                        <h3 class="sidebar-section-title">Reference</h3>
+                        <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
-                                <a href="assumptions.html" class="sidebar-nav-link">Assumptions & Limitations</a>
+                                <a href="assumptions.html#api-endpoints" class="sidebar-nav-link">API
+                                    Endpoints</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#certificate-types" class="sidebar-nav-link">Certificate
+                                    Types</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#asn1-version" class="sidebar-nav-link">ASN.1 Version</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#policy-files" class="sidebar-nav-link">Policy Files</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#bootstrapping" class="sidebar-nav-link">Bootstrapping</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#ctl-electors" class="sidebar-nav-link">CTL & Electors</a>
+                            </li>
+                            <li class="sidebar-nav-item">
+                                <a href="assumptions.html#misbehaviour" class="sidebar-nav-link">Misbehaviour & LA</a>
                             </li>
                         </ul>
                     </div>
@@ -149,14 +169,16 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         of these crates (e.g., <code>ra/</code>, <code>eca/</code>, <code>aca/</code>, <code>la/</code>,
                         <code>cam/</code>, <code>dc/</code>) are <em>service crates</em> that produce a single SCMS
                         service binary, implementing a specific SCMS role and intended to be deployed as an independent
-                        microservice.</p>
+                        microservice.
+                    </p>
 
                     <p>In addition to service crates, the workspace also includes shared <em>library crates</em>. Both
                         <code>scmscommon</code> and <code>oscms_bridge</code> are Rust library crates
                         (<code>crate-type = lib</code>) reused across multiple services. While <code>scmscommon</code>
                         provides common Rust-level utilities and infrastructure abstractions, <code>oscms_bridge</code>
                         acts as the Rust integration layer for the C-based <code>oscms-codecs-bridge</code>,
-                        encapsulating all Rust-C interoperability.</p>
+                        encapsulating all Rust-C interoperability.
+                    </p>
 
                     <p>In addition to Rust crates, the repository includes a small set of directories dedicated to
                         environment management and operational concerns rather than application logic. The
@@ -230,7 +252,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>This strict separation allows the C bridge to be developed, audited, and reused independently of
                         the Rust backend. The design, build system, and coding guidelines of the
                         <code>oscms-codecs-bridge</code> are described in detail in a dedicated section later in this
-                        document.</p>
+                        document.
+                    </p>
 
                     <h3 id="dependencies">Dependency Model and Service Boundaries</h3>
 
@@ -238,7 +261,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         each service depends on the <code>oscms_bridge</code> Rust crate, which in turn manages
                         compilation, linking, and binding generation for the underlying C-based
                         <code>oscms-codecs-bridge</code> for cryptographic processing and IEEE 1609.2.1 SPDU handling.
-                        Also, no Rust service directly depends on another service's crate.</p>
+                        Also, no Rust service directly depends on another service's crate.
+                    </p>
 
                     <p>Inter-service coordination occurs exclusively through well-defined network APIs and asynchronous
                         messaging, not through shared code or in-process calls. This enforces deployment-time isolation
@@ -255,60 +279,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <script src="../../../js/components.js"></script>
 
     <!-- Documentation Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = e.target.getAttribute('href');
-
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-
-                            document.querySelectorAll('.sidebar-nav-link').forEach(l => {
-                                l.classList.remove('active');
-                            });
-                            e.target.classList.add('active');
-                        }
-                    }
-                });
-            });
-
-            document.querySelectorAll('.sidebar-section-title').forEach(title => {
-                title.addEventListener('click', (e) => {
-                    const section = e.target.closest('.sidebar-section');
-                    section.classList.toggle('collapsed');
-                });
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '-150px 0px -66%'
-            });
-
-            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
-                observer.observe(heading);
-            });
-        });
-    </script>
+    <script src="../../../js/navigation.js"></script>
 </body>
 
 </html>

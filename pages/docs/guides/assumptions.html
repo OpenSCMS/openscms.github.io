@@ -104,7 +104,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </div>
 
                     <div class="sidebar-section">
-                        <h3 class="sidebar-section-title">Reference</h3>
+                        <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
                         <ul class="sidebar-nav">
                             <li class="sidebar-nav-item">
                                 <a href="#api-endpoints" class="sidebar-nav-link active">API Endpoints</a>
@@ -186,7 +186,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>OpenSCMS currently supports the IEEE 1609.2.1 ASN.1 files with tag
                         <strong>2022-published</strong>. OpenSCMS provides transpiling utilities (via a fork of the
                         ASN1C transpiler) to convert the IEEE 1609.2.1 ASN1.C files into C code. If new official ASN.1
-                        files are published in the future, the utilities can be used for migration.</p>
+                        files are published in the future, the utilities can be used for migration.
+                    </p>
 
                     <h3 id="policy-files">Policy Files</h3>
                     <p>OpenSCMS policies and policy files follow closely the SaesolTech SCMS' policies, where SaesolTech
@@ -225,14 +226,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p><strong>Future Feature:</strong> Misbehaviour support is a desired feature, ideally interoperable
                         across North America, European, and other standards.</p>
 
-                    <div class="doc-card" style="margin-top: 2rem;">
-                        <h4>Related Resources</h4>
-                        <ul>
-                            <li><a href="../api-reference.html">Complete API Reference</a></li>
-                            <li><a href="../scms-components.html">SCMS Components Details</a></li>
-                            <li><a href="setup.html">Setup & Deployment Guide</a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -245,60 +238,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <script src="../../../js/components.js"></script>
 
     <!-- Documentation Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = e.target.getAttribute('href');
-
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-
-                            document.querySelectorAll('.sidebar-nav-link').forEach(l => {
-                                l.classList.remove('active');
-                            });
-                            e.target.classList.add('active');
-                        }
-                    }
-                });
-            });
-
-            document.querySelectorAll('.sidebar-section-title').forEach(title => {
-                title.addEventListener('click', (e) => {
-                    const section = e.target.closest('.sidebar-section');
-                    section.classList.toggle('collapsed');
-                });
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '-150px 0px -66%'
-            });
-
-            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
-                observer.observe(heading);
-            });
-        });
-    </script>
+    <script src="../../../js/navigation.js"></script>
 </body>
 
 </html>

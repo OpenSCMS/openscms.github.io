@@ -124,7 +124,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>The <code>oscms-codecs-bridge</code> library follows a clean and consistent development style
                         adapted from the Google C++ Style Guide. The C codebase is formatted with
-                        <code>clang-format</code> and structured to be readable, maintainable, and portable.</p>
+                        <code>clang-format</code> and structured to be readable, maintainable, and portable.
+                    </p>
 
                     <h3 id="language-standard">C Language Standard and Tooling</h3>
 
@@ -133,7 +134,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         <li><strong>Compiler:</strong> GCC 11+ or Clang 12+.</li>
                         <li><strong>Build system:</strong> CMake 3.15+.</li>
                         <li><strong>Formatting:</strong> <code>clang-format</code> with project-provided
-                            <code>.clang-format</code> file.</li>
+                            <code>.clang-format</code> file.
+                        </li>
                     </ul>
 
                     <h3 id="header-files">Header Files</h3>
@@ -175,7 +177,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <ul>
                         <li>All public API functions and types are prefixed with <code>Oscms</code> or
-                            <code>oscms_</code>.</li>
+                            <code>oscms_</code>.
+                        </li>
                         <li>Internal symbols are either declared <code>static</code> or prefixed with the module name to
                             avoid symbol collisions (e.g., <code>codec_internal_parse_point()</code>).</li>
                     </ul>
@@ -287,59 +290,7 @@ typedef struct {
     <script src="../../../js/components.js"></script>
 
     <!-- Documentation Navigation Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Sidebar navigation - smooth scroll and active state
-            document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = e.target.getAttribute('href');
-
-                    // For internal links on the same page
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-
-                        if (targetElement) {
-                            targetElement.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
-                            });
-                        }
-                    }
-                });
-            });
-
-            // Sidebar section collapse/expand
-            document.querySelectorAll('.sidebar-section-title').forEach(title => {
-                title.addEventListener('click', (e) => {
-                    const section = e.target.closest('.sidebar-section');
-                    section.classList.toggle('collapsed');
-                });
-            });
-
-            // Highlight sidebar item on scroll
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const id = entry.target.getAttribute('id');
-                        document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === `#${id}`) {
-                                link.classList.add('active');
-                            }
-                        });
-                    }
-                });
-            }, {
-                rootMargin: '-150px 0px -66%'
-            });
-
-            document.querySelectorAll('.docs-content h3[id], .docs-content h4[id]').forEach(heading => {
-                observer.observe(heading);
-            });
-        });
-    </script>
+    <script src="../../../js/navigation.js"></script>
 </body>
 
 </html>
