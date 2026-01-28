@@ -26,15 +26,23 @@ class ComponentLoader {
   getBasePath() {
     const path = window.location.pathname;
     if (
-      path.includes("/pages/docs/guides/") ||
-      path.includes("/pages/docs/components/") ||
-      path.includes("/pages/docs/bridge/") ||
+      path.includes("/pages/docs/guides/architecture/") ||
+      path.includes("/pages/docs/guides/code-structure/") ||
+      path.includes("/pages/docs/guides/setup/")
+    ) {
+      return "../../../../";
+    }
+
+    if (
       path.includes("/pages/about/overview/") ||
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
       path.includes("/pages/about/release-notes/") ||
       path.includes("/pages/docs/guides/architecture/") ||
-      path.includes("/pages/docs/guides/code-structure/")
+      path.includes("/pages/docs/guides/code-structure/") ||
+      path.includes("/pages/docs/guides/setup/") ||
+      path.includes("/pages/docs/components/") ||
+      path.includes("/pages/docs/bridge/")
     ) {
       return "../../../";
     }
@@ -89,6 +97,10 @@ class ComponentLoader {
       "oscms-bridge": "documentation",
       dependencies: "documentation",
       setup: "documentation",
+      "build-dependencies": "documentation",
+      certificates: "documentation",
+      "manual-deployment": "documentation",
+      kubernetes: "documentation",
       assumptions: "documentation",
       "scms-components": "documentation",
       ra: "documentation",
@@ -293,7 +305,8 @@ class ComponentLoader {
     const hash = window.location.hash;
     const isArchitectureSubpage = path.includes("/pages/docs/guides/architecture/");
     const isCodeStructureSubpage = path.includes("/pages/docs/guides/code-structure/");
-    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage && !isCodeStructureSubpage;
+    const isSetupSubpage = path.includes("/pages/docs/guides/setup/");
+    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage && !isCodeStructureSubpage && !isSetupSubpage;
 
     // Helper function to check if link should be active
     // Now includes context awareness for subfolders
@@ -307,6 +320,8 @@ class ComponentLoader {
         return isArchitectureSubpage && filename === pageName;
       } else if (subfolder === 'code-structure') {
         return isCodeStructureSubpage && filename === pageName;
+      } else if (subfolder === 'setup') {
+        return isSetupSubpage && filename === pageName;
       } else if (subfolder === 'guides-root') {
         return isGuidesRoot && filename === pageName;
       }
@@ -316,27 +331,37 @@ class ComponentLoader {
     };
 
     // Build correct paths based on current location
-    let architecturePath, codeStructurePath, guidesRootPath;
+    let architecturePath, codeStructurePath, setupPath, guidesRootPath;
     
     if (isArchitectureSubpage) {
       // From architecture subpage: need to go up one level
       architecturePath = "";  // Same folder
       codeStructurePath = "../code-structure/";
+      setupPath = "../setup/";
       guidesRootPath = "../";
     } else if (isCodeStructureSubpage) {
       // From code-structure subpage: need to go up one level
       architecturePath = "../architecture/";
       codeStructurePath = "";  // Same folder
+      setupPath = "../setup/";
+      guidesRootPath = "../";
+    } else if (isSetupSubpage) {
+      // From setup subpage: need to go up one level
+      architecturePath = "../architecture/";
+      codeStructurePath = "../code-structure/";
+      setupPath = "";  // Same folder
       guidesRootPath = "../";
     } else if (isGuidesRoot) {
       // From guides root: navigate into subfolders
       architecturePath = "architecture/";
       codeStructurePath = "code-structure/";
+      setupPath = "setup/";
       guidesRootPath = "";
     } else {
       // Fallback
       architecturePath = "architecture/";
       codeStructurePath = "code-structure/";
+      setupPath = "setup/";
       guidesRootPath = "";
     }
 
@@ -394,19 +419,19 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Setup & Deployment</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}setup.html" class="sidebar-nav-link ${isActive('setup') ? 'active' : ''}">Overview</a>
+                            <a href="${setupPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'setup') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}setup.html#build-dependencies" class="sidebar-nav-link ${isActive('setup', '#build-dependencies') ? 'active' : ''}">Build Dependencies</a>
+                            <a href="${setupPath}build-dependencies.html" class="sidebar-nav-link ${isActive('build-dependencies', null, 'setup') ? 'active' : ''}">Build Dependencies</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}setup.html#certificates" class="sidebar-nav-link ${isActive('setup', '#certificates') ? 'active' : ''}">Certificates & Keys</a>
+                            <a href="${setupPath}certificates.html" class="sidebar-nav-link ${isActive('certificates', null, 'setup') ? 'active' : ''}">Certificates & Keys</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}setup.html#manual-deployment" class="sidebar-nav-link ${isActive('setup', '#manual-deployment') ? 'active' : ''}">Manual Deployment</a>
+                            <a href="${setupPath}manual-deployment.html" class="sidebar-nav-link ${isActive('manual-deployment', null, 'setup') ? 'active' : ''}">Manual Deployment</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}setup.html#kubernetes" class="sidebar-nav-link ${isActive('setup', '#kubernetes') ? 'active' : ''}">Docker & Kubernetes</a>
+                            <a href="${setupPath}kubernetes.html" class="sidebar-nav-link ${isActive('kubernetes', null, 'setup') ? 'active' : ''}">Docker & Kubernetes</a>
                         </li>
                     </ul>
                 </div>
