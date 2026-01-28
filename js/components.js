@@ -277,6 +277,119 @@ class ComponentLoader {
         `;
   }
 
+  getDocsGuidesSidebarTemplate() {
+    const path = window.location.pathname;
+    const filename = path.split("/").pop().replace(".html", "");
+    const hash = window.location.hash;
+
+    // Helper function to check if link should be active
+    const isActive = (pageName, hashValue = null) => {
+      if (hashValue) {
+        return filename === pageName && hash === hashValue;
+      }
+      return filename === pageName;
+    };
+
+    return `
+            <aside class="docs-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Getting Started</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="getting-started.html" class="sidebar-nav-link ${isActive('getting-started') ? 'active' : ''}">The OpenSCMS</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Architecture</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="architecture.html" class="sidebar-nav-link ${isActive('architecture') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="architecture.html#high-level-layers" class="sidebar-nav-link ${isActive('architecture', '#high-level-layers') ? 'active' : ''}">High-Level Layers</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="architecture.html#technology-choices" class="sidebar-nav-link ${isActive('architecture', '#technology-choices') ? 'active' : ''}">Technology Choices</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Code Structure</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html" class="sidebar-nav-link ${isActive('code-structure') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html#workspace" class="sidebar-nav-link ${isActive('code-structure', '#workspace') ? 'active' : ''}">Workspace Organization</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html#service-crate" class="sidebar-nav-link ${isActive('code-structure', '#service-crate') ? 'active' : ''}">Service Crate Structure</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html#scmscommon" class="sidebar-nav-link ${isActive('code-structure', '#scmscommon') ? 'active' : ''}">scmscommon</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html#oscms-bridge" class="sidebar-nav-link ${isActive('code-structure', '#oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="code-structure.html#dependencies" class="sidebar-nav-link ${isActive('code-structure', '#dependencies') ? 'active' : ''}">Dependency Model</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Setup & Deployment</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="setup.html" class="sidebar-nav-link ${isActive('setup') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="setup.html#build-dependencies" class="sidebar-nav-link ${isActive('setup', '#build-dependencies') ? 'active' : ''}">Build Dependencies</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="setup.html#certificates" class="sidebar-nav-link ${isActive('setup', '#certificates') ? 'active' : ''}">Certificates & Keys</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="setup.html#manual-deployment" class="sidebar-nav-link ${isActive('setup', '#manual-deployment') ? 'active' : ''}">Manual Deployment</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="setup.html#kubernetes" class="sidebar-nav-link ${isActive('setup', '#kubernetes') ? 'active' : ''}">Docker & Kubernetes</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#api-endpoints" class="sidebar-nav-link ${isActive('assumptions', '#api-endpoints') ? 'active' : ''}">API Endpoints</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#certificate-types" class="sidebar-nav-link ${isActive('assumptions', '#certificate-types') ? 'active' : ''}">Certificate Types</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#asn1-version" class="sidebar-nav-link ${isActive('assumptions', '#asn1-version') ? 'active' : ''}">ASN.1 Version</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#policy-files" class="sidebar-nav-link ${isActive('assumptions', '#policy-files') ? 'active' : ''}">Policy Files</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#bootstrapping" class="sidebar-nav-link ${isActive('assumptions', '#bootstrapping') ? 'active' : ''}">Bootstrapping</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#ctl-electors" class="sidebar-nav-link ${isActive('assumptions', '#ctl-electors') ? 'active' : ''}">CTL & Electors</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="assumptions.html#misbehaviour" class="sidebar-nav-link ${isActive('assumptions', '#misbehaviour') ? 'active' : ''}">Misbehaviour & LA</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        `;
+  }
 
   getDocsSubmenuTemplate() {
     const path = window.location.pathname;
@@ -358,6 +471,7 @@ class ComponentLoader {
       "docs-submenu-placeholder"
     );
     const aboutSidebarPlaceholder = document.getElementById("about-sidebar-placeholder");
+    const docsGuidesSidebarPlaceholder = document.getElementById("docs-guides-sidebar-placeholder");
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
@@ -373,6 +487,10 @@ class ComponentLoader {
 
     if (aboutSidebarPlaceholder) {
       aboutSidebarPlaceholder.innerHTML = this.getAboutSidebarTemplate();
+    }
+
+    if (docsGuidesSidebarPlaceholder) {
+      docsGuidesSidebarPlaceholder.innerHTML = this.getDocsGuidesSidebarTemplate();
     }
   }
 }
