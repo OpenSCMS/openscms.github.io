@@ -296,10 +296,22 @@ class ComponentLoader {
     const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage && !isCodeStructureSubpage;
 
     // Helper function to check if link should be active
-    const isActive = (pageName, hashValue = null) => {
+    // Now includes context awareness for subfolders
+    const isActive = (pageName, hashValue = null, subfolder = null) => {
       if (hashValue) {
         return filename === pageName && hash === hashValue;
       }
+
+      // If a subfolder is specified, check if we're in that subfolder
+      if (subfolder === 'architecture') {
+        return isArchitectureSubpage && filename === pageName;
+      } else if (subfolder === 'code-structure') {
+        return isCodeStructureSubpage && filename === pageName;
+      } else if (subfolder === 'guides-root') {
+        return isGuidesRoot && filename === pageName;
+      }
+
+      // Default: just check filename
       return filename === pageName;
     };
 
@@ -334,7 +346,7 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Getting Started</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}getting-started.html" class="sidebar-nav-link ${isActive('getting-started') ? 'active' : ''}">The OpenSCMS</a>
+                            <a href="${guidesRootPath}getting-started.html" class="sidebar-nav-link ${isActive('getting-started', null, 'guides-root') ? 'active' : ''}">The OpenSCMS</a>
                         </li>
                     </ul>
                 </div>
@@ -343,13 +355,13 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Architecture</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${architecturePath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
+                            <a href="${architecturePath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'architecture') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${architecturePath}high-level-layers.html" class="sidebar-nav-link ${isActive('high-level-layers') ? 'active' : ''}">High-Level Layers</a>
+                            <a href="${architecturePath}high-level-layers.html" class="sidebar-nav-link ${isActive('high-level-layers', null, 'architecture') ? 'active' : ''}">High-Level Layers</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${architecturePath}technology-choices.html" class="sidebar-nav-link ${isActive('technology-choices') ? 'active' : ''}">Technology Choices</a>
+                            <a href="${architecturePath}technology-choices.html" class="sidebar-nav-link ${isActive('technology-choices', null, 'architecture') ? 'active' : ''}">Technology Choices</a>
                         </li>
                     </ul>
                 </div>
@@ -358,22 +370,22 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Code Structure</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
+                            <a href="${codeStructurePath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'code-structure') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}workspace.html" class="sidebar-nav-link ${isActive('workspace') ? 'active' : ''}">Workspace Organization</a>
+                            <a href="${codeStructurePath}workspace.html" class="sidebar-nav-link ${isActive('workspace', null, 'code-structure') ? 'active' : ''}">Workspace Organization</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}service-crate.html" class="sidebar-nav-link ${isActive('service-crate') ? 'active' : ''}">Service Crate Structure</a>
+                            <a href="${codeStructurePath}service-crate.html" class="sidebar-nav-link ${isActive('service-crate', null, 'code-structure') ? 'active' : ''}">Service Crate Structure</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}scmscommon.html" class="sidebar-nav-link ${isActive('scmscommon') ? 'active' : ''}">scmscommon</a>
+                            <a href="${codeStructurePath}scmscommon.html" class="sidebar-nav-link ${isActive('scmscommon', null, 'code-structure') ? 'active' : ''}">scmscommon</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}oscms-bridge.html" class="sidebar-nav-link ${isActive('oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
+                            <a href="${codeStructurePath}oscms-bridge.html" class="sidebar-nav-link ${isActive('oscms-bridge', null, 'code-structure') ? 'active' : ''}">oscms_bridge</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${codeStructurePath}dependencies.html" class="sidebar-nav-link ${isActive('dependencies') ? 'active' : ''}">Dependency Model</a>
+                            <a href="${codeStructurePath}dependencies.html" class="sidebar-nav-link ${isActive('dependencies', null, 'code-structure') ? 'active' : ''}">Dependency Model</a>
                         </li>
                     </ul>
                 </div>
