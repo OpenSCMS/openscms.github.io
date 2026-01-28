@@ -298,6 +298,17 @@ class ComponentLoader {
                         </li>
                     </ul>
                 </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">
+                      TODOs, Assumptions and Limitations
+                    </h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${rootPath}assumptions.html" class="sidebar-nav-link ${isActive('assumptions') ? 'active' : ''}">Assumptions and Limitations</a>
+                        </li>
+                    </ul>
+                </div>
             </aside>
         `;
   }
@@ -456,33 +467,6 @@ class ComponentLoader {
                         </li>
                         <li class="sidebar-nav-item">
                             <a href="${setupPath}kubernetes.html" class="sidebar-nav-link ${isActive('kubernetes', null, 'setup') ? 'active' : ''}">Docker & Kubernetes</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="sidebar-section">
-                    <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
-                    <ul class="sidebar-nav">
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#api-endpoints" class="sidebar-nav-link ${isActive('assumptions', '#api-endpoints') ? 'active' : ''}">API Endpoints</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#certificate-types" class="sidebar-nav-link ${isActive('assumptions', '#certificate-types') ? 'active' : ''}">Certificate Types</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#asn1-version" class="sidebar-nav-link ${isActive('assumptions', '#asn1-version') ? 'active' : ''}">ASN.1 Version</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#policy-files" class="sidebar-nav-link ${isActive('assumptions', '#policy-files') ? 'active' : ''}">Policy Files</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#bootstrapping" class="sidebar-nav-link ${isActive('assumptions', '#bootstrapping') ? 'active' : ''}">Bootstrapping</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#ctl-electors" class="sidebar-nav-link ${isActive('assumptions', '#ctl-electors') ? 'active' : ''}">CTL & Electors</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}assumptions.html#misbehaviour" class="sidebar-nav-link ${isActive('assumptions', '#misbehaviour') ? 'active' : ''}">Misbehaviour & LA</a>
                         </li>
                     </ul>
                 </div>
