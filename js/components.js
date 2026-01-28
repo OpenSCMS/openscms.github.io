@@ -30,7 +30,8 @@ class ComponentLoader {
       path.includes("/pages/docs/components/") ||
       path.includes("/pages/docs/bridge/") ||
       path.includes("/pages/about/overview/") ||
-      path.includes("/pages/about/governance/")
+      path.includes("/pages/about/governance/") ||
+      path.includes("/pages/about/openscms/")
     ) {
       return "../../../";
     }
@@ -59,6 +60,9 @@ class ComponentLoader {
       "interaction-flows": "about",
       challenges: "about",
       openscms: "about",
+      architecture: path.includes("/about/") ? "about" : "documentation",
+      "root-of-trust": "about",
+      deployment: path.includes("/about/") ? "about" : "documentation",
       governance: "about",
       "governance-model": "about",
       "developer-grant": "about",
@@ -71,7 +75,6 @@ class ComponentLoader {
       documentation: "documentation",
       guides: "documentation",
       "getting-started": "documentation",
-      architecture: "documentation",
       "code-structure": "documentation",
       setup: "documentation",
       assumptions: "documentation",
@@ -149,7 +152,8 @@ class ComponentLoader {
     const hash = window.location.hash;
     const isOverviewSubpage = path.includes("/pages/about/overview/");
     const isGovernanceSubpage = path.includes("/pages/about/governance/");
-    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage;
+    const isOpenscmsSubpage = path.includes("/pages/about/openscms/");
+    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage && !isOpenscmsSubpage;
 
     // Helper function to check if link should be active
     const isActive = (pageName, hashValue = null) => {
@@ -160,26 +164,36 @@ class ComponentLoader {
     };
 
     // Build correct paths based on current location
-    let overviewPath, governancePath, rootPath;
+    let overviewPath, openscmsPath, governancePath, rootPath;
     
     if (isOverviewSubpage) {
       // From overview subpage: need to go up one level, then to other folders
       overviewPath = "";  // Same folder
+      openscmsPath = "../openscms/";
+      governancePath = "../governance/";
+      rootPath = "../";
+    } else if (isOpenscmsSubpage) {
+      // From openscms subpage: need to go up one level, then to other folders
+      overviewPath = "../overview/";
+      openscmsPath = "";  // Same folder
       governancePath = "../governance/";
       rootPath = "../";
     } else if (isGovernanceSubpage) {
       // From governance subpage: need to go up one level, then to other folders
       overviewPath = "../overview/";
+      openscmsPath = "../openscms/";
       governancePath = "";  // Same folder
       rootPath = "../";
     } else if (isAboutRoot) {
       // From about root: just navigate into subfolders
       overviewPath = "overview/";
+      openscmsPath = "openscms/";
       governancePath = "governance/";
       rootPath = "";
     } else {
       // Shouldn't happen, but fallback
       overviewPath = "overview/";
+      openscmsPath = "openscms/";
       governancePath = "governance/";
       rootPath = "";
     }
@@ -206,16 +220,16 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">The OpenSCMS</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${rootPath}openscms.html#overview" class="sidebar-nav-link ${isActive('openscms', '#overview') ? 'active' : ''}">Overview</a>
+                            <a href="${openscmsPath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${rootPath}openscms.html#architecture" class="sidebar-nav-link ${isActive('openscms', '#architecture') ? 'active' : ''}">Architecture</a>
+                            <a href="${openscmsPath}architecture.html" class="sidebar-nav-link ${isActive('architecture') ? 'active' : ''}">Architecture</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${rootPath}openscms.html#root-of-trust" class="sidebar-nav-link ${isActive('openscms', '#root-of-trust') ? 'active' : ''}">Root of Trust</a>
+                            <a href="${openscmsPath}root-of-trust.html" class="sidebar-nav-link ${isActive('root-of-trust') ? 'active' : ''}">Root of Trust</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${rootPath}openscms.html#deployment" class="sidebar-nav-link ${isActive('openscms', '#deployment') ? 'active' : ''}">Deployment</a>
+                            <a href="${openscmsPath}deployment.html" class="sidebar-nav-link ${isActive('deployment') ? 'active' : ''}">Deployment</a>
                         </li>
                     </ul>
                 </div>

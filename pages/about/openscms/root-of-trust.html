@@ -1,0 +1,71 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Root of Trust">
+    <title>Root of Trust - About OpenSCMS</title>
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="about-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>The OpenSCMS</h2>
+
+                    <h3 id="root-of-trust">Establishing the Root of Trust</h3>
+
+                    <p>Before an EE can securely interact with the SCMS, it must establish a root of trust by being
+                        provisioned with certificates for electors, root certificate authorities (root CAs), or both.
+                        The IEEE 1609.2.1 standard explicitly leaves the mechanisms and security requirements for this
+                        provisioning outside its scope.</p>
+
+                    <p>OpenSCMS addresses this gap by providing a flexible and extensible mechanism for initializing
+                        trust anchors. During system startup, OpenSCMS loads Certificate Chain Files (CCFs) and
+                        Certificate Trust Lists (CTLs), which define the trust relationships used throughout the system.
+                    </p>
+
+                    <p>To support testing, experimentation, and rapid deployment, OpenSCMS includes a standalone
+                        utility, <code>scms-manager</code>, implemented on top of the oscms-codecs-bridge library. This
+                        tool enables the generation of elector and root CA key pairs and certificates, as well as the
+                        creation of CCF and CTL artifacts. These generated payloads can be directly consumed by OpenSCMS
+                        during initialization.</p>
+
+                    <p>While scms-manager serves as a reference and support tool, OpenSCMS does not impose a fixed trust
+                        model. Users remain free to generate and manage trust anchors according to their own operational
+                        and security requirements, ensuring that the system can be adapted to a wide range of deployment
+                        scenarios.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../js/navigation.js"></script>
+</body>
+
+</html>
