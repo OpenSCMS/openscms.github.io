@@ -28,7 +28,8 @@ class ComponentLoader {
     if (
       path.includes("/pages/docs/guides/") ||
       path.includes("/pages/docs/components/") ||
-      path.includes("/pages/docs/bridge/")
+      path.includes("/pages/docs/bridge/") ||
+      path.includes("/pages/about/overview/")
     ) {
       return "../../../";
     }
@@ -53,6 +54,9 @@ class ComponentLoader {
       "": "index",
       about: "about",
       overview: path.includes("/about/") ? "about" : "documentation",
+      introduction: "about",
+      "interaction-flows": "about",
+      challenges: "about",
       openscms: "about",
       governance: "about",
       "release-notes": "about",
@@ -101,7 +105,7 @@ class ComponentLoader {
                             <li class="menu-item ${this.currentPage === "about" ? "active" : ""
       }">
                                 <a href="${this.basePath
-      }pages/about/overview.html">About</a>
+      }pages/about/overview/introduction.html">About</a>
                             </li>
                             <li class="menu-item ${this.currentPage === "documentation"
         ? "active"
@@ -133,6 +137,85 @@ class ComponentLoader {
                     <p>IEEE 1609.2.1 SCMS Implementation</p>
                 </div>
             </footer>
+        `;
+  }
+
+  getAboutSidebarTemplate() {
+    const path = window.location.pathname;
+    const filename = path.split("/").pop().replace(".html", "");
+    const hash = window.location.hash;
+    const isOverviewSubpage = path.includes("/pages/about/overview/");
+    const overviewBasePath = isOverviewSubpage ? "" : "overview/";
+
+    // Helper function to check if link should be active
+    const isActive = (pageName, hashValue = null) => {
+      if (hashValue) {
+        return filename === pageName && hash === hashValue;
+      }
+      return filename === pageName;
+    };
+
+    return `
+            <aside class="docs-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Background</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${overviewBasePath}introduction.html" class="sidebar-nav-link ${isActive('introduction') ? 'active' : ''}">Introduction</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${overviewBasePath}interaction-flows.html" class="sidebar-nav-link ${isActive('interaction-flows') ? 'active' : ''}">Core Interaction Flows</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${overviewBasePath}challenges.html" class="sidebar-nav-link ${isActive('challenges') ? 'active' : ''}">Architectural
+                                Challenges</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">The OpenSCMS</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#overview" class="sidebar-nav-link ${isActive('openscms', '#overview') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#architecture" class="sidebar-nav-link ${isActive('openscms', '#architecture') ? 'active' : ''}">Architecture</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#root-of-trust" class="sidebar-nav-link ${isActive('openscms', '#root-of-trust') ? 'active' : ''}">Root of Trust</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#deployment" class="sidebar-nav-link ${isActive('openscms', '#deployment') ? 'active' : ''}">Deployment</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Governance & Licensing</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#governance" class="sidebar-nav-link ${isActive('governance', '#governance') ? 'active' : ''}">Governance Model</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#developer-grant" class="sidebar-nav-link ${isActive('governance', '#developer-grant') ? 'active' : ''}">Developer Grant and
+                                CLA</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#license" class="sidebar-nav-link ${isActive('governance', '#license') ? 'active' : ''}">Apache License 2.0</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Release Notes</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${isOverviewSubpage ? '../' : ''}release-notes.html#release-notes" class="sidebar-nav-link ${isActive('release-notes', '#release-notes') ? 'active' : ''}">OpenSCMS 1.0.0</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
         `;
   }
 
@@ -216,6 +299,7 @@ class ComponentLoader {
     const docsSubmenuPlaceholder = document.getElementById(
       "docs-submenu-placeholder"
     );
+    const aboutSidebarPlaceholder = document.getElementById("about-sidebar-placeholder");
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
@@ -227,6 +311,10 @@ class ComponentLoader {
 
     if (docsSubmenuPlaceholder) {
       docsSubmenuPlaceholder.innerHTML = this.getDocsSubmenuTemplate();
+    }
+
+    if (aboutSidebarPlaceholder) {
+      aboutSidebarPlaceholder.innerHTML = this.getAboutSidebarTemplate();
     }
   }
 }

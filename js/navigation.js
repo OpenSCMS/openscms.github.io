@@ -51,10 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.getAttribute('id');
+                // Only update active state for hash-based links (same-page navigation)
                 document.querySelectorAll('.sidebar-nav-link').forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === `#${id}`) {
-                        link.classList.add('active');
+                    const href = link.getAttribute('href');
+                    // Only manage active state for links with hash anchors on current page
+                    if (href && href.startsWith('#')) {
+                        link.classList.remove('active');
+                        if (href === `#${id}`) {
+                            link.classList.add('active');
+                        }
                     }
                 });
             }
