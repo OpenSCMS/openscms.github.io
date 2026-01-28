@@ -32,7 +32,8 @@ class ComponentLoader {
       path.includes("/pages/about/overview/") ||
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
-      path.includes("/pages/about/release-notes/")
+      path.includes("/pages/about/release-notes/") ||
+      path.includes("/pages/docs/guides/architecture/")
     ) {
       return "../../../";
     }
@@ -77,6 +78,9 @@ class ComponentLoader {
       documentation: "documentation",
       guides: "documentation",
       "getting-started": "documentation",
+      architecture: path.includes("/about/") ? "about" : "documentation",
+      "high-level-layers": "documentation",
+      "technology-choices": "documentation",
       "code-structure": "documentation",
       setup: "documentation",
       assumptions: "documentation",
@@ -281,6 +285,8 @@ class ComponentLoader {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
     const hash = window.location.hash;
+    const isArchitectureSubpage = path.includes("/pages/docs/guides/architecture/");
+    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage;
 
     // Helper function to check if link should be active
     const isActive = (pageName, hashValue = null) => {
@@ -290,13 +296,30 @@ class ComponentLoader {
       return filename === pageName;
     };
 
+    // Build correct paths based on current location
+    let architecturePath, guidesRootPath;
+    
+    if (isArchitectureSubpage) {
+      // From architecture subpage: need to go up one level
+      architecturePath = "";  // Same folder
+      guidesRootPath = "../";
+    } else if (isGuidesRoot) {
+      // From guides root: navigate into subfolder
+      architecturePath = "architecture/";
+      guidesRootPath = "";
+    } else {
+      // Fallback
+      architecturePath = "architecture/";
+      guidesRootPath = "";
+    }
+
     return `
             <aside class="docs-sidebar">
                 <div class="sidebar-section">
                     <h3 class="sidebar-section-title">Getting Started</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="getting-started.html" class="sidebar-nav-link ${isActive('getting-started') ? 'active' : ''}">The OpenSCMS</a>
+                            <a href="${guidesRootPath}getting-started.html" class="sidebar-nav-link ${isActive('getting-started') ? 'active' : ''}">The OpenSCMS</a>
                         </li>
                     </ul>
                 </div>
@@ -305,13 +328,13 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Architecture</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="architecture.html" class="sidebar-nav-link ${isActive('architecture') ? 'active' : ''}">Overview</a>
+                            <a href="${architecturePath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="architecture.html#high-level-layers" class="sidebar-nav-link ${isActive('architecture', '#high-level-layers') ? 'active' : ''}">High-Level Layers</a>
+                            <a href="${architecturePath}high-level-layers.html" class="sidebar-nav-link ${isActive('high-level-layers') ? 'active' : ''}">High-Level Layers</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="architecture.html#technology-choices" class="sidebar-nav-link ${isActive('architecture', '#technology-choices') ? 'active' : ''}">Technology Choices</a>
+                            <a href="${architecturePath}technology-choices.html" class="sidebar-nav-link ${isActive('technology-choices') ? 'active' : ''}">Technology Choices</a>
                         </li>
                     </ul>
                 </div>
@@ -320,22 +343,22 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Code Structure</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html" class="sidebar-nav-link ${isActive('code-structure') ? 'active' : ''}">Overview</a>
+                            <a href="${guidesRootPath}code-structure.html" class="sidebar-nav-link ${isActive('code-structure') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html#workspace" class="sidebar-nav-link ${isActive('code-structure', '#workspace') ? 'active' : ''}">Workspace Organization</a>
+                            <a href="${guidesRootPath}code-structure.html#workspace" class="sidebar-nav-link ${isActive('code-structure', '#workspace') ? 'active' : ''}">Workspace Organization</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html#service-crate" class="sidebar-nav-link ${isActive('code-structure', '#service-crate') ? 'active' : ''}">Service Crate Structure</a>
+                            <a href="${guidesRootPath}code-structure.html#service-crate" class="sidebar-nav-link ${isActive('code-structure', '#service-crate') ? 'active' : ''}">Service Crate Structure</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html#scmscommon" class="sidebar-nav-link ${isActive('code-structure', '#scmscommon') ? 'active' : ''}">scmscommon</a>
+                            <a href="${guidesRootPath}code-structure.html#scmscommon" class="sidebar-nav-link ${isActive('code-structure', '#scmscommon') ? 'active' : ''}">scmscommon</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html#oscms-bridge" class="sidebar-nav-link ${isActive('code-structure', '#oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
+                            <a href="${guidesRootPath}code-structure.html#oscms-bridge" class="sidebar-nav-link ${isActive('code-structure', '#oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="code-structure.html#dependencies" class="sidebar-nav-link ${isActive('code-structure', '#dependencies') ? 'active' : ''}">Dependency Model</a>
+                            <a href="${guidesRootPath}code-structure.html#dependencies" class="sidebar-nav-link ${isActive('code-structure', '#dependencies') ? 'active' : ''}">Dependency Model</a>
                         </li>
                     </ul>
                 </div>
@@ -344,19 +367,19 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Setup & Deployment</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="setup.html" class="sidebar-nav-link ${isActive('setup') ? 'active' : ''}">Overview</a>
+                            <a href="${guidesRootPath}setup.html" class="sidebar-nav-link ${isActive('setup') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="setup.html#build-dependencies" class="sidebar-nav-link ${isActive('setup', '#build-dependencies') ? 'active' : ''}">Build Dependencies</a>
+                            <a href="${guidesRootPath}setup.html#build-dependencies" class="sidebar-nav-link ${isActive('setup', '#build-dependencies') ? 'active' : ''}">Build Dependencies</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="setup.html#certificates" class="sidebar-nav-link ${isActive('setup', '#certificates') ? 'active' : ''}">Certificates & Keys</a>
+                            <a href="${guidesRootPath}setup.html#certificates" class="sidebar-nav-link ${isActive('setup', '#certificates') ? 'active' : ''}">Certificates & Keys</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="setup.html#manual-deployment" class="sidebar-nav-link ${isActive('setup', '#manual-deployment') ? 'active' : ''}">Manual Deployment</a>
+                            <a href="${guidesRootPath}setup.html#manual-deployment" class="sidebar-nav-link ${isActive('setup', '#manual-deployment') ? 'active' : ''}">Manual Deployment</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="setup.html#kubernetes" class="sidebar-nav-link ${isActive('setup', '#kubernetes') ? 'active' : ''}">Docker & Kubernetes</a>
+                            <a href="${guidesRootPath}setup.html#kubernetes" class="sidebar-nav-link ${isActive('setup', '#kubernetes') ? 'active' : ''}">Docker & Kubernetes</a>
                         </li>
                     </ul>
                 </div>
@@ -365,25 +388,25 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#api-endpoints" class="sidebar-nav-link ${isActive('assumptions', '#api-endpoints') ? 'active' : ''}">API Endpoints</a>
+                            <a href="${guidesRootPath}assumptions.html#api-endpoints" class="sidebar-nav-link ${isActive('assumptions', '#api-endpoints') ? 'active' : ''}">API Endpoints</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#certificate-types" class="sidebar-nav-link ${isActive('assumptions', '#certificate-types') ? 'active' : ''}">Certificate Types</a>
+                            <a href="${guidesRootPath}assumptions.html#certificate-types" class="sidebar-nav-link ${isActive('assumptions', '#certificate-types') ? 'active' : ''}">Certificate Types</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#asn1-version" class="sidebar-nav-link ${isActive('assumptions', '#asn1-version') ? 'active' : ''}">ASN.1 Version</a>
+                            <a href="${guidesRootPath}assumptions.html#asn1-version" class="sidebar-nav-link ${isActive('assumptions', '#asn1-version') ? 'active' : ''}">ASN.1 Version</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#policy-files" class="sidebar-nav-link ${isActive('assumptions', '#policy-files') ? 'active' : ''}">Policy Files</a>
+                            <a href="${guidesRootPath}assumptions.html#policy-files" class="sidebar-nav-link ${isActive('assumptions', '#policy-files') ? 'active' : ''}">Policy Files</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#bootstrapping" class="sidebar-nav-link ${isActive('assumptions', '#bootstrapping') ? 'active' : ''}">Bootstrapping</a>
+                            <a href="${guidesRootPath}assumptions.html#bootstrapping" class="sidebar-nav-link ${isActive('assumptions', '#bootstrapping') ? 'active' : ''}">Bootstrapping</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#ctl-electors" class="sidebar-nav-link ${isActive('assumptions', '#ctl-electors') ? 'active' : ''}">CTL & Electors</a>
+                            <a href="${guidesRootPath}assumptions.html#ctl-electors" class="sidebar-nav-link ${isActive('assumptions', '#ctl-electors') ? 'active' : ''}">CTL & Electors</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="assumptions.html#misbehaviour" class="sidebar-nav-link ${isActive('assumptions', '#misbehaviour') ? 'active' : ''}">Misbehaviour & LA</a>
+                            <a href="${guidesRootPath}assumptions.html#misbehaviour" class="sidebar-nav-link ${isActive('assumptions', '#misbehaviour') ? 'active' : ''}">Misbehaviour & LA</a>
                         </li>
                     </ul>
                 </div>

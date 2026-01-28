@@ -12,9 +12,9 @@ http://www.apache.org/licenses/LICENSE-2.0.
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OpenSCMS Architecture Overview">
-    <title>Architecture - OpenSCMS Guides</title>
-    <link rel="stylesheet" href="../../../css/styles.css">
+    <meta name="description" content="OpenSCMS Technology Choices">
+    <title>Technology Choices - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
 </head>
 
 <body>
@@ -34,31 +34,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Architecture</h2>
 
-                    <h3 id="overview">Overview</h3>
-
-                    <p>OpenSCMS follows a layered and service-oriented architecture aligned with the logical
-                        decomposition proposed by IEEE 1609.2.1. Each SCMS component is implemented as an independent
-                        Rust crate following microservices design, allowing clear separation of responsibilities,
-                        independent scaling, and reduced trust concentration. Based on that, V2X end entities (OBUs,
-                        RSUs, and test clients) can interact with the SCMS via IEEE 1609.2.1-defined REST interfaces.
-                    </p>
-
-                    <h3 id="high-level-layers">High-Level Layers</h3>
-
-                    <p>The system can be viewed as four primary layers:</p>
-
-                    <ul>
-                        <li><strong>Service Layer</strong>: Rust-based microservices implementing SCMS components such
-                            as RA, ECA, ACA, and LA.</li>
-                        <li><strong>Messaging and Persistence Layer</strong>: Asynchronous task coordination via
-                            RabbitMQ (implemented in components that receive a higher load of frequent requests, such as
-                            RA) and persistent storage using relational databases (MySQL).</li>
-                        <li><strong>Cryptographic and Protocol Layer</strong>: The <code>oscms-codecs-bridge</code> C
-                            library, responsible for cryptography, ASN.1 encoding/decoding, and SPDU parsing and
-                            construction.</li>
-                    </ul>
-
-                    <h3 id="technology-choices">Technology Choices</h3>
+                    <h3>Technology Choices</h3>
 
                     <h4 id="rust-backend">Rust Backend</h4>
 
@@ -110,10 +86,10 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
-    <script src="../../../js/components.js"></script>
+    <script src="../../../../js/components.js"></script>
 
     <!-- Documentation Navigation Script -->
-    <script src="../../../js/navigation.js"></script>
+    <script src="../../../../js/navigation.js"></script>
 </body>
 
 </html>
