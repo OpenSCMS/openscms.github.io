@@ -752,6 +752,53 @@ class ComponentLoader {
     if (docsComponentsSidebarPlaceholder) {
       docsComponentsSidebarPlaceholder.innerHTML = this.getDocsComponentsSidebarTemplate();
     }
+
+    // Setup sidebar scroll management
+    this.setupSidebarScrollManagement();
+  }
+
+  setupSidebarScrollManagement() {
+    // Find all sidebars
+    const sidebars = document.querySelectorAll('.docs-sidebar');
+    
+    sidebars.forEach(sidebar => {
+      // Restore scroll position when page loads
+      this.restoreSidebarScroll(sidebar);
+
+      // Save scroll position when clicking on sidebar links
+      const sidebarLinks = sidebar.querySelectorAll('.sidebar-nav-link');
+      sidebarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          this.saveSidebarScroll(sidebar);
+        });
+      });
+
+      // Also save scroll position when user manually scrolls
+      sidebar.addEventListener('scroll', () => {
+        this.saveSidebarScroll(sidebar);
+      });
+    });
+  }
+
+  saveSidebarScroll(sidebar) {
+    if (sidebar) {
+      sessionStorage.setItem('sidebarScrollPosition', sidebar.scrollTop);
+    }
+  }
+
+  restoreSidebarScroll(sidebar) {
+    if (sidebar) {
+      const savedPosition = sessionStorage.getItem('sidebarScrollPosition');
+      if (savedPosition !== null) {
+        // Use setTimeout to ensure DOM is fully rendered
+        setTimeout(() => {
+          sidebar.scrollTo({
+            top: parseInt(savedPosition, 10),
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+    }
   }
 }
 
