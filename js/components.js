@@ -31,7 +31,8 @@ class ComponentLoader {
       path.includes("/pages/docs/bridge/") ||
       path.includes("/pages/about/overview/") ||
       path.includes("/pages/about/governance/") ||
-      path.includes("/pages/about/openscms/")
+      path.includes("/pages/about/openscms/") ||
+      path.includes("/pages/about/release-notes/")
     ) {
       return "../../../";
     }
@@ -68,6 +69,7 @@ class ComponentLoader {
       "developer-grant": "about",
       license: "about",
       "release-notes": "about",
+      "v1.0.0": "about",
       blog: "blog",
       source: "source",
       faq: "faq",
@@ -153,7 +155,8 @@ class ComponentLoader {
     const isOverviewSubpage = path.includes("/pages/about/overview/");
     const isGovernanceSubpage = path.includes("/pages/about/governance/");
     const isOpenscmsSubpage = path.includes("/pages/about/openscms/");
-    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage && !isOpenscmsSubpage;
+    const isReleaseNotesSubpage = path.includes("/pages/about/release-notes/");
+    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage && !isOpenscmsSubpage && !isReleaseNotesSubpage;
 
     // Helper function to check if link should be active
     const isActive = (pageName, hashValue = null) => {
@@ -164,37 +167,49 @@ class ComponentLoader {
     };
 
     // Build correct paths based on current location
-    let overviewPath, openscmsPath, governancePath, rootPath;
+    let overviewPath, openscmsPath, governancePath, releaseNotesPath, rootPath;
     
     if (isOverviewSubpage) {
       // From overview subpage: need to go up one level, then to other folders
       overviewPath = "";  // Same folder
       openscmsPath = "../openscms/";
       governancePath = "../governance/";
+      releaseNotesPath = "../release-notes/";
       rootPath = "../";
     } else if (isOpenscmsSubpage) {
       // From openscms subpage: need to go up one level, then to other folders
       overviewPath = "../overview/";
       openscmsPath = "";  // Same folder
       governancePath = "../governance/";
+      releaseNotesPath = "../release-notes/";
       rootPath = "../";
     } else if (isGovernanceSubpage) {
       // From governance subpage: need to go up one level, then to other folders
       overviewPath = "../overview/";
       openscmsPath = "../openscms/";
       governancePath = "";  // Same folder
+      releaseNotesPath = "../release-notes/";
+      rootPath = "../";
+    } else if (isReleaseNotesSubpage) {
+      // From release-notes subpage: need to go up one level, then to other folders
+      overviewPath = "../overview/";
+      openscmsPath = "../openscms/";
+      governancePath = "../governance/";
+      releaseNotesPath = "";  // Same folder
       rootPath = "../";
     } else if (isAboutRoot) {
       // From about root: just navigate into subfolders
       overviewPath = "overview/";
       openscmsPath = "openscms/";
       governancePath = "governance/";
+      releaseNotesPath = "release-notes/";
       rootPath = "";
     } else {
       // Shouldn't happen, but fallback
       overviewPath = "overview/";
       openscmsPath = "openscms/";
       governancePath = "governance/";
+      releaseNotesPath = "release-notes/";
       rootPath = "";
     }
 
@@ -254,7 +269,7 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Release Notes</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${rootPath}release-notes.html#release-notes" class="sidebar-nav-link ${isActive('release-notes', '#release-notes') ? 'active' : ''}">OpenSCMS 1.0.0</a>
+                            <a href="${releaseNotesPath}v1.0.0.html" class="sidebar-nav-link ${isActive('v1.0.0') ? 'active' : ''}">OpenSCMS v1.0.0</a>
                         </li>
                     </ul>
                 </div>
