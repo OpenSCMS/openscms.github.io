@@ -33,7 +33,8 @@ class ComponentLoader {
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
       path.includes("/pages/about/release-notes/") ||
-      path.includes("/pages/docs/guides/architecture/")
+      path.includes("/pages/docs/guides/architecture/") ||
+      path.includes("/pages/docs/guides/code-structure/")
     ) {
       return "../../../";
     }
@@ -82,6 +83,11 @@ class ComponentLoader {
       "high-level-layers": "documentation",
       "technology-choices": "documentation",
       "code-structure": "documentation",
+      workspace: "documentation",
+      "service-crate": "documentation",
+      scmscommon: "documentation",
+      "oscms-bridge": "documentation",
+      dependencies: "documentation",
       setup: "documentation",
       assumptions: "documentation",
       "scms-components": "documentation",
@@ -286,7 +292,8 @@ class ComponentLoader {
     const filename = path.split("/").pop().replace(".html", "");
     const hash = window.location.hash;
     const isArchitectureSubpage = path.includes("/pages/docs/guides/architecture/");
-    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage;
+    const isCodeStructureSubpage = path.includes("/pages/docs/guides/code-structure/");
+    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage && !isCodeStructureSubpage;
 
     // Helper function to check if link should be active
     const isActive = (pageName, hashValue = null) => {
@@ -297,19 +304,27 @@ class ComponentLoader {
     };
 
     // Build correct paths based on current location
-    let architecturePath, guidesRootPath;
+    let architecturePath, codeStructurePath, guidesRootPath;
     
     if (isArchitectureSubpage) {
       // From architecture subpage: need to go up one level
       architecturePath = "";  // Same folder
+      codeStructurePath = "../code-structure/";
+      guidesRootPath = "../";
+    } else if (isCodeStructureSubpage) {
+      // From code-structure subpage: need to go up one level
+      architecturePath = "../architecture/";
+      codeStructurePath = "";  // Same folder
       guidesRootPath = "../";
     } else if (isGuidesRoot) {
-      // From guides root: navigate into subfolder
+      // From guides root: navigate into subfolders
       architecturePath = "architecture/";
+      codeStructurePath = "code-structure/";
       guidesRootPath = "";
     } else {
       // Fallback
       architecturePath = "architecture/";
+      codeStructurePath = "code-structure/";
       guidesRootPath = "";
     }
 
@@ -343,22 +358,22 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Code Structure</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html" class="sidebar-nav-link ${isActive('code-structure') ? 'active' : ''}">Overview</a>
+                            <a href="${codeStructurePath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html#workspace" class="sidebar-nav-link ${isActive('code-structure', '#workspace') ? 'active' : ''}">Workspace Organization</a>
+                            <a href="${codeStructurePath}workspace.html" class="sidebar-nav-link ${isActive('workspace') ? 'active' : ''}">Workspace Organization</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html#service-crate" class="sidebar-nav-link ${isActive('code-structure', '#service-crate') ? 'active' : ''}">Service Crate Structure</a>
+                            <a href="${codeStructurePath}service-crate.html" class="sidebar-nav-link ${isActive('service-crate') ? 'active' : ''}">Service Crate Structure</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html#scmscommon" class="sidebar-nav-link ${isActive('code-structure', '#scmscommon') ? 'active' : ''}">scmscommon</a>
+                            <a href="${codeStructurePath}scmscommon.html" class="sidebar-nav-link ${isActive('scmscommon') ? 'active' : ''}">scmscommon</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html#oscms-bridge" class="sidebar-nav-link ${isActive('code-structure', '#oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
+                            <a href="${codeStructurePath}oscms-bridge.html" class="sidebar-nav-link ${isActive('oscms-bridge') ? 'active' : ''}">oscms_bridge</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}code-structure.html#dependencies" class="sidebar-nav-link ${isActive('code-structure', '#dependencies') ? 'active' : ''}">Dependency Model</a>
+                            <a href="${codeStructurePath}dependencies.html" class="sidebar-nav-link ${isActive('dependencies') ? 'active' : ''}">Dependency Model</a>
                         </li>
                     </ul>
                 </div>

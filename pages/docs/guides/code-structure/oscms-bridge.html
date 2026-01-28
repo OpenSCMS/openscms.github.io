@@ -1,0 +1,87 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="oscms_bridge Rust Crate">
+    <title>oscms_bridge - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-guides-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Code Structure</h2>
+
+                    <h3>The oscms_bridge Rust Crate</h3>
+
+                    <p>The <code>oscms_bridge</code> crate is a Rust library crate that provides a safe and idiomatic
+                        Rust interface to the C-based <code>oscms-codecs-bridge</code>. It serves as the explicit
+                        language and responsibility boundary between Rust services and the low-level cryptographic and
+                        protocol engine.</p>
+
+                    <p>This crate contains a <code>build.rs</code> script responsible for:</p>
+
+                    <ul>
+                        <li>Compiling the C sources of the <code>oscms-codecs-bridge</code></li>
+                        <li>Linking the resulting static or shared library into the Rust build</li>
+                        <li>Automatically generating Rust bindings for the C API using the <code>bindgen</code> tool
+                        </li>
+                    </ul>
+
+                    <p>By generating bindings at build time, <code>oscms_bridge</code> ensures that the Rust view of the
+                        C API remains consistent with the underlying implementation, while preserving Rust's safety
+                        guarantees through carefully designed wrapper types and ownership boundaries.</p>
+
+                    <p>The <code>oscms_bridge</code> crate also contains the <code>oscms-codecs-bridge</code>
+                        subrepository, which is itself a fully independent C project. This C component is structurally
+                        and conceptually isolated from the Rust workspace and implements the core cryptographic and IEEE
+                        1609.2.1 protocol logic of OpenSCMS.</p>
+
+                    <p>The <code>oscms-codecs-bridge</code> is built using CMake and does not depend on Rust code or
+                        Rust-specific tooling. It exposes a well-defined C API that is consumed by multiple SCMS
+                        services via the <code>oscms_bridge</code> Rust lib crate, but remains entirely agnostic to
+                        service-level concerns and deployment details.</p>
+
+                    <p>This strict separation allows the C bridge to be developed, audited, and reused independently of
+                        the Rust backend. The design, build system, and coding guidelines of the
+                        <code>oscms-codecs-bridge</code> are described in detail in a dedicated section later in this
+                        document.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>
