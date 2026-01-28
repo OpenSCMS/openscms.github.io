@@ -29,7 +29,8 @@ class ComponentLoader {
       path.includes("/pages/docs/guides/") ||
       path.includes("/pages/docs/components/") ||
       path.includes("/pages/docs/bridge/") ||
-      path.includes("/pages/about/overview/")
+      path.includes("/pages/about/overview/") ||
+      path.includes("/pages/about/governance/")
     ) {
       return "../../../";
     }
@@ -59,6 +60,9 @@ class ComponentLoader {
       challenges: "about",
       openscms: "about",
       governance: "about",
+      "governance-model": "about",
+      "developer-grant": "about",
+      license: "about",
       "release-notes": "about",
       blog: "blog",
       source: "source",
@@ -83,7 +87,6 @@ class ComponentLoader {
       development: "documentation",
       installation: "documentation",
       "api-reference": "documentation",
-      license: "license",
     };
 
     return pageMap[filename] || "index";
@@ -145,7 +148,8 @@ class ComponentLoader {
     const filename = path.split("/").pop().replace(".html", "");
     const hash = window.location.hash;
     const isOverviewSubpage = path.includes("/pages/about/overview/");
-    const overviewBasePath = isOverviewSubpage ? "" : "overview/";
+    const isGovernanceSubpage = path.includes("/pages/about/governance/");
+    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage;
 
     // Helper function to check if link should be active
     const isActive = (pageName, hashValue = null) => {
@@ -155,19 +159,44 @@ class ComponentLoader {
       return filename === pageName;
     };
 
+    // Build correct paths based on current location
+    let overviewPath, governancePath, rootPath;
+    
+    if (isOverviewSubpage) {
+      // From overview subpage: need to go up one level, then to other folders
+      overviewPath = "";  // Same folder
+      governancePath = "../governance/";
+      rootPath = "../";
+    } else if (isGovernanceSubpage) {
+      // From governance subpage: need to go up one level, then to other folders
+      overviewPath = "../overview/";
+      governancePath = "";  // Same folder
+      rootPath = "../";
+    } else if (isAboutRoot) {
+      // From about root: just navigate into subfolders
+      overviewPath = "overview/";
+      governancePath = "governance/";
+      rootPath = "";
+    } else {
+      // Shouldn't happen, but fallback
+      overviewPath = "overview/";
+      governancePath = "governance/";
+      rootPath = "";
+    }
+
     return `
             <aside class="docs-sidebar">
                 <div class="sidebar-section">
                     <h3 class="sidebar-section-title">Background</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${overviewBasePath}introduction.html" class="sidebar-nav-link ${isActive('introduction') ? 'active' : ''}">Introduction</a>
+                            <a href="${overviewPath}introduction.html" class="sidebar-nav-link ${isActive('introduction') ? 'active' : ''}">Introduction</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${overviewBasePath}interaction-flows.html" class="sidebar-nav-link ${isActive('interaction-flows') ? 'active' : ''}">Core Interaction Flows</a>
+                            <a href="${overviewPath}interaction-flows.html" class="sidebar-nav-link ${isActive('interaction-flows') ? 'active' : ''}">Core Interaction Flows</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${overviewBasePath}challenges.html" class="sidebar-nav-link ${isActive('challenges') ? 'active' : ''}">Architectural
+                            <a href="${overviewPath}challenges.html" class="sidebar-nav-link ${isActive('challenges') ? 'active' : ''}">Architectural
                                 Challenges</a>
                         </li>
                     </ul>
@@ -177,16 +206,16 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">The OpenSCMS</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#overview" class="sidebar-nav-link ${isActive('openscms', '#overview') ? 'active' : ''}">Overview</a>
+                            <a href="${rootPath}openscms.html#overview" class="sidebar-nav-link ${isActive('openscms', '#overview') ? 'active' : ''}">Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#architecture" class="sidebar-nav-link ${isActive('openscms', '#architecture') ? 'active' : ''}">Architecture</a>
+                            <a href="${rootPath}openscms.html#architecture" class="sidebar-nav-link ${isActive('openscms', '#architecture') ? 'active' : ''}">Architecture</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#root-of-trust" class="sidebar-nav-link ${isActive('openscms', '#root-of-trust') ? 'active' : ''}">Root of Trust</a>
+                            <a href="${rootPath}openscms.html#root-of-trust" class="sidebar-nav-link ${isActive('openscms', '#root-of-trust') ? 'active' : ''}">Root of Trust</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}openscms.html#deployment" class="sidebar-nav-link ${isActive('openscms', '#deployment') ? 'active' : ''}">Deployment</a>
+                            <a href="${rootPath}openscms.html#deployment" class="sidebar-nav-link ${isActive('openscms', '#deployment') ? 'active' : ''}">Deployment</a>
                         </li>
                     </ul>
                 </div>
@@ -195,14 +224,14 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Governance & Licensing</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#governance" class="sidebar-nav-link ${isActive('governance', '#governance') ? 'active' : ''}">Governance Model</a>
+                            <a href="${governancePath}governance-model.html" class="sidebar-nav-link ${isActive('governance-model') ? 'active' : ''}">Governance Model</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#developer-grant" class="sidebar-nav-link ${isActive('governance', '#developer-grant') ? 'active' : ''}">Developer Grant and
+                            <a href="${governancePath}developer-grant.html" class="sidebar-nav-link ${isActive('developer-grant') ? 'active' : ''}">Developer Grant and
                                 CLA</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}governance.html#license" class="sidebar-nav-link ${isActive('governance', '#license') ? 'active' : ''}">Apache License 2.0</a>
+                            <a href="${governancePath}license.html" class="sidebar-nav-link ${isActive('license') ? 'active' : ''}">Apache License 2.0</a>
                         </li>
                     </ul>
                 </div>
@@ -211,7 +240,7 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Release Notes</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${isOverviewSubpage ? '../' : ''}release-notes.html#release-notes" class="sidebar-nav-link ${isActive('release-notes', '#release-notes') ? 'active' : ''}">OpenSCMS 1.0.0</a>
+                            <a href="${rootPath}release-notes.html#release-notes" class="sidebar-nav-link ${isActive('release-notes', '#release-notes') ? 'active' : ''}">OpenSCMS 1.0.0</a>
                         </li>
                     </ul>
                 </div>
