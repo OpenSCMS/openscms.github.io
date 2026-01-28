@@ -28,6 +28,7 @@ class ComponentLoader {
     if (
       path.includes("/pages/docs/guides/architecture/") ||
       path.includes("/pages/docs/guides/code-structure/") ||
+      path.includes("/pages/docs/guides/getting-started/") ||
       path.includes("/pages/docs/guides/setup/")
     ) {
       return "../../../../";
@@ -87,6 +88,8 @@ class ComponentLoader {
       documentation: "documentation",
       guides: "documentation",
       "getting-started": "documentation",
+      "engineering-perspective": "documentation",
+      "documentation-purpose": "documentation",
       architecture: path.includes("/about/") ? "about" : "documentation",
       "high-level-layers": "documentation",
       "technology-choices": "documentation",
@@ -303,10 +306,11 @@ class ComponentLoader {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
     const hash = window.location.hash;
+    const isGettingStartedSubpage = path.includes("/pages/docs/guides/getting-started/");
     const isArchitectureSubpage = path.includes("/pages/docs/guides/architecture/");
     const isCodeStructureSubpage = path.includes("/pages/docs/guides/code-structure/");
     const isSetupSubpage = path.includes("/pages/docs/guides/setup/");
-    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isArchitectureSubpage && !isCodeStructureSubpage && !isSetupSubpage;
+    const isGuidesRoot = path.includes("/pages/docs/guides/") && !isGettingStartedSubpage && !isArchitectureSubpage && !isCodeStructureSubpage && !isSetupSubpage;
 
     // Helper function to check if link should be active
     // Now includes context awareness for subfolders
@@ -316,7 +320,9 @@ class ComponentLoader {
       }
 
       // If a subfolder is specified, check if we're in that subfolder
-      if (subfolder === 'architecture') {
+      if (subfolder === 'getting-started') {
+        return isGettingStartedSubpage && filename === pageName;
+      } else if (subfolder === 'architecture') {
         return isArchitectureSubpage && filename === pageName;
       } else if (subfolder === 'code-structure') {
         return isCodeStructureSubpage && filename === pageName;
@@ -331,34 +337,46 @@ class ComponentLoader {
     };
 
     // Build correct paths based on current location
-    let architecturePath, codeStructurePath, setupPath, guidesRootPath;
+    let gettingStartedPath, architecturePath, codeStructurePath, setupPath, guidesRootPath;
     
-    if (isArchitectureSubpage) {
+    if (isGettingStartedSubpage) {
+      // From getting-started subpage: need to go up one level
+      gettingStartedPath = "";  // Same folder
+      architecturePath = "../architecture/";
+      codeStructurePath = "../code-structure/";
+      setupPath = "../setup/";
+      guidesRootPath = "../";
+    } else if (isArchitectureSubpage) {
       // From architecture subpage: need to go up one level
+      gettingStartedPath = "../getting-started/";
       architecturePath = "";  // Same folder
       codeStructurePath = "../code-structure/";
       setupPath = "../setup/";
       guidesRootPath = "../";
     } else if (isCodeStructureSubpage) {
       // From code-structure subpage: need to go up one level
+      gettingStartedPath = "../getting-started/";
       architecturePath = "../architecture/";
       codeStructurePath = "";  // Same folder
       setupPath = "../setup/";
       guidesRootPath = "../";
     } else if (isSetupSubpage) {
       // From setup subpage: need to go up one level
+      gettingStartedPath = "../getting-started/";
       architecturePath = "../architecture/";
       codeStructurePath = "../code-structure/";
       setupPath = "";  // Same folder
       guidesRootPath = "../";
     } else if (isGuidesRoot) {
       // From guides root: navigate into subfolders
+      gettingStartedPath = "getting-started/";
       architecturePath = "architecture/";
       codeStructurePath = "code-structure/";
       setupPath = "setup/";
       guidesRootPath = "";
     } else {
       // Fallback
+      gettingStartedPath = "getting-started/";
       architecturePath = "architecture/";
       codeStructurePath = "code-structure/";
       setupPath = "setup/";
@@ -371,7 +389,13 @@ class ComponentLoader {
                     <h3 class="sidebar-section-title">Getting Started</h3>
                     <ul class="sidebar-nav">
                         <li class="sidebar-nav-item">
-                            <a href="${guidesRootPath}getting-started.html" class="sidebar-nav-link ${isActive('getting-started', null, 'guides-root') ? 'active' : ''}">The OpenSCMS</a>
+                            <a href="${gettingStartedPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'getting-started') ? 'active' : ''}">The OpenSCMS</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${gettingStartedPath}engineering-perspective.html" class="sidebar-nav-link ${isActive('engineering-perspective', null, 'getting-started') ? 'active' : ''}">Engineering Perspective</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${gettingStartedPath}documentation-purpose.html" class="sidebar-nav-link ${isActive('documentation-purpose', null, 'getting-started') ? 'active' : ''}">Documentation Purpose</a>
                         </li>
                     </ul>
                 </div>
@@ -520,7 +544,7 @@ class ComponentLoader {
                             <a href="${docsBasePath}overview.html">Overview</a>
                         </li>
                         <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
-                            <a href="${docsBasePath}guides/getting-started.html">Guides</a>
+                            <a href="${docsBasePath}guides/getting-started/overview.html">Guides</a>
                         </li>
                         <li class="submenu-tab ${isComponentsPage ? "active" : ""
       }">
