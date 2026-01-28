@@ -1,0 +1,70 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-components-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Authorization Certificate Authority (ACA)</h2>
+
+                    <h3 id="issuance-flow">Authorization Certificate Issuance Flow</h3>
+
+                    <p>During authorization certificate issuance, the ACA receives a request from the RA containing:</p>
+
+                    <ul>
+                        <li>the selected certificate type (explicit or implicit),</li>
+                        <li>the butterfly key expansion parameters,</li>
+                        <li>linkage values obtained from the LA,</li>
+                        <li>validity and permission constraints derived from policy.</li>
+                    </ul>
+
+                    <p>Using this input, the ACA invokes the low-level C cryptographic engine to generate a batch of
+                        IEEE 1609.2.1 authorization certificates. All cryptographic operations, including key expansion,
+                        signature generation, and ASN.1 encoding, are performed within the C library to ensure
+                        consistency and correctness across components.</p>
+
+                    <p>Once certificate generation completes, the ACA returns the resulting certificate batch to the RA.
+                        The ACA itself does not persist certificates or maintain client state.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

@@ -29,7 +29,10 @@ class ComponentLoader {
       path.includes("/pages/docs/guides/architecture/") ||
       path.includes("/pages/docs/guides/code-structure/") ||
       path.includes("/pages/docs/guides/getting-started/") ||
-      path.includes("/pages/docs/guides/setup/")
+      path.includes("/pages/docs/guides/setup/") ||
+      path.includes("/pages/docs/components/ra/") ||
+      path.includes("/pages/docs/components/eca/") ||
+      path.includes("/pages/docs/components/aca/")
     ) {
       return "../../../../";
     }
@@ -39,10 +42,6 @@ class ComponentLoader {
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
       path.includes("/pages/about/release-notes/") ||
-      path.includes("/pages/docs/guides/architecture/") ||
-      path.includes("/pages/docs/guides/code-structure/") ||
-      path.includes("/pages/docs/guides/setup/") ||
-      path.includes("/pages/docs/components/") ||
       path.includes("/pages/docs/bridge/")
     ) {
       return "../../../";
@@ -107,8 +106,18 @@ class ComponentLoader {
       assumptions: "documentation",
       "scms-components": "documentation",
       ra: "documentation",
+      "internal-organization": "documentation",
+      "authorization-flow": "documentation",
+      "successor-enrollment": "documentation",
+      "ee-registration": "documentation",
+      "trust-artifacts": "documentation",
+      "lifecycle-management": "documentation",
       eca: "documentation",
+      "initial-enrollment": "documentation",
+      security: "documentation",
       aca: "documentation",
+      role: "documentation",
+      "issuance-flow": "documentation",
       la: "documentation",
       "codecs-bridge": "documentation",
       build: "documentation",
@@ -474,20 +483,183 @@ class ComponentLoader {
         `;
   }
 
+  getDocsComponentsSidebarTemplate() {
+    const path = window.location.pathname;
+    const filename = path.split("/").pop().replace(".html", "");
+    const hash = window.location.hash;
+    const isRASubpage = path.includes("/pages/docs/components/ra/");
+    const isECASubpage = path.includes("/pages/docs/components/eca/");
+    const isACASubpage = path.includes("/pages/docs/components/aca/");
+    const isComponentsRoot = path.includes("/pages/docs/components/") && !isRASubpage && !isECASubpage && !isACASubpage;
+
+    // Helper function to check if link should be active
+    const isActive = (pageName, hashValue = null, subfolder = null) => {
+      if (hashValue) {
+        return filename === pageName && hash === hashValue;
+      }
+
+      // If a subfolder is specified, check if we're in that subfolder
+      if (subfolder === 'ra') {
+        return isRASubpage && filename === pageName;
+      } else if (subfolder === 'eca') {
+        return isECASubpage && filename === pageName;
+      } else if (subfolder === 'aca') {
+        return isACASubpage && filename === pageName;
+      } else if (subfolder === 'components-root') {
+        return isComponentsRoot && filename === pageName;
+      }
+
+      // Default: just check filename
+      return filename === pageName;
+    };
+
+    // Build correct paths based on current location
+    let raPath, ecaPath, acaPath, componentsRootPath;
+    
+    if (isRASubpage) {
+      // From ra subpage: need to go up one level
+      raPath = "";  // Same folder
+      ecaPath = "../eca/";
+      acaPath = "../aca/";
+      componentsRootPath = "../";
+    } else if (isECASubpage) {
+      // From eca subpage: need to go up one level
+      raPath = "../ra/";
+      ecaPath = "";  // Same folder
+      acaPath = "../aca/";
+      componentsRootPath = "../";
+    } else if (isACASubpage) {
+      // From aca subpage: need to go up one level
+      raPath = "../ra/";
+      ecaPath = "../eca/";
+      acaPath = "";  // Same folder
+      componentsRootPath = "../";
+    } else if (isComponentsRoot) {
+      // From components root: navigate into subfolders
+      raPath = "ra/";
+      ecaPath = "eca/";
+      acaPath = "aca/";
+      componentsRootPath = "";
+    } else {
+      // Fallback
+      raPath = "ra/";
+      ecaPath = "eca/";
+      acaPath = "aca/";
+      componentsRootPath = "";
+    }
+
+    return `
+            <aside class="docs-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Core Components</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${componentsRootPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'components-root') ? 'active' : ''}">Overview</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Registration Authority</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'ra') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}internal-organization.html" class="sidebar-nav-link ${isActive('internal-organization', null, 'ra') ? 'active' : ''}">Internal Organization</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}authorization-flow.html" class="sidebar-nav-link ${isActive('authorization-flow', null, 'ra') ? 'active' : ''}">Authorization Flow</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}successor-enrollment.html" class="sidebar-nav-link ${isActive('successor-enrollment', null, 'ra') ? 'active' : ''}">Successor Enrollment</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}ee-registration.html" class="sidebar-nav-link ${isActive('ee-registration', null, 'ra') ? 'active' : ''}">EE Registration</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}trust-artifacts.html" class="sidebar-nav-link ${isActive('trust-artifacts', null, 'ra') ? 'active' : ''}">Trust Artifacts</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${raPath}lifecycle-management.html" class="sidebar-nav-link ${isActive('lifecycle-management', null, 'ra') ? 'active' : ''}">Lifecycle Management</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Enrollment CA</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${ecaPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'eca') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${ecaPath}initial-enrollment.html" class="sidebar-nav-link ${isActive('initial-enrollment', null, 'eca') ? 'active' : ''}">Initial Enrollment</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${ecaPath}security.html" class="sidebar-nav-link ${isActive('security', null, 'eca') ? 'active' : ''}">Security Considerations</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Authorization CA</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${acaPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'aca') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${acaPath}role.html" class="sidebar-nav-link ${isActive('role', null, 'aca') ? 'active' : ''}">Role in Certificate Flows</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${acaPath}issuance-flow.html" class="sidebar-nav-link ${isActive('issuance-flow', null, 'aca') ? 'active' : ''}">Issuance Flow</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${acaPath}security.html" class="sidebar-nav-link ${isActive('security', null, 'aca') ? 'active' : ''}">Security Considerations</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Linkage Authority</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${componentsRootPath}la.html" class="sidebar-nav-link ${isActive('la', null, 'components-root') ? 'active' : ''}">Linkage Authority</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        `;
+  }
+
   getDocsSubmenuTemplate() {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
 
     let docsBasePath = "./";
-    if (path.includes("/pages/docs/components/")) {
-      docsBasePath = "../";
-    } else if (path.includes("/pages/docs/guides/")) {
-      docsBasePath = "../";
-    } else if (path.includes("/pages/docs/bridge/")) {
+    // Check if we're in a deep subfolder (3 levels: /pages/docs/guides/getting-started/)
+    if (
+      path.includes("/pages/docs/guides/getting-started/") ||
+      path.includes("/pages/docs/guides/architecture/") ||
+      path.includes("/pages/docs/guides/code-structure/") ||
+      path.includes("/pages/docs/guides/setup/") ||
+      path.includes("/pages/docs/components/ra/") ||
+      path.includes("/pages/docs/components/eca/") ||
+      path.includes("/pages/docs/components/aca/")
+    ) {
+      // From 3 levels deep, we need to go up 2 levels to reach /pages/docs/
+      docsBasePath = "../../";
+    } else if (
+      path.includes("/pages/docs/components/") ||
+      path.includes("/pages/docs/guides/") ||
+      path.includes("/pages/docs/bridge/")
+    ) {
+      // From 2 levels deep (e.g., /pages/docs/components/), go up 1 level
       docsBasePath = "../";
     } else if (path.includes("/pages/docs/")) {
+      // Already in /pages/docs/, stay here
       docsBasePath = "./";
     } else if (path.includes("/pages/")) {
+      // From /pages/, navigate into docs/
       docsBasePath = "docs/";
     }
 
@@ -555,6 +727,7 @@ class ComponentLoader {
     );
     const aboutSidebarPlaceholder = document.getElementById("about-sidebar-placeholder");
     const docsGuidesSidebarPlaceholder = document.getElementById("docs-guides-sidebar-placeholder");
+    const docsComponentsSidebarPlaceholder = document.getElementById("docs-components-sidebar-placeholder");
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
@@ -574,6 +747,10 @@ class ComponentLoader {
 
     if (docsGuidesSidebarPlaceholder) {
       docsGuidesSidebarPlaceholder.innerHTML = this.getDocsGuidesSidebarTemplate();
+    }
+
+    if (docsComponentsSidebarPlaceholder) {
+      docsComponentsSidebarPlaceholder.innerHTML = this.getDocsComponentsSidebarTemplate();
     }
   }
 }

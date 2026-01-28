@@ -1,0 +1,103 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-components-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Enrollment Certificate Authority (ECA)</h2>
+
+                    <h3 id="initial-enrollment">Initial Enrollment Certificate Flow</h3>
+
+                    <p>The initial enrollment flow is responsible for issuing the first enrollment certificate for an
+                        EE. This operation represents a critical trust boundary within the SCMS, as enrollment
+                        certificates embed long-term identity attributes that are later used to authorize all other
+                        certificate provisioning activities.</p>
+
+                    <p>From a cryptographic perspective, the initial enrollment request establishes the first
+                        authenticated link between the End Entity (EE) and the SCMS. The enrollment request submitted by
+                        the client must be digitally signed using the EE's <em>canonical private key</em>. This key
+                        corresponds to the canonical public key previously provided during the EE registration process
+                        and stored by the Registration Authority (RA).</p>
+
+                    <p>Upon receiving an enrollment request, the ECA does not directly trust the cryptographic identity
+                        asserted by the client. Instead, the ECA queries the RA to retrieve the canonical information
+                        associated with the requesting EE, including the canonical public key. Using this information,
+                        the ECA verifies the digital signature of the enrollment request, ensuring that the request
+                        originates from the registered EE and has not been tampered with.</p>
+
+                    <p>If signature verification succeeds and all lifecycle and policy preconditions are satisfied, the
+                        ECA issues an explicit IEEE 1609.2.1 enrollment certificate. This certificate is signed by the
+                        ECA and binds the EE's canonical identity to a new cryptographic credential that will be used
+                        for all subsequent interactions with the SCMS.</p>
+
+                    <p>The enrollment certificate represents the transition from an unauthenticated registration context
+                        to an authenticated operational context. Once issued, it becomes the primary credential used by
+                        the EE to authenticate future protocol messages. For example, when the RA receives an
+                        authorization certificate request, it first validates the enrollment certificate by verifying
+                        its signature using the ECA certificate. Only after the enrollment certificate is validated does
+                        the RA verify the digital signature of the incoming request using the public key contained in
+                        the enrollment certificate.</p>
+
+                    <h3>Enrollment Certificate Request</h3>
+
+                    <pre><code>POST /v3/enrollment-certificate
+
+Description:
+  Submits a request for an initial enrollment certificate.
+
+Input:
+  An IEEE 1609.2.1 Enrollment Certificate Request SPDU containing canonical
+  identity information and cryptographic material, signed using the EE's
+  canonical private key.
+
+Output:
+  A response SPDU containing the newly issued enrollment certificate.
+
+Errors:
+  Requests originating from EEs in invalid lifecycle states, malformed
+  SPDUs, signature verification failures, or cryptographic validation
+  errors result in protocol-defined error responses.</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-components-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Registration Authority (RA)</h2>
+
+                    <h3 id="lifecycle-management">End Entity Lifecycle Management</h3>
+
+                    <p>The Registration Authority (RA) is the authoritative component responsible for maintaining the
+                        lifecycle state of each End Entity (EE) within the SCMS. The lifecycle state represents the EE's
+                        progression through registration, enrollment, and certificate provisioning stages, and is used
+                        as a hard precondition for allowing or denying protocol flows.</p>
+
+                    <p>Lifecycle state is explicitly stored and managed by the RA and is queried by other SCMS
+                        components to enforce protocol correctness. State transitions are never implicit and only occur
+                        as a result of successful execution of specific SCMS flows.</p>
+
+                    <h3>Lifecycle States</h3>
+
+                    <p>The following lifecycle states are supported:</p>
+
+                    <ul>
+                        <li><code>Registered</code>: The EE has been registered in the SCMS but does not yet possess a
+                            valid enrollment certificate.</li>
+                        <li><code>Enrolled</code>: The EE possesses a valid enrollment certificate and is eligible to
+                            request authorization certificates.</li>
+                        <li><code>Provisioning</code>: The EE is actively provisioning authorization certificates.</li>
+                        <li><code>SuccessorEnrolled</code>: The EE has successfully completed a successor enrollment
+                            flow and holds a renewed enrollment certificate.</li>
+                        <li><code>Blocked</code>: The EE is explicitly blocked and is not allowed to participate in any
+                            SCMS flows.</li>
+                        <li><code>Deleted</code>: The EE has been removed from active use and all SCMS interactions are
+                            denied.</li>
+                    </ul>
+
+                    <h3>Valid Lifecycle Transitions</h3>
+
+                    <p>The RA enforces the following valid lifecycle transitions:</p>
+
+                    <ul>
+                        <li><code>Registered</code> → <code>Enrolled</code>: Triggered after a successful enrollment
+                            certificate issuance by the ECA.</li>
+                        <li><code>Enrolled</code> → <code>Provisioning</code>: Triggered when the RA accepts an
+                            authorization certificate request from the EE.</li>
+                        <li><code>Registered</code> → <code>SuccessorEnrolled</code>: Triggered after a successful
+                            successor enrollment flow.</li>
+                        <li><code>Provisioning</code> → <code>SuccessorEnrolled</code>: Triggered after a successful
+                            successor enrollment flow while provisioning.</li>
+                        <li><code>*</code> → <code>Blocked</code>: Triggered by administrative action.</li>
+                        <li><code>*</code> → <code>Deleted</code>: Triggered by administrative action.</li>
+                    </ul>
+
+                    <p>All other transitions are considered invalid and are rejected by the RA.</p>
+
+                    <h3>Lifecycle Enforcement Across SCMS Components</h3>
+
+                    <p>The lifecycle state maintained by the RA is consulted by other SCMS components as part of their
+                        flow validation logic. Before issuing an enrollment certificate, the Enrollment Certificate
+                        Authority (ECA) queries the RA to verify that the EE is in the <code>Registered</code> state.
+                        Enrollment requests originating from EEs in any other state are rejected.</p>
+
+                    <p>By centralizing lifecycle state management and enforcement within the RA, OpenSCMS ensures
+                        consistent protocol behavior, clear state transitions, and robust error handling across all SCMS
+                        components, even in distributed and horizontally scaled deployments.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

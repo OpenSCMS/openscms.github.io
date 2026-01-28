@@ -1,0 +1,82 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-components-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Registration Authority (RA)</h2>
+
+                    <h3 id="trust-artifacts">Trust Artifact Distribution</h3>
+
+                    <p>The RA also exposes endpoints for distributing trust and configuration artifacts required by V2X
+                        clients.</p>
+
+                    <p><strong>Endpoints include:</strong></p>
+
+                    <ul>
+                        <li><code>GET /v3/ra-certificate</code></li>
+                        <li><code>GET /v3/ca-certificate</code></li>
+                        <li><code>GET /v3/ctl</code></li>
+                        <li><code>GET /v3/ccf-ctl</code></li>
+                        <li><code>GET /v3/crl</code></li>
+                        <li><code>GET /v3/composite-crl-ctl</code></li>
+                    </ul>
+
+                    <p>These endpoints return protocol-compliant artifacts such as CA certificates, Certificate Trust
+                        Lists (CTLs), and Certificate Revocation Lists (CRLs). Errors are reported using SCMS-defined
+                        error semantics.</p>
+
+                    <h3>Cryptographic Responsibilities and Trust Role</h3>
+
+                    <p>The RA is the only OpenSCMS component whose certificate includes a public encryption key intended
+                        for use by V2X clients. This design makes the RA the cryptographic ingress point for sensitive
+                        operations.</p>
+
+                    <p>Consequently, the RA decrypts and validates the majority of client-originated messages and
+                        verifies digital signatures across most protocol flows. During startup, the RA loads its own
+                        certificates as well as the certificates of other SCMS components from the <code>certs/</code>
+                        directory, enabling it to distribute trust material as part of its DC/DCM responsibilities.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>
