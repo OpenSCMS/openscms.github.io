@@ -910,6 +910,9 @@ class ComponentLoader {
 
     // Setup sidebar scroll management
     this.setupSidebarScrollManagement();
+    
+    // Setup sidebar section collapse/expand
+    this.setupSidebarCollapse();
   }
 
   setupSidebarScrollManagement() {
@@ -926,11 +929,6 @@ class ComponentLoader {
         link.addEventListener('click', () => {
           this.saveSidebarScroll(sidebar);
         });
-      });
-
-      // Also save scroll position when user manually scrolls
-      sidebar.addEventListener('scroll', () => {
-        this.saveSidebarScroll(sidebar);
       });
     });
   }
@@ -949,9 +947,64 @@ class ComponentLoader {
         setTimeout(() => {
           sidebar.scrollTo({
             top: parseInt(savedPosition, 10),
-            behavior: 'smooth'
+            behavior: 'instant' // Use 'instant' for immediate positioning without animation
           });
-        }, 100);
+        }, 0);
+      }
+    }
+  }
+
+  setupSidebarCollapse() {
+    // Add click handlers to sidebar section titles for collapse/expand
+    document.querySelectorAll('.sidebar-section-title').forEach(title => {
+      title.addEventListener('click', (e) => {
+        const section = e.target.closest('.sidebar-section');
+        if (section) {
+          section.classList.toggle('collapsed');
+          
+          // Save the collapsed state
+          this.saveSidebarCollapseState();
+        }
+      });
+    });
+    
+    // Restore collapsed state when page loads
+    this.restoreSidebarCollapseState();
+  }
+
+  saveSidebarCollapseState() {
+    const collapsedSections = [];
+    document.querySelectorAll('.sidebar-section').forEach((section, index) => {
+      const title = section.querySelector('.sidebar-section-title');
+      if (title && section.classList.contains('collapsed')) {
+        collapsedSections.push({
+          index: index,
+          title: title.textContent.trim()
+        });
+      }
+    });
+    sessionStorage.setItem('sidebarCollapsedSections', JSON.stringify(collapsedSections));
+  }
+
+  restoreSidebarCollapseState() {
+    const saved = sessionStorage.getItem('sidebarCollapsedSections');
+    if (saved) {
+      try {
+        const collapsedSections = JSON.parse(saved);
+        const sections = document.querySelectorAll('.sidebar-section');
+        
+        collapsedSections.forEach(collapsed => {
+          // Try to match by title (more reliable across different pages)
+          sections.forEach(section => {
+            const title = section.querySelector('.sidebar-section-title');
+            if (title && title.textContent.trim() === collapsed.title) {
+              section.classList.add('collapsed');
+            }
+          });
+        });
+      } catch (e) {
+        // Ignore parse errors
+        console.error('Error restoring sidebar collapse state:', e);
       }
     }
   }
