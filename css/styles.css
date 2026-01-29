@@ -437,6 +437,25 @@ body {
     line-height: 1.7;
 }
 
+/* Breadcrumb Navigation */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+    font-weight: 500;
+}
+
+.breadcrumb-separator {
+    color: var(--border-color);
+    font-weight: 400;
+    user-select: none;
+}
+
 .docs-content h2 {
     margin-top: 0;
     font-size: 2rem;

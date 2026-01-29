@@ -889,6 +889,88 @@ class ComponentLoader {
 
     // Setup sidebar section collapse/expand
     this.setupSidebarCollapse();
+    
+    // Setup breadcrumb navigation
+    this.setupBreadcrumb();
+  }
+
+  setupBreadcrumb() {
+    const path = window.location.pathname;
+    const docsContent = document.querySelector('.docs-content');
+    
+    if (!docsContent) return;
+    
+    // Find the first h2 in the content
+    const h2 = docsContent.querySelector('h2');
+    if (!h2) return;
+    
+    let breadcrumbHTML = '';
+    
+    // Docs pages
+    if (path.includes('/pages/docs/')) {
+      breadcrumbHTML = '<nav class="breadcrumb">Docs';
+      
+      if (path.includes('/docs/guides/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Guides';
+        
+        if (path.includes('/guides/getting-started/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Getting Started';
+        } else if (path.includes('/guides/architecture/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Architecture';
+        } else if (path.includes('/guides/code-structure/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Code Structure';
+        } else if (path.includes('/guides/setup/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Setup & Deployment';
+        }
+      } else if (path.includes('/docs/components/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> SCMS Components';
+        
+        if (path.includes('/components/ra/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Registration Authority';
+        } else if (path.includes('/components/eca/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Enrollment CA';
+        } else if (path.includes('/components/aca/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Authorization CA';
+        }
+      } else if (path.includes('/docs/bridge/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Codecs Bridge';
+        
+        if (path.includes('/bridge/overview/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Introduction';
+        } else if (path.includes('/bridge/build/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Build & Structure';
+        } else if (path.includes('/bridge/library-layers/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Library Layers';
+        } else if (path.includes('/bridge/utilities/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Utilities';
+        } else if (path.includes('/bridge/development/')) {
+          breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Development';
+        }
+      }
+
+      breadcrumbHTML += '</nav>';
+    }
+    // About pages
+    else if (path.includes('/pages/about/')) {
+      breadcrumbHTML = '<nav class="breadcrumb">About';
+
+      if (path.includes('/about/overview/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Background';
+      } else if (path.includes('/about/openscms/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> The OpenSCMS';
+      } else if (path.includes('/about/governance/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Governance & Licensing';
+      } else if (path.includes('/about/release-notes/')) {
+        breadcrumbHTML += ' <span class="breadcrumb-separator">›</span> Release Notes';
+      }
+      
+      breadcrumbHTML += '</nav>';
+    }
+    
+    if (breadcrumbHTML) {
+      // Replace the h2 content with breadcrumb
+      h2.outerHTML = breadcrumbHTML;
+    }
   }
 
   setupSidebarScrollManagement() {
