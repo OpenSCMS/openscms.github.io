@@ -136,13 +136,7 @@ class ComponentLoader {
       logging: "documentation",
       "rust-integration": "documentation",
       development: "documentation",
-      "language-standard": "documentation",
-      "header-files": "documentation",
-      scoping: "documentation",
-      structs: "documentation",
-      naming: "documentation",
-      installation: "documentation",
-      installation: "documentation",
+      "extensibility": "documentation",
       "api-reference": "documentation",
     };
 
@@ -774,19 +768,7 @@ class ComponentLoader {
                             <a href="${developmentPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'development') ? 'active' : ''}">Development Overview</a>
                         </li>
                         <li class="sidebar-nav-item">
-                            <a href="${developmentPath}language-standard.html" class="sidebar-nav-link ${isActive('language-standard', null, 'development') ? 'active' : ''}">C Standard & Tooling</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${developmentPath}header-files.html" class="sidebar-nav-link ${isActive('header-files', null, 'development') ? 'active' : ''}">Header Files</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${developmentPath}scoping.html" class="sidebar-nav-link ${isActive('scoping', null, 'development') ? 'active' : ''}">Scoping</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${developmentPath}structs.html" class="sidebar-nav-link ${isActive('structs', null, 'development') ? 'active' : ''}">Structs</a>
-                        </li>
-                        <li class="sidebar-nav-item">
-                            <a href="${developmentPath}naming.html" class="sidebar-nav-link ${isActive('naming', null, 'development') ? 'active' : ''}">Naming Conventions</a>
+                            <a href="${developmentPath}extensibility.html" class="sidebar-nav-link ${isActive('extensibility', null, 'development') ? 'active' : ''}">Extensibility Considerations</a>
                         </li>
                     </ul>
                 </div>
