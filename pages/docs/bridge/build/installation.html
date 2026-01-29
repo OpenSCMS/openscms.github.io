@@ -34,6 +34,24 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Build & Structure</h2>
 
+                    <h3>Repository Structure</h3>
+
+                    <pre><code>oscms-codecs-bridge/
+├── codecs/                  # Codec implementations and abstractions
+│   ├── asn1c/                # asn1c-based IEEE 1609.2.1 codec
+│   │   ├── src/              # Generated and handwritten codec glue
+│   │   └── submodules/api/   # Abstract codec API
+├── include/public/           # Public bridge headers
+├── src/                      # Protocol and cryptographic bridge logic
+├── scms_manager/             # Utility for certificate/key generation
+├── tests/                    # Unit and integration tests
+└── CMakeLists.txt</code></pre>
+
+                    <p>The repository is organized to clearly separate codec-specific implementations from the generic
+                        protocol and cryptographic logic. This structure supports future extensibility, allowing
+                        alternative ASN.1 transpilers or codecs to be integrated without disrupting existing
+                        functionality.</p>
+
                     <h3>Build and Installation</h3>
 
                     <p>The <code>oscms-codecs-bridge</code> library is built using CMake and follows a standard
@@ -67,6 +85,10 @@ make install</code></pre>
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
     <script src="../../../../js/components.js"></script>
 
 </body>

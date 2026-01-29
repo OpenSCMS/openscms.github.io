@@ -77,6 +77,37 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         deployment; <code>scripts/</code> contains helper scripts for bootstrapping and automation
                         tasks; and <code>docker/</code> includes container definitions used for CI and build pipelines.
                     </p>
+
+                    <h3>Internal Structure of a Service Crate</h3>
+
+                    <p>Although each service implements a different SCMS role, their internal structure follows a common
+                        pattern, which simplifies navigation and onboarding:</p>
+
+                    <ul>
+                        <li><code>main.rs</code>: Service entry point, responsible for startup, configuration loading,
+                            and HTTP server initialization.</li>
+                        <li><code>endpoint.rs</code>: Definition of REST or binary endpoints exposed by the service.
+                        </li>
+                        <li><code>core_logic/</code>: Implementation of the service's domain-specific logic, including
+                            certificate workflows and protocol handling.</li>
+                        <li><code>entities/</code>: Data models representing persisted or derived SCMS entities.</li>
+                        <li><code>persistence/</code>: Database access layer and query abstractions.</li>
+                        <li><code>migrator/</code>: Schema migrations required by the service.</li>
+                    </ul>
+
+                    <p>This separation enforces a clear distinction between transport and API concerns, protocol and
+                        cryptographic logic, and persistence and state management.</p>
+
+                    <h3>Role of scmscommon</h3>
+
+                    <p>The <code>scmscommon</code> crate is a Rust library crate that contains functionality shared
+                        across multiple SCMS services. This includes common configuration handling, shared data types,
+                        error abstractions, and utility routines that are orthogonal to any specific SCMS role.</p>
+
+                    <p>By centralizing this functionality in a dedicated crate, OpenSCMS avoids code duplication while
+                        maintaining strict service boundaries. Importantly, <code>scmscommon</code> does not implement
+                        SCMS business logic or protocol workflows, ensuring that each service crate remains responsible
+                        only for its own role as defined by the standard.</p>
                 </div>
             </div>
         </div>
@@ -86,6 +117,10 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
     <script src="../../../../js/components.js"></script>
 
 </body>

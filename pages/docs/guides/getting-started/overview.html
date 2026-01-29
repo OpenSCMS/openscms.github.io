@@ -49,6 +49,12 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         core SCMS workflows defined by IEEE 1609.2.1. The system supports enrollment certificate
                         provisioning and authorization certificate provisioning, including butterfly key expansion to
                         compose pseudonym certificate generation.</p>
+
+                    <p>From an engineering perspective, OpenSCMS is designed as a distributed, microservice-based system
+                        implemented primarily in Rust, with a dedicated cryptographic and protocol engine implemented in
+                        C. This separation allows the system to combine strong safety and concurrency guarantees at the
+                        service level with precise control over cryptographic operations and ASN.1 codecs operation at
+                        the protocol level.</p>
                 </div>
             </div>
         </div>
@@ -58,6 +64,10 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
     <script src="../../../../js/components.js"></script>
 
 </body>

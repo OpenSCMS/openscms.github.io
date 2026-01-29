@@ -34,6 +34,15 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Registration Authority (RA)</h2>
 
+                    <p>The Registration Authority (RA) is the primary front-end component of OpenSCMS and the main
+                        interaction point for V2X clients. For architectural simplicity, the RA consolidates the roles
+                        of the Device Configuration (DC) and Device Configuration Manager (DCM) defined in IEEE
+                        1609.2.1.</p>
+
+                    <p>In practice, this makes the RA responsible for End Entity (EE) lifecycle management, distribution
+                        of trust and configuration artifacts, and coordination of certificate provisioning workflows
+                        with other SCMS components.</p>
+
                     <h3 id="internal-organization">Internal Organization and Execution Model</h3>
 
                     <p>The RA is internally organized into two deployment-time roles: the <em>RA Frontend</em> and the
@@ -58,6 +67,10 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
     <script src="../../../../js/components.js"></script>
 
 </body>
