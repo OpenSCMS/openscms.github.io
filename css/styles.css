@@ -300,20 +300,33 @@ body {
     content: '▼';
     font-size: 0.7rem;
     transition: transform 0.2s ease;
+    transform: rotate(-90deg); /* Start collapsed by default */
 }
 
-.sidebar-section.collapsed .sidebar-section-title::after {
-    transform: rotate(-90deg);
+/* Expanded state (when NOT collapsed) */
+.sidebar-section:not(.collapsed) .sidebar-section-title::after {
+    transform: rotate(0deg);
 }
 
 .sidebar-nav {
     list-style: none;
     margin: 0;
     padding: 0;
-    max-height: 1000px;
+    max-height: 0; /* Start collapsed by default */
     overflow: hidden;
     transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0; /* Start collapsed by default */
+}
+
+/* Expanded state (when NOT collapsed) */
+.sidebar-section:not(.collapsed) .sidebar-nav {
+    max-height: 1000px;
     opacity: 1;
+}
+
+/* Keep the old collapsed rules for backward compatibility */
+.sidebar-section.collapsed .sidebar-section-title::after {
+    transform: rotate(-90deg);
 }
 
 .sidebar-section.collapsed .sidebar-nav {

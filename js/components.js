@@ -25,6 +25,7 @@ class ComponentLoader {
 
   getBasePath() {
     const path = window.location.pathname;
+    // Check for 4-level deep paths first (most specific)
     if (
       path.includes("/pages/docs/guides/architecture/") ||
       path.includes("/pages/docs/guides/code-structure/") ||
@@ -42,23 +43,30 @@ class ComponentLoader {
       return "../../../../";
     }
 
+    // Check for 3-level deep paths (subfolders without sub-subfolders)
     if (
       path.includes("/pages/about/overview/") ||
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
-      path.includes("/pages/about/release-notes/")
+      path.includes("/pages/about/release-notes/") ||
+      path.includes("/pages/docs/components/") ||
+      path.includes("/pages/docs/guides/") ||
+      path.includes("/pages/docs/bridge/")
     ) {
       return "../../../";
     }
 
+    // Check for 2-level deep paths
     if (path.includes("/pages/docs/") || path.includes("/pages/about/")) {
       return "../../";
     }
 
+    // Check for 1-level deep (inside /pages/)
     if (path.includes("/pages/")) {
       return "../";
     }
 
+    // At root
     return "./";
   }
 
@@ -144,34 +152,25 @@ class ComponentLoader {
   }
 
   getHeaderTemplate() {
+    // basePath already takes us to the root, so we just need to add the path from root
     return `
             <header class="header">
                 <div class="container header-container">
                     <div class="header-left">
-                        <a href="${this.basePath
-      }index.html" style="display: block; line-height: 0;">
-                            <img src="${this.basePath
-      }assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+                        <a href="${this.basePath}index.html" style="display: block; line-height: 0;">
+                            <img src="${this.basePath}assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
                         </a>
                     </div>
                     <nav class="header-nav">
                         <ul class="header-menu">
-                            <li class="menu-item ${this.currentPage === "about" ? "active" : ""
-      }">
-                                <a href="${this.basePath
-      }pages/about/overview/introduction.html">About</a>
+                            <li class="menu-item ${this.currentPage === "about" ? "active" : ""}">
+                                <a href="${this.basePath}pages/about/overview/introduction.html">About</a>
                             </li>
-                            <li class="menu-item ${this.currentPage === "documentation"
-        ? "active"
-        : ""
-      }">
-                                <a href="${this.basePath
-      }pages/docs/overview.html">Docs</a>
+                            <li class="menu-item ${this.currentPage === "documentation" ? "active" : ""}">
+                                <a href="${this.basePath}pages/docs/overview.html">Docs</a>
                             </li>
-                            <li class="menu-item ${this.currentPage === "faq" ? "active" : ""
-      }">
-                                <a href="${this.basePath
-      }pages/faq.html">FAQ</a>
+                            <li class="menu-item ${this.currentPage === "faq" ? "active" : ""}">
+                                <a href="${this.basePath}pages/faq.html">FAQ</a>
                             </li>
                             <li class="menu-item">
                                 <a href="https://github.com/orgs/OpenSCMS/discussions" target="_blank" rel="noopener noreferrer">Community</a>
@@ -813,54 +812,31 @@ class ComponentLoader {
       docsBasePath = "docs/";
     }
 
-    const isGuidesPage =
-      filename === "guides" ||
-      filename === "getting-started" ||
-      filename === "architecture" ||
-      filename === "code-structure" ||
-      filename === "setup" ||
-      filename === "assumptions";
-
-    const isComponentsPage =
-      filename === "scms-components" ||
-      filename === "ra" ||
-      filename === "eca" ||
-      filename === "aca" ||
-      filename === "la" ||
-      (filename === "overview" && path.includes("/components/"));
-
-    const isBridgePage =
-      filename === "codecs-bridge" ||
-      filename === "build" ||
-      filename === "library-layers" ||
-      filename === "utilities" ||
-      filename === "development" ||
-      (filename === "overview" && path.includes("/bridge/"));
+    // Determine which section is active based on path
+    const isGuidesPage = path.includes("/pages/docs/guides/");
+    const isComponentsPage = path.includes("/pages/docs/components/");
+    const isBridgePage = path.includes("/pages/docs/bridge/");
+    const isOverviewPage = path.includes("/pages/docs/overview.html") || 
+                          (filename === "overview" && !isGuidesPage && !isComponentsPage && !isBridgePage);
+    const isApiReferencePage = filename === "api-reference";
 
     return `
             <nav class="docs-submenu">
                 <div class="container">
                     <ul class="submenu-tabs">
-                        <li class="submenu-tab ${filename === "overview" &&
-        !path.includes("/components/") &&
-        !path.includes("/bridge/")
-        ? "active"
-        : ""
-      }">
+                        <li class="submenu-tab ${isOverviewPage ? "active" : ""}">
                             <a href="${docsBasePath}overview.html">Overview</a>
                         </li>
                         <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
                             <a href="${docsBasePath}guides/getting-started/overview.html">Guides</a>
                         </li>
-                        <li class="submenu-tab ${isComponentsPage ? "active" : ""
-      }">
+                        <li class="submenu-tab ${isComponentsPage ? "active" : ""}">
                             <a href="${docsBasePath}components/overview.html">SCMS Components</a>
                         </li>
                         <li class="submenu-tab ${isBridgePage ? "active" : ""}">
                             <a href="${docsBasePath}bridge/overview/overview.html">Codecs Bridge</a>
                         </li>
-                        <li class="submenu-tab ${filename === "api-reference" ? "active" : ""
-      }">
+                        <li class="submenu-tab ${isApiReferencePage ? "active" : ""}">
                             <a href="${docsBasePath}api-reference.html">API Reference</a>
                         </li>
                     </ul>
@@ -910,7 +886,7 @@ class ComponentLoader {
 
     // Setup sidebar scroll management
     this.setupSidebarScrollManagement();
-    
+
     // Setup sidebar section collapse/expand
     this.setupSidebarCollapse();
   }
@@ -973,32 +949,39 @@ class ComponentLoader {
   }
 
   saveSidebarCollapseState() {
-    const collapsedSections = [];
+    const expandedSections = [];
     document.querySelectorAll('.sidebar-section').forEach((section, index) => {
       const title = section.querySelector('.sidebar-section-title');
-      if (title && section.classList.contains('collapsed')) {
-        collapsedSections.push({
+      // Save expanded sections (those WITHOUT collapsed class)
+      if (title && !section.classList.contains('collapsed')) {
+        expandedSections.push({
           index: index,
           title: title.textContent.trim()
         });
       }
     });
-    sessionStorage.setItem('sidebarCollapsedSections', JSON.stringify(collapsedSections));
+    sessionStorage.setItem('sidebarExpandedSections', JSON.stringify(expandedSections));
   }
 
   restoreSidebarCollapseState() {
-    const saved = sessionStorage.getItem('sidebarCollapsedSections');
+    const sections = document.querySelectorAll('.sidebar-section');
+    
+    // First, add 'collapsed' class to all sections by default
+    sections.forEach(section => {
+      section.classList.add('collapsed');
+    });
+
+    // Then restore expanded state from session storage
+    const saved = sessionStorage.getItem('sidebarExpandedSections');
     if (saved) {
       try {
-        const collapsedSections = JSON.parse(saved);
-        const sections = document.querySelectorAll('.sidebar-section');
-        
-        collapsedSections.forEach(collapsed => {
+        const expandedSections = JSON.parse(saved);
+        expandedSections.forEach(expanded => {
           // Try to match by title (more reliable across different pages)
           sections.forEach(section => {
             const title = section.querySelector('.sidebar-section-title');
-            if (title && title.textContent.trim() === collapsed.title) {
-              section.classList.add('collapsed');
+            if (title && title.textContent.trim() === expanded.title) {
+              section.classList.remove('collapsed');
             }
           });
         });
@@ -1007,6 +990,14 @@ class ComponentLoader {
         console.error('Error restoring sidebar collapse state:', e);
       }
     }
+    
+    // Always expand the section containing the active link
+    sections.forEach(section => {
+      const activeLink = section.querySelector('.sidebar-nav-link.active');
+      if (activeLink) {
+        section.classList.remove('collapsed');
+      }
+    });
   }
 }
 
