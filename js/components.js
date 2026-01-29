@@ -807,7 +807,12 @@ class ComponentLoader {
       path.includes("/pages/docs/guides/setup/") ||
       path.includes("/pages/docs/components/ra/") ||
       path.includes("/pages/docs/components/eca/") ||
-      path.includes("/pages/docs/components/aca/")
+      path.includes("/pages/docs/components/aca/") ||
+      path.includes("/pages/docs/bridge/overview/") ||
+      path.includes("/pages/docs/bridge/build/") ||
+      path.includes("/pages/docs/bridge/library-layers/") ||
+      path.includes("/pages/docs/bridge/utilities/") ||
+      path.includes("/pages/docs/bridge/development/")
     ) {
       // From 3 levels deep, we need to go up 2 levels to reach /pages/docs/
       docsBasePath = "../../";
