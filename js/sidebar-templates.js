@@ -6,128 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 class SidebarTemplates {
   
   static getAboutSidebar() {
-    const path = window.location.pathname;
-    const filename = path.split("/").pop().replace(".html", "");
-    const hash = window.location.hash;
-    const isOverviewSubpage = path.includes("/pages/about/overview/");
-    const isGovernanceSubpage = path.includes("/pages/about/governance/");
-    const isOpenscmsSubpage = path.includes("/pages/about/openscms/");
-    const isReleaseNotesSubpage = path.includes("/pages/about/release-notes/");
-    const isAboutRoot = path.includes("/pages/about/") && !isOverviewSubpage && !isGovernanceSubpage && !isOpenscmsSubpage && !isReleaseNotesSubpage;
-
-    // Helper function to check if link should be active
-    const isActive = (pageName, hashValue = null) => {
-      if (hashValue) {
-        return filename === pageName && hash === hashValue;
-      }
-      return filename === pageName;
-    };
-
-    let overviewPath, openscmsPath, governancePath, releaseNotesPath, rootPath;
-    
-    if (isOverviewSubpage) {
-      overviewPath = "";
-      openscmsPath = "../openscms/";
-      governancePath = "../governance/";
-      releaseNotesPath = "../release-notes/";
-      rootPath = "../";
-    } else if (isOpenscmsSubpage) {
-      overviewPath = "../overview/";
-      openscmsPath = "";
-      governancePath = "../governance/";
-      releaseNotesPath = "../release-notes/";
-      rootPath = "../";
-    } else if (isGovernanceSubpage) {
-      overviewPath = "../overview/";
-      openscmsPath = "../openscms/";
-      governancePath = "";
-      releaseNotesPath = "../release-notes/";
-      rootPath = "../";
-    } else if (isReleaseNotesSubpage) {
-      overviewPath = "../overview/";
-      openscmsPath = "../openscms/";
-      governancePath = "../governance/";
-      releaseNotesPath = "";
-      rootPath = "../";
-    } else if (isAboutRoot) {
-      overviewPath = "overview/";
-      openscmsPath = "openscms/";
-      governancePath = "governance/";
-      releaseNotesPath = "release-notes/";
-      rootPath = "";
-    } else {
-      overviewPath = "overview/";
-      openscmsPath = "openscms/";
-      governancePath = "governance/";
-      releaseNotesPath = "release-notes/";
-      rootPath = "";
-    }
-
-    return `
-      <aside class="docs-sidebar">
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Background</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${overviewPath}introduction.html" class="sidebar-nav-link ${isActive('introduction') ? 'active' : ''}">Introduction</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${overviewPath}interaction-flows.html" class="sidebar-nav-link ${isActive('interaction-flows') ? 'active' : ''}">Core Interaction Flows</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${overviewPath}challenges.html" class="sidebar-nav-link ${isActive('challenges') ? 'active' : ''}">Architectural Challenges</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">The OpenSCMS</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${openscmsPath}overview.html" class="sidebar-nav-link ${isActive('overview') ? 'active' : ''}">Overview</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${openscmsPath}architecture.html" class="sidebar-nav-link ${isActive('architecture') ? 'active' : ''}">Architecture</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${openscmsPath}root-of-trust.html" class="sidebar-nav-link ${isActive('root-of-trust') ? 'active' : ''}">Root of Trust</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${openscmsPath}deployment.html" class="sidebar-nav-link ${isActive('deployment') ? 'active' : ''}">Deployment</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Governance & Licensing</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${governancePath}governance-model.html" class="sidebar-nav-link ${isActive('governance-model') ? 'active' : ''}">Governance Model</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${governancePath}developer-grant.html" class="sidebar-nav-link ${isActive('developer-grant') ? 'active' : ''}">Developer Grant and CLA</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${governancePath}license.html" class="sidebar-nav-link ${isActive('license') ? 'active' : ''}">Apache License 2.0</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Release Notes</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${releaseNotesPath}v1.0.0.html" class="sidebar-nav-link ${isActive('v1.0.0') ? 'active' : ''}">OpenSCMS v1.0.0</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${rootPath}assumptions.html" class="sidebar-nav-link ${isActive('assumptions') ? 'active' : ''}">Assumptions and Limitations</a>
-            </li>
-          </ul>
-        </div>
-      </aside>
-    `;
+    return SidebarTemplates._addActiveClass(SidebarTemplates._getAboutComplex());
   }
 
   static getDocsGuidesSidebar() {
@@ -379,6 +258,75 @@ class SidebarTemplates {
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/bridge/build/installation.html" class="sidebar-nav-link">How to Build</a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    `;
+  }
+
+  static _getAboutComplex() {
+    const basePath = PathUtils.getBasePath();
+    return `
+      <aside class="docs-sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-section-title">Background</h3>
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/overview/introduction.html" class="sidebar-nav-link">Introduction</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/overview/interaction-flows.html" class="sidebar-nav-link">Core Interaction Flows</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/overview/challenges.html" class="sidebar-nav-link">Architectural Challenges</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-section-title">The OpenSCMS</h3>
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/openscms/overview.html" class="sidebar-nav-link">Overview</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/openscms/architecture.html" class="sidebar-nav-link">Architecture</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/openscms/root-of-trust.html" class="sidebar-nav-link">Root of Trust</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/openscms/deployment.html" class="sidebar-nav-link">Deployment</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-section-title">Governance & Licensing</h3>
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/governance/governance-model.html" class="sidebar-nav-link">Governance Model</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/governance/developer-grant.html" class="sidebar-nav-link">Developer Grant and CLA</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/governance/license.html" class="sidebar-nav-link">Apache License 2.0</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-section-title">Release Notes</h3>
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/release-notes/v1.0.0.html" class="sidebar-nav-link">OpenSCMS v1.0.0</a>
+            </li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
+          <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/assumptions.html" class="sidebar-nav-link">Assumptions and Limitations</a>
             </li>
           </ul>
         </div>
