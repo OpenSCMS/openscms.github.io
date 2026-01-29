@@ -1,0 +1,129 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rust Workspace Organization">
+    <title>Workspace Organization - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-guides-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Code Structure</h2>
+
+                    <h3>Rust Workspace Organization</h3>
+
+                    <p>At the top level, the repository is a Cargo workspace that groups all SCMS services and shared
+                        libraries:</p>
+
+                    <pre><code>openscms/
+├── aca/        # Authorization Certificate Authority service
+├── eca/        # Enrollment Certificate Authority service
+├── ra/         # Registration Authority service
+├── la/         # Linkage Authority services
+├── cam/        # Certificate Access Manager
+├── dc/         # Device Configuration service
+├── scmscommon/ # Shared Rust utilities and abstractions
+├── certs/      # Certificates and keys required at runtime
+├── deployment/ # Helm charts and Kubernetes manifests
+├── docker/     # CI and build container definitions
+├── scripts/    # Helper and bootstrap scripts
+└── oscms_bridge/
+    └── oscms-codecs-bridge/ # C cryptographic and protocol engine</code></pre>
+
+                    <p>Each directory under the workspace root corresponds to an independent Rust crate (except
+                        <code>certs</code>, <code>deployment</code>, <code>docker</code> and <code>scripts</code>). Most
+                        of these crates (e.g., <code>ra/</code>, <code>eca/</code>, <code>aca/</code>, <code>la/</code>,
+                        <code>cam/</code>, <code>dc/</code>) are <em>service crates</em> that produce a single SCMS
+                        service binary, implementing a specific SCMS role and intended to be deployed as an independent
+                        microservice.
+                    </p>
+
+                    <p>In addition to service crates, the workspace also includes shared <em>library crates</em>. Both
+                        <code>scmscommon</code> and <code>oscms_bridge</code> are Rust library crates
+                        (<code>crate-type = lib</code>) reused across multiple services. While <code>scmscommon</code>
+                        provides common Rust-level utilities and infrastructure abstractions, <code>oscms_bridge</code>
+                        acts as the Rust integration layer for the C-based <code>oscms-codecs-bridge</code>,
+                        encapsulating all Rust-C interoperability.
+                    </p>
+
+                    <p>In addition to Rust crates, the repository includes a small set of directories dedicated to
+                        environment management and operational concerns rather than application logic. The
+                        <code>certs/</code> directory contains the certificates and keys required at runtime by SCMS
+                        services; <code>deployment/</code> provides Helm charts and Kubernetes manifests used for
+                        deployment; <code>scripts/</code> contains helper scripts for bootstrapping and automation
+                        tasks; and <code>docker/</code> includes container definitions used for CI and build pipelines.
+                    </p>
+
+                    <h3>Internal Structure of a Service Crate</h3>
+
+                    <p>Although each service implements a different SCMS role, their internal structure follows a common
+                        pattern, which simplifies navigation and onboarding:</p>
+
+                    <ul>
+                        <li><code>main.rs</code>: Service entry point, responsible for startup, configuration loading,
+                            and HTTP server initialization.</li>
+                        <li><code>endpoint.rs</code>: Definition of REST or binary endpoints exposed by the service.
+                        </li>
+                        <li><code>core_logic/</code>: Implementation of the service's domain-specific logic, including
+                            certificate workflows and protocol handling.</li>
+                        <li><code>entities/</code>: Data models representing persisted or derived SCMS entities.</li>
+                        <li><code>persistence/</code>: Database access layer and query abstractions.</li>
+                        <li><code>migrator/</code>: Schema migrations required by the service.</li>
+                    </ul>
+
+                    <p>This separation enforces a clear distinction between transport and API concerns, protocol and
+                        cryptographic logic, and persistence and state management.</p>
+
+                    <h3>Role of scmscommon</h3>
+
+                    <p>The <code>scmscommon</code> crate is a Rust library crate that contains functionality shared
+                        across multiple SCMS services. This includes common configuration handling, shared data types,
+                        error abstractions, and utility routines that are orthogonal to any specific SCMS role.</p>
+
+                    <p>By centralizing this functionality in a dedicated crate, OpenSCMS avoids code duplication while
+                        maintaining strict service boundaries. Importantly, <code>scmscommon</code> does not implement
+                        SCMS business logic or protocol workflows, ensuring that each service crate remains responsible
+                        only for its own role as defined by the standard.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
+    <script src="../../../../js/components.js"></script>
+
+</body>
+
+</html>

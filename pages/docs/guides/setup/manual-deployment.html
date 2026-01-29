@@ -1,0 +1,124 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dependency Model and Service Boundaries">
+    <title>Dependency Model - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-guides-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Setup & Deployment</h2>
+
+                    <h3 id="manual-deployment">Manual Deployment</h3>
+
+                    <p>Manual deployment allows individual SCMS services to be built and run directly on a host system
+                        without containerization. This approach is particularly useful during development and debugging,
+                        as
+                        it provides direct access to logs, processes, and configuration files. However, it requires more
+                        careful configuration than unified Kubernetes-based deployments.</p>
+
+                    <p>This section describes the process of manually deploying a single service, using the Registration
+                        Authority (RA) as an example. The same general workflow applies to all other services (LA, ECA,
+                        ACA).</p>
+
+                    <h3>Prerequisites</h3>
+
+                    <p>Before deploying any service, ensure that:</p>
+
+                    <ul>
+                        <li>All system dependencies have been installed (see the "Build Dependencies" section).</li>
+                        <li>A MySQL server is running and accessible.</li>
+                        <li>A RabbitMQ broker is running and accessible.</li>
+                        <li>Service certificates and keys have been generated and are present in the
+                            <code>certs/</code>
+                            directory.
+                        </li>
+                    </ul>
+
+                    <h3>Example: Deploying the Registration Authority (RA)</h3>
+
+                    <h4>Setting Up Environment Variables</h4>
+
+                    <p>Each service requires environment variables to configure database connections, message broker
+                        URLs,
+                        certificate paths, and API ports. For the RA service, the following environment variables must
+                        be
+                        defined:</p>
+
+                    <pre><code>MYSQL_USERNAME=username
+MYSQL_PASSWORD=password
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_CONNECTION_STRING=mysql://username:password@mysql:3306
+
+RABBITMQ_CONNECTION_STRING=amqp://rmqadmin:password@scmsrabbitmq:5672</code></pre>
+
+                    <h4>Building and Running the RA Service</h4>
+
+                    <p>Once the environment is correctly configured, the RA service can be built and started.</p>
+
+                    <p>From the repository root, build the complete Rust workspace:</p>
+
+                    <pre><code>cargo build</code></pre>
+
+                    <p>This step compiles all Rust service crates as well as the C-based
+                        <code>oscms-codecs-bridge</code>, and generates the required Rust bindings via
+                        <code>bindgen</code>. Build failures at this stage typically indicate missing system
+                        dependencies or misconfigured toolchains.
+                    </p>
+
+                    <p>To start the Registration Authority service, change into the RA crate directory and run:</p>
+
+                    <pre><code>cd openscms/ra
+cargo run</code></pre>
+
+                    <p>Upon startup, the RA service will load its certificates and keys, establish connections to the
+                        configured MySQL database and RabbitMQ broker, and expose its REST endpoints on the configured
+                        port.</p>
+
+                    <p>Startup failures usually result from missing certificates, incorrect environment variables, or
+                        unavailable external services.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
+    <script src="../../../../js/components.js"></script>
+
+</body>
+
+</html>

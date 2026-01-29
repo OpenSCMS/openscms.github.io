@@ -1,0 +1,152 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dependency Model and Service Boundaries">
+    <title>Dependency Model - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-guides-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Setup & Deployment</h2>
+
+                    <h3 id="kubernetes">Using Docker and Kubernetes</h3>
+
+                    <p>While manual deployment is useful for development and debugging, the recommended way to run
+                        OpenSCMS is through its unified deployment mechanism based on Docker, Kubernetes, and Skaffold.
+                        This approach deploys the complete OpenSCMS ecosystem in a single, coordinated workflow,
+                        including all SCMS services, their databases, and supporting infrastructure such as RabbitMQ.
+                    </p>
+
+                    <p>For local development and evaluation, OpenSCMS provides a reference deployment based on Minikube.
+                    </p>
+
+                    <h3>Environment Setup Using Minikube</h3>
+
+                    <h4>Installing Required Tooling</h4>
+
+                    <p>All required tooling should be installed using <code>binenv</code>, as described earlier. This
+                        ensures that consistent and compatible versions of all Kubernetes-related tools are used across
+                        different development environments.</p>
+
+                    <h4>Configuring Minikube</h4>
+
+                    <p>OpenSCMS uses the Docker driver for Minikube. This can be configured permanently by editing (or
+                        creating) the Minikube configuration file with the following content:</p>
+
+                    <pre><code>{
+  "vm-driver": "docker"
+}</code></pre>
+
+                    <h4>Installing kubectl Plugins</h4>
+
+                    <p>To simplify cluster management, install the <code>krew</code> plugin manager for
+                        <code>kubectl</code>:
+                    </p>
+
+                    <pre><code>(
+  set -x; cd "$(mktemp -d)" &&
+  OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+  ARCH="$(uname -m | sed -e 's/x86_64/amd64/' \
+                         -e 's/\(arm\)\(64\)\?.*/\1\2/' \
+                         -e 's/aarch64$/arm64/')" &&
+  KREW="krew-${OS}_${ARCH}" &&
+  curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+  tar zxvf "${KREW}.tar.gz" &&
+  ./"${KREW}" install krew
+)
+echo 'export PATH="$HOME/.krew/bin:$PATH"' >> $HOME/.bashrc
+exec $SHELL</code></pre>
+
+                    <p>Verify the installation:</p>
+
+                    <pre><code>kubectl krew --help</code></pre>
+
+                    <p>Finally, install the RabbitMQ plugin to simplify inspection and configuration of the message
+                        broker:</p>
+
+                    <pre><code>kubectl krew install rabbitmq</code></pre>
+
+                    <h3>Starting Minikube and Deploying OpenSCMS</h3>
+
+                    <h4>Starting Minikube</h4>
+
+                    <p>Start Minikube with:</p>
+
+                    <pre><code>minikube start</code></pre>
+
+                    <p>The first startup may take several minutes as container images are downloaded.</p>
+
+                    <h4>Test Deployment</h4>
+
+                    <p>Once Minikube is running, perform a test deployment of OpenSCMS from the repository root:</p>
+
+                    <pre><code>skaffold run && skaffold delete</code></pre>
+
+                    <p>This command deploys the full SCMS stack and then immediately tears it down, verifying that all
+                        components can be built and scheduled correctly.</p>
+
+                    <p>After the deployment completes, verify that the RabbitMQ components were installed successfully:
+                    </p>
+
+                    <pre><code>kubectl get ns</code></pre>
+
+                    <p>A namespace named <code>rabbitmq-system</code> should be present.</p>
+
+                    <h3>Accessing Services via Minikube</h3>
+
+                    <p>Minikube exposes services using an IP address that can be obtained with:</p>
+
+                    <pre><code>minikube ip</code></pre>
+
+                    <p>For convenience, this IP address can be mapped to a hostname by adding an entry to
+                        <code>/etc/hosts</code>:
+                    </p>
+
+                    <pre><code>sudo echo "$(minikube ip) minikube" >> /etc/hosts
+ping minikube</code></pre>
+
+                    <p>This allows services to be accessed using a stable hostname during development and testing.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
+    <script src="../../../../js/components.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Overview">
+    <title>Overview - About OpenSCMS</title>
+    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="about-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>The OpenSCMS</h2>
+
+                    <h3 id="overview">Overview</h3>
+
+                    <p>The challenges outlined above—ranging from cryptographic correctness and privacy preservation to
+                        scalability, system coordination, and operational complexity—highlight the need for an SCMS
+                        implementation that is both architecturally sound and practically usable. The OpenSCMS project
+                        was designed specifically to address these challenges by providing a clean, modular, and
+                        validated implementation of the core IEEE 1609.2.1 SCMS workflows.</p>
+
+                    <p>Rather than attempting to replicate every optional component defined in the standard, OpenSCMS
+                        focuses on delivering a compact yet complete architecture that correctly implements the
+                        essential interaction flows between end entities and the SCMS. This approach ensures correctness
+                        and interoperability while significantly lowering the barrier to adoption for both industrial
+                        and academic users.</p>
+
+                    <p>A key design goal of OpenSCMS is to remain faithful to the logical structure and security
+                        guarantees of the standard, while simplifying deployment, experimentation, and extension. This
+                        balance is achieved through clear component boundaries, explicit interfaces, and a strong
+                        separation between protocol logic, cryptographic processing, and system orchestration.</p>
+
+                    <p>These design choices directly influence the architectural decisions presented in the next
+                        section, which describes how OpenSCMS realizes these concepts through a layered and distributed
+                        implementation.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-guides-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Getting Started</h2>
+
+                    <h3 id="the-openscms">The OpenSCMS</h3>
+
+                    <p>The <strong>OpenSCMS</strong> project is an open-source implementation of a Security Credential
+                        Management System (SCMS) compliant with the IEEE 1609.2 and IEEE 1609.2.1 standards for V2X
+                        communication.</p>
+
+                    <p>Unlike traditional PKI systems, an SCMS must simultaneously satisfy strict cryptographic
+                        correctness, large-scale performance, and strong privacy requirements. In particular, the SCMS
+                        must enable authenticated and authorized communication between V2X end entities while preventing
+                        long-term tracking of vehicles and infrastructure nodes.</p>
+
+                    <p>The OpenSCMS addresses this challenge by providing a "minimum complete" implementation of the
+                        core SCMS workflows defined by IEEE 1609.2.1. The system supports enrollment certificate
+                        provisioning and authorization certificate provisioning, including butterfly key expansion to
+                        compose pseudonym certificate generation.</p>
+
+                    <p>From an engineering perspective, OpenSCMS is designed as a distributed, microservice-based system
+                        implemented primarily in Rust, with a dedicated cryptographic and protocol engine implemented in
+                        C. This separation allows the system to combine strong safety and concurrency guarantees at the
+                        service level with precise control over cryptographic operations and ASN.1 codecs operation at
+                        the protocol level.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
+    <script src="../../../../js/components.js"></script>
+
+</body>
+
+</html>

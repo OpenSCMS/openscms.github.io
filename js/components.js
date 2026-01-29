@@ -16,206 +16,122 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 */
 
-
+// Main component loader - orchestrates all page components
 class ComponentLoader {
   constructor() {
-    this.basePath = this.getBasePath();
-    this.currentPage = this.getCurrentPage();
+    this.basePath = PathUtils.getBasePath();
+    this.currentPage = PathUtils.getCurrentPage();
   }
 
-  getBasePath() {
-    const path = window.location.pathname;
-    if (
-      path.includes("/pages/docs/guides/") ||
-      path.includes("/pages/docs/components/") ||
-      path.includes("/pages/docs/bridge/")
-    ) {
-      return "../../../";
-    }
-
-    if (path.includes("/pages/docs/") || path.includes("/pages/about/")) {
-      return "../../";
-    }
-
-    if (path.includes("/pages/")) {
-      return "../";
-    }
-
-    return "./";
-  }
-
-  getCurrentPage() {
-    const path = window.location.pathname;
-    const filename = path.split("/").pop().replace(".html", "") || "index";
-
-    const pageMap = {
-      index: "index",
-      "": "index",
-      about: "about",
-      overview: path.includes("/about/") ? "about" : "documentation",
-      openscms: "about",
-      governance: "about",
-      "release-notes": "about",
-      blog: "blog",
-      source: "source",
-      faq: "faq",
-      docs: "documentation",
-      documentation: "documentation",
-      guides: "documentation",
-      "getting-started": "documentation",
-      architecture: "documentation",
-      "code-structure": "documentation",
-      setup: "documentation",
-      assumptions: "documentation",
-      "scms-components": "documentation",
-      ra: "documentation",
-      eca: "documentation",
-      aca: "documentation",
-      la: "documentation",
-      "codecs-bridge": "documentation",
-      build: "documentation",
-      "library-layers": "documentation",
-      utilities: "documentation",
-      development: "documentation",
-      installation: "documentation",
-      "api-reference": "documentation",
-      license: "license",
-    };
-
-    return pageMap[filename] || "index";
-  }
-
+  // Header template
   getHeaderTemplate() {
     return `
-            <header class="header">
-                <div class="container header-container">
-                    <div class="header-left">
-                        <a href="${this.basePath
-      }index.html" style="display: block; line-height: 0;">
-                            <img src="${this.basePath
-      }assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
-                        </a>
-                    </div>
-                    <nav class="header-nav">
-                        <ul class="header-menu">
-                            <li class="menu-item ${this.currentPage === "about" ? "active" : ""
-      }">
-                                <a href="${this.basePath
-      }pages/about/overview.html">About</a>
-                            </li>
-                            <li class="menu-item ${this.currentPage === "documentation"
-        ? "active"
-        : ""
-      }">
-                                <a href="${this.basePath
-      }pages/docs/overview.html">Docs</a>
-                            </li>
-                            <li class="menu-item ${this.currentPage === "faq" ? "active" : ""
-      }">
-                                <a href="${this.basePath
-      }pages/faq.html">FAQ</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="https://github.com/orgs/OpenSCMS/discussions" target="_blank" rel="noopener noreferrer">Community</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </header>
-        `;
+      <header class="header">
+        <div class="container header-container">
+          <div class="header-left">
+            <a href="${this.basePath}index.html" style="display: block; line-height: 0;">
+              <img src="${this.basePath}assets/openscms_logo_final_hor.png" alt="OpenSCMS Logo" class="header-logo">
+            </a>
+          </div>
+          <nav class="header-nav">
+            <ul class="header-menu">
+              <li class="menu-item ${this.currentPage === "about" ? "active" : ""}">
+                <a href="${this.basePath}pages/about/overview/introduction.html">About</a>
+              </li>
+              <li class="menu-item ${this.currentPage === "documentation" ? "active" : ""}">
+                <a href="${this.basePath}pages/docs/overview.html">Docs</a>
+              </li>
+              <li class="menu-item ${this.currentPage === "faq" ? "active" : ""}">
+                <a href="${this.basePath}pages/faq.html">FAQ</a>
+              </li>
+              <li class="menu-item">
+                <a href="https://github.com/orgs/OpenSCMS/discussions" target="_blank" rel="noopener noreferrer">Community</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+    `;
   }
 
+  // Footer template
   getFooterTemplate() {
     return `
-            <footer class="footer">
-                <div class="container">
-                    <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
-                    <p>IEEE 1609.2.1 SCMS Implementation</p>
-                </div>
-            </footer>
-        `;
+      <footer class="footer">
+        <div class="container">
+          <p>&copy; 2025 LG Electronics, Inc. Licensed under Apache License 2.0.</p>
+          <p>IEEE 1609.2.1 SCMS Implementation</p>
+        </div>
+      </footer>
+    `;
   }
 
-
+  // Docs submenu template
   getDocsSubmenuTemplate() {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
 
     let docsBasePath = "./";
-    if (path.includes("/pages/docs/components/")) {
-      docsBasePath = "../";
-    } else if (path.includes("/pages/docs/guides/")) {
-      docsBasePath = "../";
-    } else if (path.includes("/pages/docs/bridge/")) {
-      docsBasePath = "../";
+    if (
+      path.includes("/pages/docs/guides/") ||
+      path.includes("/pages/docs/components/") ||
+      path.includes("/pages/docs/bridge/")
+    ) {
+      if (
+        path.match(/\/pages\/docs\/(guides|components|bridge)\/[^/]+\/[^/]+\.html/)
+      ) {
+        docsBasePath = "../../";
+      } else {
+        docsBasePath = "../";
+      }
     } else if (path.includes("/pages/docs/")) {
       docsBasePath = "./";
     } else if (path.includes("/pages/")) {
       docsBasePath = "docs/";
     }
 
-    const isGuidesPage =
-      filename === "guides" ||
-      filename === "getting-started" ||
-      filename === "architecture" ||
-      filename === "code-structure" ||
-      filename === "setup" ||
-      filename === "assumptions";
-
-    const isComponentsPage =
-      filename === "scms-components" ||
-      filename === "ra" ||
-      filename === "eca" ||
-      filename === "aca" ||
-      filename === "la" ||
-      (filename === "overview" && path.includes("/components/"));
-
-    const isBridgePage =
-      filename === "codecs-bridge" ||
-      filename === "build" ||
-      filename === "library-layers" ||
-      filename === "utilities" ||
-      filename === "development" ||
-      (filename === "overview" && path.includes("/bridge/"));
+    const isGuidesPage = path.includes("/pages/docs/guides/");
+    const isComponentsPage = path.includes("/pages/docs/components/");
+    const isBridgePage = path.includes("/pages/docs/bridge/");
+    const isOverviewPage = path.includes("/pages/docs/overview.html") || 
+                          (filename === "overview" && !isGuidesPage && !isComponentsPage && !isBridgePage);
+    const isApiReferencePage = filename === "api-reference";
 
     return `
-            <nav class="docs-submenu">
-                <div class="container">
-                    <ul class="submenu-tabs">
-                        <li class="submenu-tab ${filename === "overview" &&
-        !path.includes("/components/") &&
-        !path.includes("/bridge/")
-        ? "active"
-        : ""
-      }">
-                            <a href="${docsBasePath}overview.html">Overview</a>
-                        </li>
-                        <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
-                            <a href="${docsBasePath}guides/getting-started.html">Guides</a>
-                        </li>
-                        <li class="submenu-tab ${isComponentsPage ? "active" : ""
-      }">
-                            <a href="${docsBasePath}components/overview.html">SCMS Components</a>
-                        </li>
-                        <li class="submenu-tab ${isBridgePage ? "active" : ""}">
-                            <a href="${docsBasePath}bridge/overview.html">Codecs Bridge</a>
-                        </li>
-                        <li class="submenu-tab ${filename === "api-reference" ? "active" : ""
-      }">
-                            <a href="${docsBasePath}api-reference.html">API Reference</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        `;
+      <nav class="docs-submenu">
+        <div class="container">
+          <ul class="submenu-tabs">
+            <li class="submenu-tab ${isOverviewPage ? "active" : ""}">
+              <a href="${docsBasePath}overview.html">Overview</a>
+            </li>
+            <li class="submenu-tab ${isGuidesPage ? "active" : ""}">
+              <a href="${docsBasePath}guides/getting-started/overview.html">Guides</a>
+            </li>
+            <li class="submenu-tab ${isComponentsPage ? "active" : ""}">
+              <a href="${docsBasePath}components/overview.html">SCMS Components</a>
+            </li>
+            <li class="submenu-tab ${isBridgePage ? "active" : ""}">
+              <a href="${docsBasePath}bridge/overview/overview.html">Codecs Bridge</a>
+            </li>
+            <li class="submenu-tab ${isApiReferencePage ? "active" : ""}">
+              <a href="${docsBasePath}api-reference.html">API Reference</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    `;
   }
 
+  // Initialize all components
   init() {
+    // Render templates
     const headerPlaceholder = document.getElementById("header-placeholder");
     const footerPlaceholder = document.getElementById("footer-placeholder");
-    const docsSubmenuPlaceholder = document.getElementById(
-      "docs-submenu-placeholder"
-    );
+    const docsSubmenuPlaceholder = document.getElementById("docs-submenu-placeholder");
+    const aboutSidebarPlaceholder = document.getElementById("about-sidebar-placeholder");
+    const docsGuidesSidebarPlaceholder = document.getElementById("docs-guides-sidebar-placeholder");
+    const docsComponentsSidebarPlaceholder = document.getElementById("docs-components-sidebar-placeholder");
+    const docsBridgeSidebarPlaceholder = document.getElementById("docs-bridge-sidebar-placeholder");
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
@@ -228,9 +144,31 @@ class ComponentLoader {
     if (docsSubmenuPlaceholder) {
       docsSubmenuPlaceholder.innerHTML = this.getDocsSubmenuTemplate();
     }
+
+    if (aboutSidebarPlaceholder) {
+      aboutSidebarPlaceholder.innerHTML = SidebarTemplates.getAboutSidebar();
+    }
+
+    if (docsGuidesSidebarPlaceholder) {
+      docsGuidesSidebarPlaceholder.innerHTML = SidebarTemplates.getDocsGuidesSidebar();
+    }
+
+    if (docsComponentsSidebarPlaceholder) {
+      docsComponentsSidebarPlaceholder.innerHTML = SidebarTemplates.getDocsComponentsSidebar();
+    }
+
+    if (docsBridgeSidebarPlaceholder) {
+      docsBridgeSidebarPlaceholder.innerHTML = SidebarTemplates.getDocsBridgeSidebar();
+    }
+
+    // Setup dynamic features using utility modules
+    SidebarManager.setupScrollManagement();
+    SidebarManager.setupCollapse();
+    BreadcrumbManager.setup();
   }
 }
 
+// Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   const loader = new ComponentLoader();
   loader.init();

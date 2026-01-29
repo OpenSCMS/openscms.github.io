@@ -1,0 +1,137 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS v1.0.0 Release Notes">
+    <title>OpenSCMS v1.0.0 - Release Notes</title>
+    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="about-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2 id="release-notes">Release Notes</h2>
+
+                    <h3>OpenSCMS v1.0.0</h3>
+
+                    <h4 id="overview">1. Overview</h4>
+                    <p>
+                        OpenSCMS v1.0.0 marks the first stable release of the OpenSCMS platform.
+                        This release delivers a fully functional, standards-aligned implementation
+                        of the core server-side components defined by IEEE 1609.2.1, with a strong
+                        focus on correctness, interoperability, and extensibility.
+                    </p>
+
+                    <h4 id="compliance">2. Standards Compliance</h4>
+                    <ul>
+                        <li>IEEE 1609.2.1 protocol support (server-side scope)</li>
+                        <li>Explicit and implicit certificate handling</li>
+                        <li>ASN.1 SPDU encoding and decoding aligned with the standard</li>
+                    </ul>
+
+                    <h4 id="components">3. Core Components Included</h4>
+                    <ul>
+                        <li>Registration Authority (RA)</li>
+                        <li>Enrollment Certificate Authority (ECA)</li>
+                        <li>Authorization Certificate Authority (ACA)</li>
+                        <li>Linkage Authority (LA)</li>
+                        <li>Certificate and trust distribution services (CTL, CCF, CRL, CMIS)</li>
+                    </ul>
+
+                    <h4 id="crypto">4. Cryptographic Capabilities</h4>
+                    <ul>
+                        <li>Explicit and implicit certificate issuance</li>
+                        <li>Butterfly key expansion mechanisms:
+                            <ul>
+                                <li>Original Butterfly Keys (OBK)</li>
+                                <li>Unified Butterfly Keys (UBK)</li>
+                                <li>Compact Unified Butterfly Keys (CUBK)</li>
+                            </ul>
+                        </li>
+                        <li>Encrypted and non-encrypted butterfly flows</li>
+                        <li>ECDSA signatures and ECIES-based encryption</li>
+                        <li>P-256 and Brainpool P-384 curve support where applicable</li>
+                    </ul>
+
+                    <h4 id="bridge">5. oscms-codecs-bridge Library</h4>
+                    <ul>
+                        <li>Standalone C library providing cryptographic core and ASN.1 codecs</li>
+                        <li>Codec-agnostic architecture with ASN.1 abstraction layer</li>
+                        <li>Integrated with Rust services using bindgen</li>
+                        <li>Extensive unit test coverage validating cryptographic correctness</li>
+                    </ul>
+
+                    <h4 id="api">6. API and Service Interfaces</h4>
+                    <ul>
+                        <li>REST-based APIs for RA and ECA components</li>
+                        <li>Asynchronous request processing using message queues (RabbitMQ)</li>
+                        <li>OpenAPI / Swagger documentation available for exposed endpoints</li>
+                    </ul>
+
+                    <h4 id="deployment">7. Deployment and Operations</h4>
+                    <ul>
+                        <li>Unified deployment using Docker, Kubernetes, and Skaffold</li>
+                        <li>Minikube-based local development and testing support</li>
+                        <li>Helm charts for orchestration of services</li>
+                        <li>Manual deployment supported for individual components</li>
+                    </ul>
+
+                    <h4 id="config">8. Configuration and Extensibility</h4>
+                    <ul>
+                        <li>Environment-variable–based configuration model</li>
+                        <li>Fully documented deployment parameters</li>
+                        <li>Modular architecture enabling future extensions and integrations</li>
+                    </ul>
+
+                    <h4 id="testing">9. Testing and Validation</h4>
+                    <ul>
+                        <li>120+ unit tests for the C-based cryptographic core</li>
+                        <li>Rust unit tests covering service logic and integration layers</li>
+                        <li>End-to-end validation using a certified V2X client</li>
+                        <li>Validation of registration, enrollment, authorization, and download flows</li>
+                    </ul>
+
+                    <h4 id="next-steps">10. Next Steps</h4>
+                    <p>
+                        Future releases will focus on expanding protocol coverage, improving
+                        operational tooling, and incorporating feedback from early adopters.
+                        Contributions, integrations, and reviews from the community are welcome.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
+
+</body>
+
+</html>

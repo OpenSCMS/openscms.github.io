@@ -1,0 +1,119 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS High-Level Layers">
+    <title>High-Level Layers - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-components-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Registration Authority (RA)</h2>
+
+                    <h3 id="authorization-flow">Authorization Certificate Provisioning Flow</h3>
+
+                    <p>The Authorization Certificate provisioning flow is responsible for issuing batches of
+                        authorization (pseudonym) certificates that are used by V2X clients for authenticated
+                        application-layer communication.</p>
+
+                    <p>This flow is intentionally split into two phases: a request phase and a download phase. The
+                        request phase is synchronous and lightweight, allowing the RA to validate and acknowledge the
+                        request quickly. The actual certificate generation is performed asynchronously to support high
+                        request volumes and batch-based issuance. The download phase allows the client to retrieve the
+                        generated certificates once processing has completed.</p>
+
+                    <p>From an architectural perspective, the RA Frontend terminates the client connection, validates
+                        and decrypts the request, and enqueues a task for asynchronous execution. One of the RA Worker
+                        instances then processes the task by invoking the Authorization Certificate Authority (ACA),
+                        persists the generated certificates, and makes them available for download.</p>
+
+                    <h3>Authorization Certificate Request</h3>
+
+                    <p>The client submits an Authorization Certificate Request SPDU to the RA Frontend. The request
+                        contains cryptographic material and authorization parameters required to generate one or more
+                        authorization certificates.</p>
+
+                    <pre><code>POST /v3/authorization-certificate
+
+Description:
+  Submits a request for one or more authorization (pseudonym)
+  certificates.
+
+Input:
+  - IEEE 1609.2.1 Authorization Certificate Request SPDU
+  - Contains enrollment reference, butterfly key parameters,
+    certificate permissions, and validity constraints
+
+Output:
+  - Acknowledgment SPDU (ACK)
+  - Includes timing information indicating when the client
+    should issue the download request
+
+Errors:
+  - Invalid or malformed SPDU
+  - Signature verification failure
+  - Decryption failure
+  - Policy or parameter violations</code></pre>
+
+                    <h3>Authorization Certificate Download</h3>
+
+                    <pre><code>GET /v3/authorization-certificate
+
+Description:
+  Retrieves the batch of authorization certificates generated
+  for a previously submitted request.
+
+Input:
+  - Download Request SPDU
+  - Includes request hash returned during the request phase
+
+Output:
+  - Response SPDU containing a batch of authorization
+    (pseudonym) certificates
+
+Errors:
+  - Unknown or expired request hash
+  - Certificates not yet available</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/path-utils.js"></script>
+    <script src="../../../../js/sidebar-manager.js"></script>
+    <script src="../../../../js/breadcrumb.js"></script>
+    <script src="../../../../js/sidebar-templates.js"></script>
+    <script src="../../../../js/components.js"></script>
+
+</body>
+
+</html>
