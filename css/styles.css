@@ -16,7 +16,6 @@ limitations under the License.
 SPDX-License-Identifier: Apache-2.0
 */
 
-/* Reset e estilos base */
 * {
     margin: 0;
     padding: 0;
@@ -142,7 +141,6 @@ body {
     border-bottom: 2px solid var(--border-color);
     position: sticky;
     top: 60px;
-    /* Altura do header */
     z-index: 90;
     box-shadow: var(--shadow);
 }
@@ -242,7 +240,6 @@ body {
 .docs-sidebar {
     position: sticky;
     top: 130px;
-    /* header + submenu height */
     height: fit-content;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
@@ -514,7 +511,6 @@ body {
     text-align: justify;
 }
 
-/* Listas melhoradas */
 .docs-content ul {
     margin: 1.5rem 0;
     padding-left: 0;
