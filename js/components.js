@@ -115,7 +115,7 @@ class ComponentLoader {
       certificates: "documentation",
       "manual-deployment": "documentation",
       kubernetes: "documentation",
-      assumptions: "documentation",
+      assumptions: "about",
       "scms-components": "documentation",
       ra: "documentation",
       "internal-organization": "documentation",
@@ -990,7 +990,7 @@ class ComponentLoader {
         console.error('Error restoring sidebar collapse state:', e);
       }
     }
-    
+
     // Always expand the section containing the active link
     sections.forEach(section => {
       const activeLink = section.querySelector('.sidebar-nav-link.active');
