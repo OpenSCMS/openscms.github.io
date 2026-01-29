@@ -1,0 +1,63 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Memory Management Utilities">
+    <title>Memory Management - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Memory Management Utilities</h2>
+
+                    <p>The library provides a set of memory management utilities to ensure safe and consistent allocation and deallocation across the Rust-C boundary.</p>
+
+                    <h4>Key Utilities</h4>
+
+                    <ul>
+                        <li><strong>Allocation wrappers:</strong> Custom allocation functions ensure compatibility between Rust and C memory models.</li>
+                        <li><strong>Cleanup routines:</strong> Functions for deallocating complex ASN.1 structures and cryptographic key material.</li>
+                        <li><strong>Memory pools:</strong> Optional pooling mechanisms for frequently allocated types.</li>
+                    </ul>
+
+                    <p>All exported functions that allocate memory follow a consistent pattern: ownership is clearly documented, and corresponding cleanup functions are provided.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

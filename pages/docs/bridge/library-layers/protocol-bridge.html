@@ -1,0 +1,64 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Protocol Bridge Layer">
+    <title>Protocol Bridge Layer - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Protocol Bridge Layer</h2>
+
+                    <p>The protocol bridge layer implements the cryptographic and protocol operations defined by IEEE 1609.2.1. It sits above the codec abstraction layer and below the Rust-based SCMS service layer.</p>
+
+                    <p>This layer is responsible for:</p>
+
+                    <ul>
+                        <li><strong>SPDU construction and verification:</strong> Building and validating IEEE 1609.2.1 Secured Protocol Data Units (SPDUs), including enrollment requests, certificate responses, and misbehavior reports.</li>
+                        <li><strong>Cryptographic operations:</strong> Performing signing, verification, encryption, and decryption using NIST P-256 and Brainpool curves.</li>
+                        <li><strong>Certificate and key management:</strong> Handling certificate chains, trust anchors, and cryptographic key material.</li>
+                        <li><strong>Protocol-level semantics:</strong> Enforcing the rules and constraints defined in the IEEE 1609.2.1 specification.</li>
+                    </ul>
+
+                    <p>By implementing these operations in C, the protocol bridge layer ensures high performance and security for cryptographic operations while remaining independent of the Rust-based application logic.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

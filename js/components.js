@@ -32,7 +32,12 @@ class ComponentLoader {
       path.includes("/pages/docs/guides/setup/") ||
       path.includes("/pages/docs/components/ra/") ||
       path.includes("/pages/docs/components/eca/") ||
-      path.includes("/pages/docs/components/aca/")
+      path.includes("/pages/docs/components/aca/") ||
+      path.includes("/pages/docs/bridge/overview/") ||
+      path.includes("/pages/docs/bridge/build/") ||
+      path.includes("/pages/docs/bridge/library-layers/") ||
+      path.includes("/pages/docs/bridge/utilities/") ||
+      path.includes("/pages/docs/bridge/development/")
     ) {
       return "../../../../";
     }
@@ -41,8 +46,7 @@ class ComponentLoader {
       path.includes("/pages/about/overview/") ||
       path.includes("/pages/about/governance/") ||
       path.includes("/pages/about/openscms/") ||
-      path.includes("/pages/about/release-notes/") ||
-      path.includes("/pages/docs/bridge/")
+      path.includes("/pages/about/release-notes/")
     ) {
       return "../../../";
     }
@@ -121,9 +125,23 @@ class ComponentLoader {
       la: "documentation",
       "codecs-bridge": "documentation",
       build: "documentation",
+      installation: "documentation",
+      structure: "documentation",
       "library-layers": "documentation",
+      "codec-abstraction": "documentation",
+      "protocol-bridge": "documentation",
       utilities: "documentation",
+      "memory-management": "documentation",
+      "cryptographic-primitives": "documentation",
+      logging: "documentation",
+      "rust-integration": "documentation",
       development: "documentation",
+      "language-standard": "documentation",
+      "header-files": "documentation",
+      scoping: "documentation",
+      structs: "documentation",
+      naming: "documentation",
+      installation: "documentation",
       installation: "documentation",
       "api-reference": "documentation",
     };
@@ -631,6 +649,151 @@ class ComponentLoader {
         `;
   }
 
+  getDocsBridgeSidebarTemplate() {
+    const path = window.location.pathname;
+    const filename = path.split("/").pop().replace(".html", "");
+    const hash = window.location.hash;
+    const isOverviewSubpage = path.includes("/pages/docs/bridge/overview/");
+    const isBuildSubpage = path.includes("/pages/docs/bridge/build/");
+    const isLibraryLayersSubpage = path.includes("/pages/docs/bridge/library-layers/");
+    const isUtilitiesSubpage = path.includes("/pages/docs/bridge/utilities/");
+    const isDevelopmentSubpage = path.includes("/pages/docs/bridge/development/");
+    const isBridgeRoot = path.includes("/pages/docs/bridge/") && !isOverviewSubpage && !isBuildSubpage && !isLibraryLayersSubpage && !isUtilitiesSubpage && !isDevelopmentSubpage;
+
+    // Helper function to check if link should be active
+    const isActive = (pageName, hashValue = null, subfolder = null) => {
+      if (hashValue) {
+        return filename === pageName && hash === hashValue;
+      }
+
+      // If a subfolder is specified, check if we're in that subfolder
+      if (subfolder === 'overview') {
+        return isOverviewSubpage && filename === pageName;
+      } else if (subfolder === 'build') {
+        return isBuildSubpage && filename === pageName;
+      } else if (subfolder === 'library-layers') {
+        return isLibraryLayersSubpage && filename === pageName;
+      } else if (subfolder === 'utilities') {
+        return isUtilitiesSubpage && filename === pageName;
+      } else if (subfolder === 'development') {
+        return isDevelopmentSubpage && filename === pageName;
+      } else if (subfolder === 'bridge-root') {
+        return isBridgeRoot && filename === pageName;
+      }
+
+      // Default: just check filename
+      return filename === pageName;
+    };
+
+    // Build correct paths based on current location
+    let overviewPath, buildPath, libraryLayersPath, utilitiesPath, developmentPath;
+    
+    if (isOverviewSubpage || isBuildSubpage || isLibraryLayersSubpage || isUtilitiesSubpage || isDevelopmentSubpage) {
+      // From any subpage: need to go up one level, then to other folders
+      overviewPath = isOverviewSubpage ? "" : "../overview/";
+      buildPath = isBuildSubpage ? "" : "../build/";
+      libraryLayersPath = isLibraryLayersSubpage ? "" : "../library-layers/";
+      utilitiesPath = isUtilitiesSubpage ? "" : "../utilities/";
+      developmentPath = isDevelopmentSubpage ? "" : "../development/";
+    } else if (isBridgeRoot) {
+      // From bridge root: navigate into subfolders
+      overviewPath = "overview/";
+      buildPath = "build/";
+      libraryLayersPath = "library-layers/";
+      utilitiesPath = "utilities/";
+      developmentPath = "development/";
+    } else {
+      // Fallback
+      overviewPath = "overview/";
+      buildPath = "build/";
+      libraryLayersPath = "library-layers/";
+      utilitiesPath = "utilities/";
+      developmentPath = "development/";
+    }
+
+    return `
+            <aside class="docs-sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Introduction</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${overviewPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'overview') ? 'active' : ''}">Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${overviewPath}architecture.html" class="sidebar-nav-link ${isActive('architecture', null, 'overview') ? 'active' : ''}">High-Level Architecture</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Build & Structure</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${buildPath}installation.html" class="sidebar-nav-link ${isActive('installation', null, 'build') ? 'active' : ''}">Build and Installation</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${buildPath}structure.html" class="sidebar-nav-link ${isActive('structure', null, 'build') ? 'active' : ''}">Repository Structure</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Library Layers</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${libraryLayersPath}codec-abstraction.html" class="sidebar-nav-link ${isActive('codec-abstraction', null, 'library-layers') ? 'active' : ''}">Codec Abstraction Layer</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${libraryLayersPath}protocol-bridge.html" class="sidebar-nav-link ${isActive('protocol-bridge', null, 'library-layers') ? 'active' : ''}">Protocol Bridge Layer</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Utilities</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${utilitiesPath}memory-management.html" class="sidebar-nav-link ${isActive('memory-management', null, 'utilities') ? 'active' : ''}">Memory Management</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${utilitiesPath}cryptographic-primitives.html" class="sidebar-nav-link ${isActive('cryptographic-primitives', null, 'utilities') ? 'active' : ''}">Cryptographic Primitives</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${utilitiesPath}logging.html" class="sidebar-nav-link ${isActive('logging', null, 'utilities') ? 'active' : ''}">Logging and Diagnostics</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${utilitiesPath}rust-integration.html" class="sidebar-nav-link ${isActive('rust-integration', null, 'utilities') ? 'active' : ''}">Integration with Rust</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-section-title">Development</h3>
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}overview.html" class="sidebar-nav-link ${isActive('overview', null, 'development') ? 'active' : ''}">Development Overview</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}language-standard.html" class="sidebar-nav-link ${isActive('language-standard', null, 'development') ? 'active' : ''}">C Standard & Tooling</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}header-files.html" class="sidebar-nav-link ${isActive('header-files', null, 'development') ? 'active' : ''}">Header Files</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}scoping.html" class="sidebar-nav-link ${isActive('scoping', null, 'development') ? 'active' : ''}">Scoping</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}structs.html" class="sidebar-nav-link ${isActive('structs', null, 'development') ? 'active' : ''}">Structs</a>
+                        </li>
+                        <li class="sidebar-nav-item">
+                            <a href="${developmentPath}naming.html" class="sidebar-nav-link ${isActive('naming', null, 'development') ? 'active' : ''}">Naming Conventions</a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        `;
+  }
+
   getDocsSubmenuTemplate() {
     const path = window.location.pathname;
     const filename = path.split("/").pop().replace(".html", "");
@@ -707,7 +870,7 @@ class ComponentLoader {
                             <a href="${docsBasePath}components/overview.html">SCMS Components</a>
                         </li>
                         <li class="submenu-tab ${isBridgePage ? "active" : ""}">
-                            <a href="${docsBasePath}bridge/overview.html">Codecs Bridge</a>
+                            <a href="${docsBasePath}bridge/overview/overview.html">Codecs Bridge</a>
                         </li>
                         <li class="submenu-tab ${filename === "api-reference" ? "active" : ""
       }">
@@ -728,6 +891,7 @@ class ComponentLoader {
     const aboutSidebarPlaceholder = document.getElementById("about-sidebar-placeholder");
     const docsGuidesSidebarPlaceholder = document.getElementById("docs-guides-sidebar-placeholder");
     const docsComponentsSidebarPlaceholder = document.getElementById("docs-components-sidebar-placeholder");
+    const docsBridgeSidebarPlaceholder = document.getElementById("docs-bridge-sidebar-placeholder");
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
@@ -751,6 +915,10 @@ class ComponentLoader {
 
     if (docsComponentsSidebarPlaceholder) {
       docsComponentsSidebarPlaceholder.innerHTML = this.getDocsComponentsSidebarTemplate();
+    }
+
+    if (docsBridgeSidebarPlaceholder) {
+      docsBridgeSidebarPlaceholder.innerHTML = this.getDocsBridgeSidebarTemplate();
     }
 
     // Setup sidebar scroll management

@@ -1,0 +1,64 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Codecs Bridge Overview">
+    <title>Codecs Bridge Overview - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Codecs Bridge - The C Library</h2>
+
+                    <h3>Overview</h3>
+
+                    <p>The <code>oscms-codecs-bridge</code> library is the low-level cryptographic and protocol core of
+                        OpenSCMS. It is implemented in C and provides all security-critical functionality, including
+                        cryptographic operations, ASN.1 encoding and decoding, and construction and verification of IEEE
+                        1609.2.1 SPDUs.</p>
+
+                    <p>This library is designed as a standalone component, independent of the Rust backend and SCMS
+                        service logic. Integration with the Rust-based services is performed transparently through Rust
+                        bindings generated using <code>bindgen</code>. From the perspective of a Rust developer, the
+                        library appears as a native Rust module, while all cryptographic and protocol complexity remains
+                        encapsulated in C.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

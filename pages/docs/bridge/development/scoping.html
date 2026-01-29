@@ -1,0 +1,78 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scoping">
+    <title>Scoping - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Scoping</h2>
+
+                    <h4>Namespaces</h4>
+
+                    <p>C does not have namespaces, so function and type names use prefixes to organize scope:</p>
+
+                    <ul>
+                        <li>All public API functions and types are prefixed with <code>Oscms</code> or
+                            <code>oscms_</code>.
+                        </li>
+                        <li>Internal symbols are either declared <code>static</code> or prefixed with the module name to
+                            avoid symbol collisions (e.g., <code>codec_internal_parse_point()</code>).</li>
+                    </ul>
+
+                    <h4>Internal Linkage</h4>
+
+                    <p>Helper functions, constants, and types used only within a single translation unit should be
+                        declared <code>static</code> to limit their scope:</p>
+
+                    <pre><code>static int parse_internal_type(const uint8_t *buffer) {
+    // ...
+}</code></pre>
+
+                    <h4>Local and Static Variables</h4>
+
+                    <p>Declare variables in the smallest scope possible, ideally at first use. Static variables are used
+                        sparingly and never for mutable state unless explicitly required by an initialization context.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

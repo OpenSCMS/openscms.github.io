@@ -1,0 +1,80 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Structs">
+    <title>Structs - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Structs</h2>
+
+                    <h4>Opaque vs. Exposed Structs</h4>
+
+                    <ul>
+                        <li><strong>Opaque types</strong> are forward-declared in public headers, with definitions
+                            hidden in private headers or source files. This ensures ABI stability and encapsulation.
+                        </li>
+                        <li><strong>Exposed types</strong> are fully defined in public headers when their layout must be
+                            known to callers (e.g., <code>OscmsSequence</code>).</li>
+                    </ul>
+
+                    <pre><code>// Opaque (declared but not defined publicly)
+typedef struct OscmsIeee1609Dot2Data OscmsIeee1609Dot2Data;
+
+// Exposed (definition visible)
+typedef struct {
+    size_t count;
+    void **data;
+} OscmsSequence;</code></pre>
+
+                    <h4>Struct Initialization</h4>
+
+                    <p>Initialize structs using designated initializers when possible to make initialization explicit
+                        and maintainable:</p>
+
+                    <pre><code>OscmsPoint point = {
+    .x = 0x01,
+    .y = 0x02
+};</code></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>

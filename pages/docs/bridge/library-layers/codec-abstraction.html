@@ -1,0 +1,63 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Codec Abstraction Layer">
+    <title>Codec Abstraction Layer - OpenSCMS</title>
+    <link rel="stylesheet" href="../../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Codec Abstraction Layer</h2>
+
+                    <p>The codec abstraction layer defines a common API for encoding and decoding IEEE 1609.2.1 data structures, independent of the underlying ASN.1 transpiler or code generator used.</p>
+
+                    <p>This abstraction ensures that protocol logic, cryptographic operations, and SPDU construction remain fully decoupled from the specific codec implementation. In the current version, the concrete implementation relies on <code>asn1c</code>, but this design allows alternative transpilers to be integrated in the future without requiring changes to higher-level layers.</p>
+
+                    <h4>Key Design Principles</h4>
+
+                    <ul>
+                        <li><strong>Codec-agnostic API:</strong> Protocol logic interacts only with abstract types and functions defined in the codec API layer.</li>
+                        <li><strong>Encapsulation of complexity:</strong> ASN.1-specific details (e.g., memory management, type conversions) are hidden behind a well-defined interface.</li>
+                        <li><strong>Future extensibility:</strong> Support for other transpilers can be added by implementing the same abstract API.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../../js/components.js"></script>
+
+    <!-- Documentation Navigation Script -->
+    <script src="../../../../js/navigation.js"></script>
+</body>
+
+</html>
