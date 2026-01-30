@@ -1,0 +1,222 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="OpenSCMS Assumptions and Limitations">
+    <title>Assumptions & Limitations - OpenSCMS Guides</title>
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="about-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2 id="roadmap">Roadmap and Planned Enhancements</h2>
+                    <p>
+                        The roadmap is intended to provide transparency regarding current TODOs, guide community
+                        contributions,
+                        and clarify the long-term direction of the project. No specific timeline is implied; priorities
+                        may evolve
+                        based on standardization progress, deployment feedback, and community involvement.
+                    </p>
+
+                    <h3>Architectural Decomposition and New SCMS Components</h3>
+
+                    <p>
+                        One of the primary roadmap items is the architectural decomposition of responsibilities
+                        currently
+                        concentrated in the Registration Authority (RA).
+                    </p>
+
+                    <p>Planned enhancements include:</p>
+                    <ul>
+                        <li>
+                            Implementation of a dedicated <strong>Device Configuration (DC)</strong> component
+                            responsible for
+                            distributing trusted SCMS artifacts, such as certificates and configuration data of other
+                            SCMS components.
+                        </li>
+                        <li>
+                            Implementation of a <strong>Device Configuration Management (DCM)</strong> component
+                            responsible for
+                            managing device lifecycle information, including registration, updates, and operational
+                            metadata of
+                            end entities.
+                        </li>
+                    </ul>
+
+                    <p>
+                        This separation aims to reduce RA complexity, improve scalability, and better align OpenSCMS
+                        with
+                        reference SCMS architectures.
+                    </p>
+
+                    <h3>Operational Frontend and Management Interface</h3>
+
+                    <p>
+                        OpenSCMS currently exposes REST APIs as its primary interaction mechanism and operates strictly
+                        as
+                        a backend service.
+                    </p>
+
+                    <p>Planned enhancements include the development of an optional frontend interface to:</p>
+                    <ul>
+                        <li>Register and manage end entities and devices</li>
+                        <li>Query device and certificate status</li>
+                        <li>Download certificates and trusted artifacts</li>
+                        <li>Visualize system health and operational status</li>
+                        <li>Monitor quantitative metrics such as throughput, latency, and resource utilization</li>
+                    </ul>
+
+                    <p>
+                        This interface would significantly improve operational usability for integrators and system
+                        operators.
+                    </p>
+
+                    <h3>Multi-Region and Multi-PSID Support</h3>
+
+                    <p>
+                        The current OpenSCMS implementation assumes a single operational region and a fixed set of
+                        PSIDs.
+                    </p>
+
+                    <p>Planned enhancements include:</p>
+                    <ul>
+                        <li>Support for multiple regions within a single OpenSCMS deployment</li>
+                        <li>Support for multiple, region-specific PSID sets</li>
+                        <li>
+                            Association of policy files and certificate constraints with specific regions and PSID
+                            groups
+                        </li>
+                    </ul>
+
+                    <p>
+                        These capabilities are essential for deploying OpenSCMS in more complex, real-world
+                        environments.
+                    </p>
+
+                    <h3>Performance Evaluation and Scalability Analysis</h3>
+
+                    <p>
+                        A structured performance and stress evaluation of OpenSCMS has not yet been completed.
+                    </p>
+
+                    <p>Planned activities include:</p>
+                    <ul>
+                        <li>Quantitative performance benchmarking under different load scenarios</li>
+                        <li>
+                            Measurement of throughput and response times for core certificate workflows
+                        </li>
+                        <li>Identification of bottlenecks and scalability limits</li>
+                    </ul>
+
+                    <p>
+                        Special attention is expected to be given to synchronous workflows, such as authorization
+                        certificate
+                        downloads and successor enrollment certificate operations, which may represent potential
+                        performance
+                        constraints.
+                    </p>
+
+                    <h3>Secure Internal Component Communication</h3>
+
+                    <p>
+                        OpenSCMS currently assumes a trusted internal network and does not enforce authentication or
+                        encryption
+                        between internal components.
+                    </p>
+
+                    <p>Planned enhancements include introducing secure internal communication mechanisms, such as:</p>
+                    <ul>
+                        <li>Mutual TLS (mTLS) using internal service certificates</li>
+                        <li>OAuth2-based service-to-service authentication</li>
+                    </ul>
+
+                    <p>
+                        These mechanisms would strengthen the security posture of OpenSCMS, particularly in distributed
+                        or
+                        cloud-based deployments.
+                    </p>
+
+                    <h3>Key Management and HSM/KMS Integration</h3>
+
+                    <p>
+                        Private keys and certificates are currently stored on the filesystem of the hosting servers.
+                    </p>
+
+                    <p>Planned enhancements include:</p>
+                    <ul>
+                        <li>Integration with Hardware Security Modules (HSMs)</li>
+                        <li>
+                            Support for external Key Management Systems (KMS), such as cloud-based or on-premise
+                            solutions
+                        </li>
+                    </ul>
+
+                    <p>
+                        This evolution would ensure stronger key protection guarantees and align OpenSCMS with best
+                        practices
+                        for cryptographic material management.
+                    </p>
+
+                    <h3>Misbehavior Handling and Linkage Authority Integration</h3>
+
+                    <p>
+                        Although a Linkage Authority (LA) component is implemented and supports multiple instances, it
+                        is not
+                        yet integrated into the authorization certificate issuance workflow.
+                    </p>
+
+                    <p>Planned enhancements include:</p>
+                    <ul>
+                        <li>
+                            Integration of the LA into certificate generation flows once revocation mechanisms are
+                            defined
+                        </li>
+                        <li>
+                            Exploration of interoperable misbehavior reporting and revocation strategies compatible with
+                            multiple regional standards
+                        </li>
+                    </ul>
+
+                    <p>
+                        This work is expected to depend on future standardization efforts, particularly regarding
+                        misbehavior
+                        reporting protocols in North America.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
+</body>
+
+</html>
