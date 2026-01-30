@@ -93,8 +93,8 @@ class ComponentLoader {
     const isGuidesPage = path.includes("/pages/docs/guides/");
     const isComponentsPage = path.includes("/pages/docs/components/");
     const isBridgePage = path.includes("/pages/docs/bridge/");
-    const isOverviewPage = path.includes("/pages/docs/overview.html") || 
-                          (filename === "overview" && !isGuidesPage && !isComponentsPage && !isBridgePage);
+    const isOverviewPage = path.includes("/pages/docs/overview.html") ||
+      (filename === "overview" && !isGuidesPage && !isComponentsPage && !isBridgePage);
     const isApiReferencePage = filename === "api-reference";
 
     return `

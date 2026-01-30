@@ -36,18 +36,25 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h2>Utilities</h2>
                     <h3>Integration with Rust</h3>
 
-                    <p>The C library is integrated into the Rust-based SCMS services using <code>bindgen</code>, which automatically generates Rust FFI bindings from the C header files.</p>
+                    <p>The C library is integrated into the Rust-based SCMS services using <code>bindgen</code>, which
+                        automatically generates Rust FFI bindings from the C header files.</p>
 
                     <h4>Integration Approach</h4>
 
                     <ul>
-                        <li><strong>Automatic binding generation:</strong> <code>bindgen</code> parses the public C headers and generates corresponding Rust types and function declarations.</li>
-                        <li><strong>Safe wrappers:</strong> A thin Rust wrapper layer provides safe, idiomatic Rust interfaces over the raw FFI bindings.</li>
-                        <li><strong>Memory safety:</strong> Ownership and lifetimes are carefully managed to ensure no memory leaks or use-after-free bugs.</li>
-                        <li><strong>Error handling:</strong> C error codes are converted to Rust <code>Result</code> types for consistent error handling.</li>
+                        <li><strong>Automatic binding generation:</strong> <code>bindgen</code> parses the public C
+                            headers and generates corresponding Rust types and function declarations.</li>
+                        <li><strong>Safe wrappers:</strong> A thin Rust wrapper layer provides safe, idiomatic Rust
+                            interfaces over the raw FFI bindings.</li>
+                        <li><strong>Memory safety:</strong> Ownership and lifetimes are carefully managed to ensure no
+                            memory leaks or use-after-free bugs.</li>
+                        <li><strong>Error handling:</strong> C error codes are converted to Rust <code>Result</code>
+                            types for consistent error handling.</li>
                     </ul>
 
-                    <p>This integration approach allows Rust developers to work with the cryptographic and protocol functionality as if it were native Rust code, while benefiting from the performance and security characteristics of the C implementation.</p>
+                    <p>This integration approach allows Rust developers to work with the cryptographic and protocol
+                        functionality as if it were native Rust code, while benefiting from the performance and security
+                        characteristics of the C implementation.</p>
                 </div>
             </div>
         </div>
