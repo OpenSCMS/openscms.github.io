@@ -6,12 +6,12 @@ SPDX-License-Identifier: Apache-2.0
 class PathUtils {
   static getBasePath() {
     const path = window.location.pathname;
-    
+
     if (PathUtils.isFourLevelDeep(path)) return "../../../../";
     if (PathUtils.isThreeLevelDeep(path)) return "../../../";
     if (PathUtils.isTwoLevelDeep(path)) return "../../";
     if (path.includes("/pages/")) return "../";
-    
+
     return "./";
   }
 
@@ -39,6 +39,7 @@ class PathUtils {
       "/pages/about/governance/",
       "/pages/about/openscms/",
       "/pages/about/release-notes/",
+      "/pages/about/features/",
       "/pages/docs/components/",
       "/pages/docs/guides/",
       "/pages/docs/bridge/"
@@ -58,7 +59,7 @@ class PathUtils {
     if (filename === "faq") return "faq";
     if (path.includes("/about/")) return "about";
     if (path.includes("/docs/")) return "documentation";
-    
+
     return "index";
   }
 }

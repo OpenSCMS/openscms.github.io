@@ -4,7 +4,7 @@ SPDX-License-Identifier: Apache-2.0
 */
 
 class SidebarTemplates {
-  
+
   static getAboutSidebar() {
     return SidebarTemplates._addActiveClass(SidebarTemplates._getAboutComplex());
   }
@@ -25,20 +25,20 @@ class SidebarTemplates {
   static _addActiveClass(html) {
     const currentPath = window.location.pathname;
     const basePath = PathUtils.getBasePath();
-    
+
     // Create a temporary div to parse and manipulate HTML
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = html;
-    
+
     // Find all sidebar links
     const links = tempDiv.querySelectorAll('.sidebar-nav-link');
     links.forEach(link => {
       const href = link.getAttribute('href');
       if (!href) return;
-      
+
       // Build the absolute path for the link
       let linkAbsolutePath = href;
-      
+
       // If href starts with basePath, it's already using basePath reference
       // Convert it to absolute path for comparison
       if (href.startsWith(basePath)) {
@@ -49,14 +49,14 @@ class SidebarTemplates {
         // This shouldn't happen with our current implementation, but just in case
         linkAbsolutePath = href;
       }
-      
+
       // Compare paths - check if current path ends with the link path
       // or if they match exactly
       if (currentPath.endsWith(linkAbsolutePath) || currentPath === linkAbsolutePath) {
         link.classList.add('active');
       }
     });
-    
+
     return tempDiv.innerHTML;
   }
 
@@ -323,10 +323,13 @@ class SidebarTemplates {
           </ul>
         </div>
         <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Assumptions and Limitations</h3>
+          <h3 class="sidebar-section-title">Features Map</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/about/assumptions.html" class="sidebar-nav-link">Assumptions and Limitations</a>
+              <a href="${basePath}pages/about/features/assumptions.html" class="sidebar-nav-link">Assumptions and Limitations</a>
+            </li>
+            <li class="sidebar-nav-item">
+              <a href="${basePath}pages/about/features/roadmap.html" class="sidebar-nav-link">Roadmap</a>
             </li>
           </ul>
         </div>
