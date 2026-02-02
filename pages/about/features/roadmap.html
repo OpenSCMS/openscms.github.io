@@ -157,25 +157,27 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         cloud-based deployments.
                     </p>
 
-                    <h3>Key Management and HSM/KMS Integration</h3>
+                    <h3>Key Management Architecture and Extensibility</h3>
 
                     <p>
-                        Private keys and certificates are currently stored on the filesystem of the hosting servers.
+                        In the current implementation, private keys and certificates are stored on the local filesystem
+                        of the hosting servers.
                     </p>
 
-                    <p>Planned enhancements include:</p>
-                    <ul>
-                        <li>Integration with Hardware Security Modules (HSMs)</li>
-                        <li>
-                            Support for external Key Management Systems (KMS), such as cloud-based or on-premise
-                            solutions
-                        </li>
-                    </ul>
+                    <p>
+                        Planned enhancements focus on introducing a modular and extensible key management architecture.
+                        The goal is to define common
+                        data structures, interfaces, and callback mechanisms that allow seamless integration with a
+                        variety of key management solutions.
+                    </p>
 
                     <p>
-                        This evolution would ensure stronger key protection guarantees and align OpenSCMS with best
-                        practices
-                        for cryptographic material management.
+                        Above refactoring would enable the SCMS to support diverse environments, ranging from
+                        software-based key stores to hardware-backed
+                        or cloud-based key management systems, without requiring major code changes. Ultimately, this
+                        evolution will strengthen key protection,
+                        improve maintainability, and align OpenSCMS with best practices for secure cryptographic
+                        material handling.
                     </p>
 
                     <h3>Misbehavior Handling and Linkage Authority Integration</h3>
