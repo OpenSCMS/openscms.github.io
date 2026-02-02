@@ -37,23 +37,25 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <h3 id="certificates">Certificates and Keys</h3>
 
-                    <p>All SCMS components require X.509 certificates and corresponding private keys to participate in
-                        the
-                        Public Key Infrastructure. These certificates are used for mutual TLS authentication, signing
+                    <p>All SCMS components require an IEEE 1609.2 explicit certificate and corresponding key pairs to
+                        participate in
+                        the system. These certificates and keys are used during the communication proccess between v2x
+                        client and SCMS signing
                         operations, and enrollment processes. Each service must have access to its certificate and
                         private
-                        key, stored in PEM format, before it can be started.</p>
+                        key before it can be started.</p>
 
                     <p>OpenSCMS provides a certificate generation script for development and testing purposes. This
-                        script
-                        generates a complete PKI hierarchy including root certificates, intermediate certificates, and
-                        end-entity credentials for all services.</p>
+                        script generates all cryptographic payloads required by
+                        openSCMS services, including component certificates, public and private keys,
+                        and protocol-specific artifacts. It also produces external trust material used
+                        by V2X clients, such as elector certificates and Root CA keys.</p>
 
                     <h3>Generating Certificates for Development</h3>
 
                     <p>From the repository root, run the certificate generation script:</p>
 
-                    <pre><code>./scripts/generate_certs.sh</code></pre>
+                    <pre><code>./scripts/run_test_scms_manager.sh</code></pre>
 
                     <p>This script generates a full set of test certificates and stores them in the
                         <code>certs/</code>
@@ -61,18 +63,59 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         directory by default.
                     </p>
 
-                    <p>The script creates the following certificate structure:</p>
+                    <pre><code>certs/
+                        ├── aca
+                        │   ├── acaCertificate.coer
+                        │   ├── acaPrivateKey.dat
+                        │   └── acaPublicKey.dat
+                        ├── ctl
+                        │   ├── ccf.coer
+                        │   └── ctl.coer
+                        ├── eca
+                        │   ├── ecaCertificate.coer
+                        │   ├── ecaPrivateKey.dat
+                        │   └── ecaPublicKey.dat
+                        ├── ica
+                        │   └── icaCertificate.coer
+                        ├── ra
+                        │   ├── raCertificate.coer
+                        │   ├── raEncPrivateKey.dat
+                        │   ├── raEncPublicKey.dat
+                        │   ├── raPrivateKey.dat
+                        │   └── raPublicKey.dat
+                        └── rootca
+                            └── rootcaCertificate.coer
+                        </code></pre>
 
-                    <ul>
-                        <li><strong>Root CA:</strong> A self-signed root certificate that anchors the entire trust
-                            hierarchy.</li>
-                        <li><strong>Intermediate CAs:</strong> Certificates for each policy-specific intermediate
-                            authority
-                            (e.g., Enrollment CA, Authorization CA).</li>
-                        <li><strong>Service Certificates:</strong> End-entity certificates for each SCMS service (RA,
-                            LA,
-                            ECA, ACA) used for mutual TLS and API authentication.</li>
-                    </ul>
+                    <h3>External Service Files</h3>
+
+                    <p>In addition to internal SCMS component certificates, the <code>scms_manager</code> generates
+                        external trust artifacts that are not consumed directly by openSCMS services but are essential
+                        for V2X clients.</p>
+
+                    <p>These files include elector certificates and Root CA material, which together form part of the
+                        V2X client root of trust:</p>
+
+                    <pre><code>external_service_files/
+                        ├── electors_files
+                        │   ├── 1_electorCertificate.coer
+                        │   ├── 1_electorPrivateKey.dat
+                        │   ├── 1_electorPublicKey.dat
+                        │   ├── 2_electorCertificate.coer
+                        │   ├── 2_electorPrivateKey.dat
+                        │   ├── 2_electorPublicKey.dat
+                        │   ├── 3_electorCertificate.coer
+                        │   ├── 3_electorPrivateKey.dat
+                        │   └── 3_electorPublicKey.dat
+                        ├── ica_files
+                        │   ├── icaCertificate.coer
+                        │   ├── icaPrivateKey.dat
+                        │   └── icaPublicKey.dat
+                        └── root_ca_files
+                            ├── rootcaCertificate.coer
+                            ├── rootcaPrivateKey.dat
+                            └── rootcaPublicKey.dat
+                        </code></pre>
 
                     <p><strong>Important:</strong> The certificates generated by this script are intended for
                         development

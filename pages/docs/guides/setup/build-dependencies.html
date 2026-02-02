@@ -42,136 +42,135 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         are installed on the system. OpenSCMS has a layered architecture that combines multiple
                         technologies, and each layer requires specific tooling to be present.</p>
 
-                    <h3>Core Dependencies for Manual Deployment</h3>
+                    <p>We assume a debian-based development environment, ideally Ubuntu 24.04 or newer.</p>
 
-                    <p>To compile and run OpenSCMS services manually (without Docker), the following system libraries
-                        and
-                        tools are required:</p>
+                    <h3 id="installing-dependencies-for-the-c-code">Installing Dependencies for the C Code</h3>
 
-                    <ul>
-                        <li><strong>Rust Toolchain:</strong> OpenSCMS services are written in Rust and require a
-                            working
-                            Rust installation. Install Rust via <code>rustup</code>:</li>
-                    </ul>
+                    <p>The following libraries need to be installed on your development machine.</p>
 
-                    <pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup update</code></pre>
+                    <pre><code>sudo apt install -y \
+        libzip-dev \
+        libssl-dev \
+        libcurl4-openssl-dev</code></pre>
 
-                    <ul>
-                        <li><strong>C Compiler and Build Tools:</strong> The <code>oscms-codecs-bridge</code>
-                            integrates
-                            C-based cryptographic libraries. On macOS, install Xcode command-line tools:</li>
-                    </ul>
+                    <p>You will also need a set of tools</p>
 
-                    <pre><code>xcode-select --install</code></pre>
+                    <pre><code>sudo apt-get -qy install \
+        build-essential \
+        clang-format-18 \
+        cmake \
+        cppcheck \
+        curl \
+        git \
+        gzip \
+        pkg-config \
+        valgrind \
+        wget</code></pre>
 
-                    <p>On Linux systems, ensure <code>gcc</code>, <code>make</code>, and other standard build tools are
-                        available.</p>
+                    <h3 id="setting-up-rust">Setting up Rust</h3>
 
-                    <ul>
-                        <li><strong>CMake:</strong> Required for building the <code>oscms-codecs-bridge</code> C
-                            extension.
-                            Install via Homebrew on macOS:</li>
-                    </ul>
+                    <p>Once you have all the basic dependencies installed, it's time to add Rust. It's always wise to
+                        check the instructions at the <a href="https://rust-lang.org/tools/install/">Rust Site</a>, but
+                        in short form they are as follows:</p>
 
-                    <pre><code>brew install cmake</code></pre>
+                    <pre><code># Install Rustup and activate the environment
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    source ~/.cargo/env
+    
+    # Optionally install these addons for database work
+    cargo install sea-orm-cli
+    cargo install sqlx-cli</code></pre>
 
-                    <p>On Linux, use the system package manager (e.g., <code>apt install cmake</code> on Debian-based
-                        distributions).</p>
+                    <h3 id="setting-up-minikube-for-testing">Setting up Minikube for Testing</h3>
 
-                    <ul>
-                        <li><strong>libclang:</strong> The Rust <code>bindgen</code> tool requires <code>libclang</code>
-                            to
-                            generate Rust bindings for C headers. On macOS:</li>
-                    </ul>
+                    <p>See the separate <a href="./MINIKUBE_SETUP.html">Minikube Setup Instructions</a>.</p>
 
-                    <pre><code>brew install llvm</code></pre>
+                    <h3 id="using-docker-for-development">Using Docker for Development</h3>
 
-                    <p>On Linux:</p>
+                    <p>Alternatively, you can use the docker file provided in the repository. This is the image used
+                        for all CI jobs during the initial development. It provides a basic environment for building,
+                        running clippy or formatting the source, and for running the unit tests. But it is not suitable
+                        for deploying to minikube.</p>
 
-                    <pre><code>apt install libclang-dev</code></pre>
+                    <p>For that, you will need to install Rust and the dependencies on your host machine.</p>
 
-                    <ul>
-                        <li><strong>MySQL Client Libraries:</strong> Services that interact with MySQL (such as the
-                            Registration Authority) require MySQL development headers. On macOS:</li>
-                    </ul>
+                    <p>Now change to the directory where you cloned this repository and build the image as follows</p>
 
-                    <pre><code>brew install mysql-client</code></pre>
+                    <pre><code>git clone git@github.com:OpenSCMS/oscms-ci-docker.git
+    cd oscms-ci-docker
+    docker build -t oscms-server-docker . -f docker/openscms-server-ci.dockerfile</code></pre>
 
-                    <p>On Linux:</p>
+                    <p>Now run the container thus</p>
 
-                    <pre><code>apt install libmysqlclient-dev</code></pre>
+                    <pre><code>docker run -ti --rm --volume $PWD:/WORK --user $(id -u):$(id -g) \
+           oscms-server-docker</code></pre>
 
-                    <ul>
-                        <li><strong>RabbitMQ:</strong> For local development, a running RabbitMQ instance is required.
-                            Install via:</li>
-                    </ul>
+                    <p>This will place you in a <code>bash</code> shell within the container, with your cloned source
+                        available at <code>/WORK</code>. Your user inside the container will have the same group and
+                        user id as on your host, so any changes you make will have the correct permissions.</p>
 
-                    <pre><code>brew install rabbitmq</code></pre>
+                    <p>It should also be possible to use this image as a <code>VS Code</code> development container.
+                        The development team has not used it in this way, so if it doesn't work ... contributions are
+                        welcome.</p>
 
-                    <p>Or via Docker:</p>
+                    <h3 id="getting-the-code">Getting the Code</h3>
 
-                    <pre><code>docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management</code></pre>
+                    <p>The Open SCMS stack makes heavy use of submodules. Therefore, the clone command should ensure it
+                        pulls down all sub modules as follows.</p>
 
-                    <h3>Unified Deployment Dependencies</h3>
+                    <pre><code>git clone --recurse-submodules git@github.com:OpenSCMS/OpenSCMS.git</code></pre>
 
-                    <p>For containerized deployments using Docker and Kubernetes, the following tools are required:</p>
+                    <p>Obviously, replace the URL with your own if you are cloning a fork.</p>
 
-                    <ul>
-                        <li><strong>Docker:</strong> Required to build and run container images. Install Docker Desktop
-                            on
-                            macOS or Docker Engine on Linux.</li>
-                        <li><strong>Minikube:</strong> Provides a local Kubernetes cluster for development and testing.
-                        </li>
-                        <li><strong>Skaffold:</strong> Orchestrates the build and deployment pipeline.</li>
-                        <li><strong>kubectl:</strong> The Kubernetes command-line interface.</li>
-                        <li><strong>Helm:</strong> Used to deploy certain infrastructure components such as RabbitMQ
-                            operators.</li>
-                    </ul>
-
-                    <p>OpenSCMS recommends managing all Kubernetes tooling through <code>binenv</code>, a
-                        language-agnostic
-                        tool version manager that simplifies installation and ensures consistent versions across
-                        different
-                        machines.</p>
-
-                    <h4>Installing binenv</h4>
-
-                    <p>To install <code>binenv</code> on macOS or Linux:</p>
-
-                    <pre><code>curl -sL https://github.com/devops-works/binenv/releases/latest/download/binenv-$(uname -s)-$(uname -m) \
-  -o /usr/local/bin/binenv && chmod +x /usr/local/bin/binenv</code></pre>
-
-                    <p>Initialize <code>binenv</code>:</p>
-
-                    <pre><code>binenv update</code></pre>
-
-                    <p>Add <code>binenv</code> to your shell's PATH. For Zsh, add the following to
-                        <code>~/.zshrc</code>:
+                    <p>Due to the use of relative submodule paths, if you are going to fork one repository you will
+                        need to fork them all. The alternative is for you to modify the paths in
+                        <code>.gitmodules</code>, but <strong>DO NOT</strong> commit these changes. Such a pull request
+                        will not be accepted.
                     </p>
 
-                    <pre><code>export PATH="$HOME/.binenv:$PATH"</code></pre>
+                    <p>The list of repositories, and their relative submodule dependencies is as follows</p>
 
-                    <p>For Bash, add the equivalent line to <code>~/.bashrc</code>.</p>
+                    <ul>
+                        <li><a href="https://github.com/OpenSCMS/OpenSCMS">OpenSCMS</a>
+                            <ul>
+                                <li><a href="https://github.com/OpenSCMS/oscms-codecs-bridge">oscms-codecs-bridge</a>
+                                    <ul>
+                                        <li><a
+                                                href="https://github.com/OpenSCMS/oscms-asn1c-codecs">oscms-asn1c-codecs</a>
+                                            <ul>
+                                                <li><a
+                                                        href="https://github.com/OpenSCMS/oscms-codecs-api">oscms-codecs-api</a>
+                                                </li>
+                                                <li><a
+                                                        href="https://github.com/OpenSCMS/oscms-asn1c-generated">oscms-asn1c-generated</a>
+                                                    <ul>
+                                                        <li><a
+                                                                href="https://github.com/OpenSCMS/etsi_ts103097-asn">etsi_ts103097-asn</a>
+                                                        </li>
+                                                        <li><a
+                                                                href="https://github.com/OpenSCMS/ieee1609dot2dot1-asn">ieee1609dot2dot1-asn</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
 
-                    <h4>Installing Required Tools via binenv</h4>
+                    <h2 id="contributing">Contributing</h2>
 
-                    <p>With <code>binenv</code> installed, install the required Kubernetes tooling:</p>
+                    <p>Contributions are welcome. Please see the
+                        <a href="https://github.com/OpenSCMS/.github/blob/main/CONTRIBUTING.md">CONTRIBUTING file</a>
+                        for details, including the Code of Conduct and C Style Guide.
+                    </p>
 
-                    <pre><code>binenv install minikube
-binenv install skaffold
-binenv install kubectl
-binenv install helm</code></pre>
+                    <h2 id="license">License</h2>
 
-                    <p>Verify that each tool is correctly installed:</p>
-
-                    <pre><code>minikube version
-skaffold version
-kubectl version --client
-helm version</code></pre>
-
-                    <p>These tools form the complete foundation required to deploy OpenSCMS in a containerized
-                        environment.
+                    <p>This project is licensed under the Apache-2.0 License. See the
+                        <a href="./LICENSE">LICENSE file</a> for details.
                     </p>
                 </div>
             </div>
