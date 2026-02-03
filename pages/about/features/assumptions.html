@@ -15,7 +15,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <meta name="description" content="OpenSCMS Assumptions and Limitations">
     <title>Assumptions & Limitations - OpenSCMS Guides</title>
     <link rel="icon" type="image/x-icon" href="../../favicon.ico">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../../css/styles.css">
 </head>
 
 <body>
@@ -30,6 +30,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                 <!-- Main Content -->
                 <div class="docs-content">
+
                     <h2>Assumptions and Limitations</h2>
 
                     <h3 id="api-endpoints">SCMS API Available Endpoints</h3>
@@ -86,12 +87,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         files are published in the future, the utilities can be used for migration.
                     </p>
 
-                    <h3 id="policy-files">Policy Files</h3>
-                    <p>OpenSCMS policies and policy files follow closely the SaesolTech SCMS' policies, where SaesolTech
-                        SCMS is one of the eligible Omniair Consortium SCMSs to certify clients under 1609.2.1.</p>
-                    <p><strong>Limitation:</strong> No current per-region policy files. Support for multiple regions on
-                        policy files may be a future feature.</p>
-
                     <h3 id="bootstrapping">Bootstrapping Server Certificates</h3>
                     <p>For testing purposes, OpenSCMS provides a script that generates sample elector certificates, a
                         sample CA certificate chain, and a CTL signed by those elector certificates. The certificates
@@ -120,6 +115,17 @@ http://www.apache.org/licenses/LICENSE-2.0.
                             target="_blank">ETSI TS 103 759</a> standard defines an interoperable data structure and
                         protocol for misbehavior reports, North American standards assume the function exists within the
                         system design but lack a precise, universally standardized message type.</p>
+
+                    <p>Although the Linkage Authority (LA) component is implemented and supports deployment of multiple
+                        instances,
+                        it currently operates as a standalone module. The LA is not integrated into the authorization
+                        certificate
+                        generation workflow, since OpenSCMS does not yet implement revocation or misbehavior-driven
+                        linkage mechanisms.</p>
+
+                    <p>This limitation is consistent with the fact that misbehavior detection and revocation workflows
+                        are out of scope for
+                        IEEE 1609.2.1, but it should be clearly noted that the LA integration remains incomplete.</p>
                     <p><strong>Future Feature:</strong> Misbehaviour support is a desired feature, ideally interoperable
                         across North America, European, and other standards.</p>
 
@@ -132,11 +138,11 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
-    <script src="../../js/path-utils.js"></script>
-    <script src="../../js/sidebar-manager.js"></script>
-    <script src="../../js/breadcrumb.js"></script>
-    <script src="../../js/sidebar-templates.js"></script>
-    <script src="../../js/components.js"></script>
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
 </body>
 
 </html>

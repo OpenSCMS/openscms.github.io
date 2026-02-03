@@ -10,45 +10,45 @@ http://www.apache.org/licenses/LICENSE-2.0.
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OpenSCMS High-Level Layers">
-    <title>High-Level Layers - OpenSCMS Guides</title>
-    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <link rel="stylesheet" href="../../../../css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="OpenSCMS High-Level Layers">
+  <title>High-Level Layers - OpenSCMS Guides</title>
+  <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
+  <link rel="stylesheet" href="../../../../css/styles.css">
 </head>
 
 <body>
-    <!-- Header Component -->
-    <div id="header-placeholder"></div>
+  <!-- Header Component -->
+  <div id="header-placeholder"></div>
 
-    <!-- Documentation Submenu -->
-    <div id="docs-submenu-placeholder"></div>
+  <!-- Documentation Submenu -->
+  <div id="docs-submenu-placeholder"></div>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="docs-layout">
-                <!-- Sidebar Navigation -->
-                <div id="docs-components-sidebar-placeholder"></div>
+  <main class="main-content">
+    <div class="container">
+      <div class="docs-layout">
+        <!-- Sidebar Navigation -->
+        <div id="docs-components-sidebar-placeholder"></div>
 
-                <!-- Main Content -->
-                <div class="docs-content">
-                    <h2>Registration Authority (RA)</h2>
+        <!-- Main Content -->
+        <div class="docs-content">
+          <h2>Registration Authority (RA)</h2>
 
-                    <h3 id="ee-registration">EE Registration and Policy Distribution</h3>
+          <h3 id="ee-registration">EE Registration and Policy Distribution</h3>
 
-                    <p>Before an End Entity (EE) can participate in enrollment or certificate provisioning flows, it
-                        must first be registered with the SCMS. In OpenSCMS, this initial step is handled by the
-                        Registration Authority (RA), acting in its combined DC/DCM role.</p>
+          <p>Before an End Entity (EE) can participate in enrollment or certificate provisioning flows, it
+            must first be registered with the SCMS. In OpenSCMS, this initial step is handled by the
+            Registration Authority (RA), acting in its combined DC/DCM role.</p>
 
-                    <p>The registration process establishes the EE identity within the system, associates a canonical
-                        identifier with a device identifier, and returns the initial policy that governs which SCMS
-                        operations the EE is allowed to perform. This flow is synchronous and is typically executed
-                        during initial device provisioning or manufacturing.</p>
+          <p>The registration process establishes the EE identity within the system, associates a canonical
+            identifier with a device identifier, and returns the initial policy that governs which SCMS
+            operations the EE is allowed to perform. This flow is synchronous and is typically executed
+            during initial device provisioning or manufacturing.</p>
 
-                    <h3>EE Registration Request</h3>
+          <h3>EE Registration Request</h3>
 
-                    <pre><code>POST /dcms/device/na
+          <pre><code>POST /dcms/device/na
 
 Description:
   Registers a new End Entity (EE) in the SCMS.
@@ -63,12 +63,12 @@ Errors:
   - Duplicate EE registration
   - Invalid or incomplete metadata</code></pre>
 
-                    <p>The EE registration request is a JSON-based request that provides the RA with the minimal
-                        information required to identify and register a new device.</p>
+          <p>The EE registration request is a JSON-based request that provides the RA with the minimal
+            information required to identify and register a new device.</p>
 
-                    <h3>Policy File Download</h3>
+          <h3>Policy File Download</h3>
 
-                    <pre><code>GET /dcms/policy/na
+          <pre><code>GET /dcms/policy/na
 
 Description:
   Returns policy and configuration information applicable
@@ -80,28 +80,28 @@ Input:
 Output:
   - Policy definition governing allowed SCMS operations</code></pre>
 
-                    <p>The Registration Authority exposes a single endpoint for policy retrieval. The policy returned
-                        depends on whether the request identifies a specific End Entity (EE).</p>
+          <p>The Registration Authority exposes a single endpoint for policy retrieval. The policy returned
+            depends on whether the request identifies a specific End Entity (EE).</p>
 
-                    <p>If the request includes either the <code>canonicalId</code> or <code>deviceId</code> query
-                        parameter, the RA returns a device-specific policy that defines which SCMS operations the EE is
-                        authorized to perform. If no EE-identifying parameters are provided, the RA returns the global
-                        SCMS policy, which defines system-wide configuration, trust anchors, and cryptographic
-                        constraints.</p>
-                </div>
-            </div>
+          <p>If the request includes either the <code>canonicalId</code> or <code>deviceId</code> query
+            parameter, the RA returns a device-specific policy that defines which SCMS operations the EE is
+            authorized to perform. If no EE-identifying parameters are provided, the RA returns the global
+            SCMS policy, which defines system-wide configuration, trust anchors, and cryptographic
+            constraints.</p>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 
-    <!-- Footer Component -->
-    <div id="footer-placeholder"></div>
+  <!-- Footer Component -->
+  <div id="footer-placeholder"></div>
 
-    <!-- Component Loader -->
-    <script src="../../../../js/path-utils.js"></script>
-    <script src="../../../../js/sidebar-manager.js"></script>
-    <script src="../../../../js/breadcrumb.js"></script>
-    <script src="../../../../js/sidebar-templates.js"></script>
-    <script src="../../../../js/components.js"></script>
+  <!-- Component Loader -->
+  <script src="../../../../js/path-utils.js"></script>
+  <script src="../../../../js/sidebar-manager.js"></script>
+  <script src="../../../../js/breadcrumb.js"></script>
+  <script src="../../../../js/sidebar-templates.js"></script>
+  <script src="../../../../js/components.js"></script>
 
 </body>
 

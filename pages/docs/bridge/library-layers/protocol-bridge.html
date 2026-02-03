@@ -36,18 +36,27 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h2>Library Layers</h2>
                     <h3>Protocol Bridge Layer</h3>
 
-                    <p>The protocol bridge layer implements the cryptographic and protocol operations defined by IEEE 1609.2.1. It sits above the codec abstraction layer and below the Rust-based SCMS service layer.</p>
+                    <p>The protocol bridge layer implements the cryptographic and protocol operations defined by IEEE
+                        1609.2.1. It sits above the codec abstraction layer and below the Rust-based SCMS service layer.
+                    </p>
 
                     <p>This layer is responsible for:</p>
 
                     <ul>
-                        <li><strong>SPDU construction and verification:</strong> Building and validating IEEE 1609.2.1 Secured Protocol Data Units (SPDUs), including enrollment requests, certificate responses, and misbehavior reports.</li>
-                        <li><strong>Cryptographic operations:</strong> Performing signing, verification, encryption, and decryption using NIST P-256 and Brainpool curves.</li>
-                        <li><strong>Certificate and key management:</strong> Handling certificate chains, trust anchors, and cryptographic key material.</li>
-                        <li><strong>Protocol-level semantics:</strong> Enforcing the rules and constraints defined in the IEEE 1609.2.1 specification.</li>
+                        <li><strong>SPDU construction and verification:</strong> Building and validating IEEE 1609.2.1
+                            Secured Protocol Data Units (SPDUs), including enrollment requests, certificate responses,
+                            and misbehavior reports.</li>
+                        <li><strong>Cryptographic operations:</strong> Performing signing, verification, encryption, and
+                            decryption using NIST P-256 and Brainpool curves.</li>
+                        <li><strong>Certificate and key management:</strong> Handling certificate chains, trust anchors,
+                            and cryptographic key material.</li>
+                        <li><strong>Protocol-level semantics:</strong> Enforcing the rules and constraints defined in
+                            the IEEE 1609.2.1 specification.</li>
                     </ul>
 
-                    <p>By implementing these operations in C, the protocol bridge layer ensures high performance and security for cryptographic operations while remaining independent of the Rust-based application logic.</p>
+                    <p>By implementing these operations in C, the protocol bridge layer ensures high performance and
+                        security for cryptographic operations while remaining independent of the Rust-based application
+                        logic.</p>
                 </div>
             </div>
         </div>

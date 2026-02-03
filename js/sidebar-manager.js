@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 class SidebarManager {
   static setupScrollManagement() {
     const sidebars = document.querySelectorAll('.docs-sidebar');
-    
+
     sidebars.forEach(sidebar => {
       SidebarManager.restoreScroll(sidebar);
 
@@ -47,7 +47,7 @@ class SidebarManager {
         }
       });
     });
-    
+
     SidebarManager.restoreCollapseState();
   }
 
@@ -67,7 +67,7 @@ class SidebarManager {
 
   static restoreCollapseState() {
     const sections = document.querySelectorAll('.sidebar-section');
-    
+
     sections.forEach(section => section.classList.add('collapsed'));
 
     const saved = sessionStorage.getItem('sidebarExpandedSections');

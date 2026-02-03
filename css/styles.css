@@ -614,6 +614,7 @@ body {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -783,12 +784,14 @@ body {
     .docs-grid-4 {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .docs-grid-3 {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
+
     .docs-grid-4,
     .docs-grid-3 {
         grid-template-columns: 1fr;
