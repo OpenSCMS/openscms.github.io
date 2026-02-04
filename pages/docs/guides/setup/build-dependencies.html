@@ -74,16 +74,16 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         in short form they are as follows:</p>
 
                     <pre><code># Install Rustup and activate the environment
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-    source ~/.cargo/env
-    
-    # Optionally install these addons for database work
-    cargo install sea-orm-cli
-    cargo install sqlx-cli</code></pre>
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env</code></pre>
+
+                    <pre><code># Optionally install these addons for database work
+cargo install sea-orm-cli
+cargo install sqlx-cli</code></pre>
 
                     <h3 id="setting-up-minikube-for-testing">Setting up Minikube for Testing</h3>
 
-                    <p>See the separate <a href="./MINIKUBE_SETUP.html">Minikube Setup Instructions</a>.</p>
+                    <p>See the separate <a href="./kubernetes.html">Minikube Setup Instructions</a>.</p>
 
                     <h3 id="using-docker-for-development">Using Docker for Development</h3>
 
@@ -96,14 +96,12 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>Now change to the directory where you cloned this repository and build the image as follows</p>
 
-                    <pre><code>git clone git@github.com:OpenSCMS/oscms-ci-docker.git
-    cd oscms-ci-docker
-    docker build -t oscms-server-docker . -f docker/openscms-server-ci.dockerfile</code></pre>
+                    <pre><code>docker build -t oscms-server-docker . -f docker/openscms-server-ci.dockerfile</code></pre>
 
                     <p>Now run the container thus</p>
 
                     <pre><code>docker run -ti --rm --volume $PWD:/WORK --user $(id -u):$(id -g) \
-           oscms-server-docker</code></pre>
+oscms-server-docker</code></pre>
 
                     <p>This will place you in a <code>bash</code> shell within the container, with your cloned source
                         available at <code>/WORK</code>. Your user inside the container will have the same group and
@@ -112,6 +110,18 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>It should also be possible to use this image as a <code>VS Code</code> development container.
                         The development team has not used it in this way, so if it doesn't work ... contributions are
                         welcome.</p>
+
+                    <h3>Running the Server In Minikube</h3>
+
+                    <p>
+                        OpenSCMS was developed and tested using <b>minikube</b>. Once you have performed the needed
+                        <a href="./kubernetes.html">Minikube Setup Instructions</a>, you can start the local server
+                        with the simple command
+                    </p>
+
+                    <p>For troubleshooting and more details on how to explore the server, check the details at <b><a
+                                href="https://github.com/OpenSCMS/OpenSCMS/blob/main/README.md#running-the-server-in-minikube">
+                                OpenSCMS Main Server</a></b>.</p>
 
                     <h3 id="getting-the-code">Getting the Code</h3>
 
@@ -165,12 +175,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>Contributions are welcome. Please see the
                         <a href="https://github.com/OpenSCMS/.github/blob/main/CONTRIBUTING.md">CONTRIBUTING file</a>
                         for details, including the Code of Conduct and C Style Guide.
-                    </p>
-
-                    <h2 id="license">License</h2>
-
-                    <p>This project is licensed under the Apache-2.0 License. See the
-                        <a href="./LICENSE">LICENSE file</a> for details.
                     </p>
                 </div>
             </div>

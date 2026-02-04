@@ -50,20 +50,16 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <h4>Installing Required Tooling</h4>
 
-                    <p>All required tooling should be installed using <code>binenv</code>, as described earlier. This
+                    <p>All required tooling should be installed using <code>binenv</code>, as described earlier. Their
+                        versions can be seen in `.binenv.lock` in the repository root. This
                         ensures that consistent and compatible versions of all Kubernetes-related tools are used across
                         different development environments.</p>
 
+                    <pre><code>
+                        binenv install -l
+                    </code></pre>
+
                     <h4>Configuring Minikube</h4>
-
-                    <p>OpenSCMS uses the Docker driver for Minikube. This can be configured permanently by editing (or
-                        creating) the Minikube configuration file with the following content:</p>
-
-                    <pre><code>{
-  "vm-driver": "docker"
-}</code></pre>
-
-                    <h4>Installing kubectl Plugins</h4>
 
                     <p>To simplify cluster management, install the <code>krew</code> plugin manager for
                         <code>kubectl</code>:
@@ -106,7 +102,10 @@ exec $SHELL</code></pre>
 
                     <p>Once Minikube is running, perform a test deployment of OpenSCMS from the repository root:</p>
 
-                    <pre><code>skaffold run && skaffold delete</code></pre>
+                    <pre><code>
+                        scripts/run_test_scms_manager.sh # to generate the certificates
+                        skaffold run && skaffold delete
+                    </code></pre>
 
                     <p>This command deploys the full SCMS stack and then immediately tears it down, verifying that all
                         components can be built and scheduled correctly.</p>

@@ -37,7 +37,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <h3 id="certificates">Certificates and Keys</h3>
 
-                    <p>All SCMS components require an IEEE 1609.2 explicit certificate and corresponding key pairs to
+                    <p>All OpenSCMS components require an IEEE 1609.2 explicit certificate and corresponding key pairs
+                        to
                         participate in
                         the system. These certificates and keys are used during the communication proccess between v2x
                         client and SCMS signing
@@ -55,7 +56,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>From the repository root, run the certificate generation script:</p>
 
-                    <pre><code>./scripts/run_test_scms_manager.sh</code></pre>
+                    <pre><code>scripts/run_test_scms_manager.sh</code></pre>
 
                     <p>This script generates a full set of test certificates and stores them in the
                         <code>certs/</code>
@@ -64,58 +65,60 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </p>
 
                     <pre><code>certs/
-                        ├── aca
-                        │   ├── acaCertificate.coer
-                        │   ├── acaPrivateKey.dat
-                        │   └── acaPublicKey.dat
-                        ├── ctl
-                        │   ├── ccf.coer
-                        │   └── ctl.coer
-                        ├── eca
-                        │   ├── ecaCertificate.coer
-                        │   ├── ecaPrivateKey.dat
-                        │   └── ecaPublicKey.dat
-                        ├── ica
-                        │   └── icaCertificate.coer
-                        ├── ra
-                        │   ├── raCertificate.coer
-                        │   ├── raEncPrivateKey.dat
-                        │   ├── raEncPublicKey.dat
-                        │   ├── raPrivateKey.dat
-                        │   └── raPublicKey.dat
-                        └── rootca
-                            └── rootcaCertificate.coer
-                        </code></pre>
+├── aca
+│   ├── acaCertificate.coer
+│   ├── acaPrivateKey.dat
+│   └── acaPublicKey.dat
+├── ctl
+│   ├── ccf.coer
+│   └── ctl.coer
+├── eca
+│   ├── ecaCertificate.coer
+│   ├── ecaPrivateKey.dat
+│   └── ecaPublicKey.dat
+├── ica
+│   └── icaCertificate.coer
+├── ra
+│   ├── raCertificate.coer
+│   ├── raEncPrivateKey.dat
+│   ├── raEncPublicKey.dat
+│   ├── raPrivateKey.dat
+│   └── raPublicKey.dat
+└── rootca
+└── rootcaCertificate.coer</code></pre>
 
                     <h3>External Service Files</h3>
 
-                    <p>In addition to internal SCMS component certificates, the <code>scms_manager</code> generates
-                        external trust artifacts that are not consumed directly by openSCMS services but are essential
-                        for V2X clients.</p>
+                    <p>In addition to internal OpenSCMS component certificates, the <code>scms_manager</code> generates
+                        external trust artifacts that are not consumed directly by OpenSCMS services but are essential
+                        for stablishing the root of trust.</p>
 
-                    <p>These files include elector certificates and Root CA material, which together form part of the
-                        V2X client root of trust:</p>
+                    <p>These files include electors certificates and Root CA material. It is important to note that the
+                        V2X client will likely be interested in consulting the <b>electors_hash_root_of_trust.info</b>
+                        file, as
+                        it contains the hashes of the elector certificates that were used to sign the CTL (material
+                        containing the list of trusted OpenSCMS certificates).</p>
 
                     <pre><code>external_service_files/
-                        ├── electors_files
-                        │   ├── 1_electorCertificate.coer
-                        │   ├── 1_electorPrivateKey.dat
-                        │   ├── 1_electorPublicKey.dat
-                        │   ├── 2_electorCertificate.coer
-                        │   ├── 2_electorPrivateKey.dat
-                        │   ├── 2_electorPublicKey.dat
-                        │   ├── 3_electorCertificate.coer
-                        │   ├── 3_electorPrivateKey.dat
-                        │   └── 3_electorPublicKey.dat
-                        ├── ica_files
-                        │   ├── icaCertificate.coer
-                        │   ├── icaPrivateKey.dat
-                        │   └── icaPublicKey.dat
-                        └── root_ca_files
-                            ├── rootcaCertificate.coer
-                            ├── rootcaPrivateKey.dat
-                            └── rootcaPublicKey.dat
-                        </code></pre>
+├── electors_files
+│   ├── 1_electorCertificate.coer
+│   ├── 1_electorPrivateKey.dat
+│   ├── 1_electorPublicKey.dat
+│   ├── 2_electorCertificate.coer
+│   ├── 2_electorPrivateKey.dat
+│   ├── 2_electorPublicKey.dat
+│   ├── 3_electorCertificate.coer
+│   ├── 3_electorPrivateKey.dat
+│   └── 3_electorPublicKey.dat
+│   └── electors_hash_root_of_trust.info
+├── ica_files
+│   ├── icaCertificate.coer
+│   ├── icaPrivateKey.dat
+│   └── icaPublicKey.dat
+└── root_ca_files
+    ├── rootcaCertificate.coer
+    ├── rootcaPrivateKey.dat
+    └── rootcaPublicKey.dat</code></pre>
 
                     <p><strong>Important:</strong> The certificates generated by this script are intended for
                         development
