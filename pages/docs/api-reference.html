@@ -40,14 +40,13 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         With OpenSCMS running (as per the Minikube deployment described in the
                         <b><a href="./guides/setup/kubernetes.html">Minikube Setup Instructions</a></b>), you can
                         retrieve the
-                        Swagger documentation in JSON format for each component using the following commands:
+                        Swagger documentation in JSON format for all components using the following script:
                     </p>
 
-                    <pre><code>MINIKUBE_IP=$(minikube ip)
-                        wget -O ra_swagger.json ${MINIKUBE_IP}:30080/api-docs/openapi.json
-                        wget -O aca_swagger.json ${MINIKUBE_IP}:30082/api-docs/openapi.json
-                        wget -O eca_swagger.json ${MINIKUBE_IP}:30085/api-docs/openapi.json
-                        wget -O la_swagger.json ${MINIKUBE_IP}:30091/api-docs/openapi.json</code></pre>
+                    <pre><code>for S in aca eca la1 ra;
+do
+    wget -O - `minikube service ${S}-external-service --url`/api-docs/openapi.json | jq . >${S}_swagger.json;
+done;</code></pre>
 
                     <p>
                         Alternatively, you can download version 1.0.0 directly using the links below:
