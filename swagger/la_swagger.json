@@ -6,7 +6,7 @@
         "license": {
             "name": ""
         },
-        "version": "0.1.0"
+        "version": "1.0.0"
     },
     "paths": {
         "/": {
@@ -101,6 +101,119 @@
     },
     "components": {
         "schemas": {
+            "Caterpillar": {
+                "oneOf": [
+                    {
+                        "type": "object",
+                        "required": [
+                            "Obk"
+                        ],
+                        "properties": {
+                            "Obk": {
+                                "$ref": "#/components/schemas/CaterpillarObk"
+                            }
+                        }
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "Ubk"
+                        ],
+                        "properties": {
+                            "Ubk": {
+                                "$ref": "#/components/schemas/CaterpillarUbk"
+                            }
+                        }
+                    }
+                ]
+            },
+            "CaterpillarObk": {
+                "type": "object",
+                "required": [
+                    "vid",
+                    "pub_key_sign",
+                    "pub_key_encrypt",
+                    "f_sign",
+                    "f_encrypt",
+                    "exp_type",
+                    "hash_id",
+                    "certificate_type"
+                ],
+                "properties": {
+                    "certificate_type": {
+                        "$ref": "#/components/schemas/CertificateType"
+                    },
+                    "exp_type": {
+                        "$ref": "#/components/schemas/ExpansionType"
+                    },
+                    "f_encrypt": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "f_sign": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "hash_id": {
+                        "type": "string"
+                    },
+                    "pub_key_encrypt": {
+                        "$ref": "#/components/schemas/VerifyingKey"
+                    },
+                    "pub_key_sign": {
+                        "$ref": "#/components/schemas/VerifyingKey"
+                    },
+                    "vid": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "CaterpillarStatus": {
+                "type": "string",
+                "description": "Initially all caterpillar are set as `ToBeProcessed`.\nThis status controls which records should be filtered when loading the\ncaterpillars for processing.",
+                "enum": [
+                    "Processed",
+                    "Processing",
+                    "Queued",
+                    "ToBeProcessed"
+                ]
+            },
+            "CaterpillarUbk": {
+                "type": "object",
+                "required": [
+                    "vid",
+                    "pub_key_sign",
+                    "f_sign",
+                    "exp_type",
+                    "hash_id",
+                    "certificate_type"
+                ],
+                "properties": {
+                    "certificate_type": {
+                        "$ref": "#/components/schemas/CertificateType"
+                    },
+                    "exp_type": {
+                        "$ref": "#/components/schemas/ExpansionType"
+                    },
+                    "f_sign": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "hash_id": {
+                        "type": "string"
+                    },
+                    "pub_key_sign": {
+                        "$ref": "#/components/schemas/VerifyingKey"
+                    },
+                    "vid": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
             "CertificateConfigInfo": {
                 "type": "object",
                 "required": [
@@ -159,6 +272,61 @@
                     "Explicit",
                     "Implicit"
                 ]
+            },
+            "ClientRequestsMapping": {
+                "type": "object",
+                "description": "This struct is on the level of the certificate request, and the caterpillar.\nBecause there is one Caterpillar for each Certificate Request.\nEach Certificate Request will output multiple Certificates.\nEach vehicle could have made multiple certificate requests.\nGiven that it has a vid and hash_id values which are combined unique for each\nEE's certificate request.\nThe ClientRequestsMappingEntry on the other hand will be in the level of each\nCertificate.",
+                "required": [
+                    "requests",
+                    "vid",
+                    "hash_id",
+                    "exp_type",
+                    "req_id"
+                ],
+                "properties": {
+                    "exp_type": {
+                        "$ref": "#/components/schemas/ExpansionType"
+                    },
+                    "hash_id": {
+                        "type": "string"
+                    },
+                    "req_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "requests": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ClientRequestsMappingEntry"
+                        }
+                    },
+                    "vid": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
+            "ClientRequestsMappingEntry": {
+                "type": "object",
+                "description": "This struct is on the level of the Certificate. It has values for\ni_index and j_index.",
+                "required": [
+                    "i_index",
+                    "j_index"
+                ],
+                "properties": {
+                    "i_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    },
+                    "j_index": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
             },
             "CocoonRequest": {
                 "type": "object",
@@ -324,8 +492,6 @@
                     "Original",
                     "Unified",
                     "Compact",
-                    "OriginalAcpc",
-                    "UnifiedAcpc",
                     "NonButterfly",
                     "NonButterflyEncrypted"
                 ]
@@ -791,6 +957,41 @@
                     }
                 }
             },
+            "NonButterflyRequest": {
+                "type": "object",
+                "required": [
+                    "vid",
+                    "verifying_key_raw",
+                    "hash_id",
+                    "exp_type",
+                    "certificate_type"
+                ],
+                "properties": {
+                    "certificate_type": {
+                        "$ref": "#/components/schemas/CertificateType"
+                    },
+                    "encryption_key_raw": {
+                        "type": "string",
+                        "format": "binary",
+                        "nullable": true
+                    },
+                    "exp_type": {
+                        "$ref": "#/components/schemas/ExpansionType"
+                    },
+                    "hash_id": {
+                        "type": "string"
+                    },
+                    "verifying_key_raw": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "vid": {
+                        "type": "integer",
+                        "format": "int64",
+                        "minimum": 0
+                    }
+                }
+            },
             "PayloadCertRequest": {
                 "type": "object",
                 "required": [
@@ -1126,6 +1327,14 @@
                     }
                 }
             },
+            "RaButterflyType": {
+                "type": "string",
+                "enum": [
+                    "Original",
+                    "Unified",
+                    "CompactUnified"
+                ]
+            },
             "RaButterflyTypeConfig": {
                 "type": "object",
                 "required": [
@@ -1188,6 +1397,23 @@
                         }
                     }
                 }
+            },
+            "ScmsEeAuth": {
+                "type": "string",
+                "enum": [
+                    "Authorization",
+                    "Canonical",
+                    "Enrollment",
+                    "NoAuth",
+                    "X509"
+                ]
+            },
+            "ScmsErrorLevel": {
+                "type": "string",
+                "enum": [
+                    "Coarse",
+                    "Fine"
+                ]
             },
             "ScmsV3AuthConfig": {
                 "type": "object",
@@ -1314,6 +1540,13 @@
                         }
                     }
                 }
+            },
+            "WebApiEeAuth": {
+                "type": "string",
+                "enum": [
+                    "NoAuth",
+                    "OAuth2"
+                ]
             }
         }
     }
