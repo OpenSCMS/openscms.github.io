@@ -29,10 +29,29 @@ http://www.apache.org/licenses/LICENSE-2.0.
         <div class="container">
             <section class="content-section">
                 <h2>API Reference</h2>
-                <p>OpenSCMS implements REST APIs for each component based on the IEEE 1609.2.1 standard (OpenAPI
-                    v3.0.3).</p>
+
 
                 <div class="architecture-info">
+
+                    <p>OpenSCMS implements REST APIs for each component based on the IEEE 1609.2.1 standard (OpenAPI
+                        v3.0.3).</p>
+
+                    <p>
+                        With OpenSCMS running (as per the Minikube deployment described in the
+                        <b><a href="./guides/setup/kubernetes.html">Minikube Setup Instructions</a></b>), you can
+                        retrieve the
+                        Swagger documentation in JSON format for each component using the following commands:
+                    </p>
+
+                    <pre><code>MINIKUBE_IP=$(minikube ip)
+                        wget -O ra_swagger.json ${MINIKUBE_IP}:30080/api-docs/openapi.json
+                        wget -O aca_swagger.json ${MINIKUBE_IP}:30082/api-docs/openapi.json
+                        wget -O eca_swagger.json ${MINIKUBE_IP}:30085/api-docs/openapi.json
+                        wget -O la_swagger.json ${MINIKUBE_IP}:30091/api-docs/openapi.json</code></pre>
+
+                    <p>
+                        Alternatively, you can download version 1.0.0 directly using the links below:
+                    </p>
 
                     <div class="api-grid">
                         <div class="api-card">
