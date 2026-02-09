@@ -41,9 +41,10 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>To reduce architectural overhead while preserving functional correctness, OpenSCMS does not
                         implement certain auxiliary components defined in the standard, such as the Device Configuration
-                        Manager (DCM), the Location Obscurer Proxy (LOP), and the Supplementary Authorization Server
-                        (SAS). Instead, the system enables the correct execution of both provisioning flows through a
-                        streamlined architecture in which:</p>
+                        Manager (DCM) - <b>you can check <a href="../features/assumptions.html">Assumptions
+                                and Limitations</a> </b> for more details. OpenSCMS enables the correct execution of
+                        both
+                        provisioning flows through a streamlined architecture in which:</p>
 
                     <ul>
                         <li>End entities interact directly with the ECA for enrollment certificate provisioning.</li>
@@ -51,12 +52,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         <li>The RA additionally exposes endpoints responsible for certificate distribution, effectively
                             subsuming the role of the Distribution Center (DC).</li>
                         <li>Essential bootstrapping functionality for end entities—traditionally associated with the
-                            DCM—is provided directly by OpenSCMS.</li>
+                            DCM—is provided directly by OpenSCMS through RA.</li>
                     </ul>
-
-                    <p>This design preserves the security and privacy properties mandated by the standard while avoiding
-                        unnecessary complexity. As a result, OpenSCMS provides a practical foundation that can be
-                        deployed, tested, and extended without requiring a full-scale SCMS deployment.</p>
 
                     <p>Importantly, the correctness of these flows has not been validated solely through specification
                         compliance, but also through end-to-end integration with a conformant EE client. The client

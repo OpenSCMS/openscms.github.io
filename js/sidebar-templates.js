@@ -281,9 +281,6 @@ class SidebarTemplates {
           <h3 class="sidebar-section-title">The OpenSCMS</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/about/openscms/overview.html" class="sidebar-nav-link">Overview</a>
-            </li>
-            <li class="sidebar-nav-item">
               <a href="${basePath}pages/about/openscms/architecture.html" class="sidebar-nav-link">Architecture</a>
             </li>
             <li class="sidebar-nav-item">

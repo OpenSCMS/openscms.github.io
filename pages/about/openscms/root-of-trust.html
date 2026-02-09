@@ -35,20 +35,19 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h3 id="root-of-trust">Establishing the Root of Trust</h3>
 
                     <p>Before an EE can securely interact with the SCMS, it must establish a root of trust by being
-                        provisioned with certificates for electors, root certificate authorities (root CAs), or both.
-                        The IEEE 1609.2.1 standard explicitly leaves the mechanisms and security requirements for this
-                        provisioning outside its scope.</p>
+                        provisioned with certificates for electors, root/intermediate certificate authorities (root CAs,
+                        ICAs). The IEEE 1609.2.1 standard explicitly leaves the mechanisms and security requirements for
+                        this provisioning outside its scope.</p>
 
-                    <p>OpenSCMS addresses this gap by providing a flexible and extensible mechanism for initializing
-                        trust anchors. During system startup, OpenSCMS loads Certificate Chain Files (CCFs) and
-                        Certificate Trust Lists (CTLs), which define the trust relationships used throughout the system.
-                    </p>
-
-                    <p>To support testing, experimentation, and rapid deployment, OpenSCMS includes a standalone
-                        utility, <code>scms-manager</code>, implemented on top of the oscms-codecs-bridge library. This
-                        tool enables the generation of elector and root CA key pairs and certificates, as well as the
-                        creation of CCF and CTL artifacts. These generated payloads can be directly consumed by OpenSCMS
+                    <p>To addresses this gap and to support testing, experimentation, and rapid deployment,
+                        OpenSCMS includes a standalone utility, <code>scms-manager</code>, implemented on top of the
+                        oscms-codecs-bridge library. This tool enables the generation of elector and root CA key pairs
+                        and certificates, as well as the creation of Certificate Chain File (CCF) and Certificate
+                        Trusted List (CTL) artifacts. These generated payloads can be directly consumed by OpenSCMS
                         during initialization.</p>
+
+                    <p> <b>See <a href="../../docs/guides/setup/certificates.html">Certificates and Keys</a> to learn
+                            more about the scms-manager tool</b>.</p>
 
                     <p>While scms-manager serves as a reference and support tool, OpenSCMS does not impose a fixed trust
                         model. Users remain free to generate and manage trust anchors according to their own operational
