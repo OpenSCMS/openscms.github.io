@@ -273,13 +273,7 @@ class SidebarTemplates {
           <h3 class="sidebar-section-title">Background</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/about/overview/introduction.html" class="sidebar-nav-link">Introduction</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/about/overview/interaction-flows.html" class="sidebar-nav-link">Core Interaction Flows</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/about/overview/challenges.html" class="sidebar-nav-link">Architectural Challenges</a>
+              <a href="${basePath}pages/about/overview/introduction.html" class="sidebar-nav-link">IEEE 1609.2.1 OpenSCMS</a>
             </li>
           </ul>
         </div>

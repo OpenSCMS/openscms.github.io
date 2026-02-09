@@ -32,7 +32,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Background</h2>
 
-                    <h3 id="introduction">Introduction</h3>
+                    <h3 id="introduction">The IEEE 1609.2.1 SCMS</h3>
                     <p>
                         Autonomous and connected vehicles depend on secure and reliable V2X (V2V/V2I) communication to
                         enable cooperative awareness, coordinated maneuvers, traffic optimization, and improved road
@@ -47,11 +47,15 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </p>
 
                     <p>
-                        Despite its importance, SCMS is difficult to implement: it is distributed,
-                        performance-sensitive, and operationally complex. In addition, most libraries for manipulating
-                        the ASN.1 structures defined by the standard are proprietary and often inaccessible to most of
-                        the audience.
+                        Despite its importance, implementing a correct SCMS presents multi-dimensional challenges: it
+                        requires secure coordination across distributed components with distinct trust models, must
+                        handle high volumes of cryptographic operations under strict latency and privacy constraints,
+                        needs to address critical systems concerns like parallelism and fault tolerance, and has
+                        historically suffered from limited accessibility due to proprietary implementations that
+                        hinder both research experimentation and industry prototyping.
                     </p>
+
+                    <h3 id="introduction">OpenSCMS</h3>
 
                     <p>
                         <strong>OpenSCMS </strong> addresses this gap with an open-source implementation of the core
@@ -59,18 +63,38 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         blocks that enables real-world use while keeping the architecture clear and extensible.
                     </p>
 
+                    <p>>OpenSCMS robustly implements the main workflows: </p>
+
+                    <ul>
+                        <li>
+                            <strong>Enrollment Certificate Provisioning</strong> End entities obtain enrollment (or
+                            successor
+                            enrollment) certificates from an ECA
+                            (Enrollment Certificate Authority) to establish trust for secure SCMS communication;
+                        </li>
+                        <li>
+                            <strong> Authorization Certificate Provisioning</strong>: Enrolled entities request
+                            certificates for V2X applications through the RA (Registration Authority), fulfilled through
+                            coordinated interaction with the ACA (Authorization Certificate Authority) and
+                            Linkage Authorities to ensure no single party can link certificates to specific devices.
+                        </li>
+                    </ul>
+
                     <p>
                         OpenSCMS prioritizes component isolation and independent scalability.
-                        It leverages a <strong>message-driven architecture</strong> where certificate requests are
+                        It leverages a <strong>message-driven architecture</strong> where certificate requests
+                        are
                         optimized through message queues, effectively decoupling service interactions from core
-                        processing. The backend is primarily written in <strong>Rust</strong>, ensuring memory safety,
+                        processing. The backend is primarily written in <strong>Rust</strong>, ensuring memory
+                        safety,
                         robust concurrency, and high performance.
                     </p>
 
                     <p>
                         The Rust components interfacing directly with a low-level C libraries to deliver
                         high-performance cryptographic operations with minimal overhead. The
-                        <strong>oscms-codecs-bridge</strong>, implements the critical cryptographic and protocol logic,
+                        <strong>oscms-codecs-bridge</strong>, implements the critical cryptographic and protocol
+                        logic,
                         including IEEE 1609.2.1 SPDU/ASN.1 encoding/decoding, signature verification,
                         encryption/decryption operations, request/response handling,
                         and the IEEE 1609.2.1 certificates issuance.
