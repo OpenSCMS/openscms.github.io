@@ -40,23 +40,39 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>OpenSCMS follows a layered and service-oriented architecture aligned with the logical
                         decomposition proposed by IEEE 1609.2.1. Each SCMS component is implemented as an independent
                         Rust crate following microservices design, allowing clear separation of responsibilities,
-                        independent scaling, and reduced trust concentration. Based on that, V2X end entities (OBUs,
-                        RSUs, and test clients) can interact with the SCMS via IEEE 1609.2.1-defined REST interfaces.
+                        independent scaling, and reduced trust concentration. Based on that, V2X end entities (primarily
+                        OBUs and RSUs) can interact with the SCMS via IEEE 1609.2.1-defined REST interfaces.
                     </p>
 
                     <h3>High-Level Layers</h3>
 
-                    <p>The system can be viewed as four primary layers:</p>
+                    <p>The system can be viewed as five primary layers:</p>
 
                     <ul>
-                        <li><strong>Service Layer</strong>: Rust-based microservices implementing SCMS components such
-                            as RA, ECA, ACA, and LA.</li>
-                        <li><strong>Messaging and Persistence Layer</strong>: Asynchronous task coordination via
-                            RabbitMQ (implemented in components that receive a higher load of frequent requests, such as
-                            RA) and persistent storage using relational databases (MySQL).</li>
-                        <li><strong>Cryptographic and Protocol Layer</strong>: The <code>oscms-codecs-bridge</code> C
-                            library, responsible for cryptography, ASN.1 encoding/decoding, and SPDU parsing and
-                            construction.</li>
+                        <ul>
+                            <li><strong>REST API Layer (Rust)</strong>: Rust-based microservices implementing SCMS
+                                components (RA, ECA, ACA, LA) and exposing the external REST API.</li>
+
+                            <li><strong>Rust–C Bridge Layer (Rust)</strong>: Interoperability layer that connects Rust
+                                code to
+                                the C-based <code>oscms-codecs-bridge</code> library, handling safe data marshalling
+                                between the two runtimes.</li>
+
+                            <li><strong>Protocol and Cryptography Bridge Layer (C): The
+                                    <code>oscms-codecs-bridge</code> C library, responsible for multiple critical
+                                    functions:
+                                    handling ASN.1-based SPDUs (Secure Protocol Data Units), performing
+                                    encryption/decryption, and orchestrating protocol-level cryptographic operations.
+                            </li>
+
+                            <li><strong>Codec Abstraction Layer (C)</strong>: A well-defined C API that abstracts the
+                                underlying codecs, providing a uniform interface for encoding/decoding and decoupling
+                                protocol logic from codec implementations.</li>
+
+                            <li><strong>Codec Implementation Layer (C)</strong>: The concrete low-level implementations
+                                of the ASN.1 codecs used by the system, focused on efficient parsing, serialization, and
+                                performance-critical operations.</li>
+                        </ul>
                     </ul>
                 </div>
             </div>

@@ -33,29 +33,57 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                 <!-- Main Content -->
                 <div class="docs-content">
-                    <h2>Getting Started</h2>
+                    <h2>OpenSCMS Community</h2>
 
-                    <h3 id="the-openscms">The OpenSCMS</h3>
+                    <h3>Getting Involved</h3>
 
                     <p>The <strong>OpenSCMS</strong> project is an open-source implementation of a Security Credential
                         Management System (SCMS) compliant with the IEEE 1609.2 and IEEE 1609.2.1 standards for V2X
                         communication.</p>
+                    <p>
+                        To get involved, first, please read the <a
+                            href="https://github.com/OpenSCMS/.github/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>
+                        and
+                        <a href="https://github.com/OpenSCMS/.github/blob/main/CONTRIBUTING.md">Contribution Guide</a>,
+                        which go into details about how our community works.
+                    </p>
+                    <p>
+                        We follow the general GitHub pull request workflow, where you make and test your changes in your
+                        <a href="#forking-the-repositories">forked copy</a> and then raise a pull request to have them
+                        incorporated into the official repositories.
+                    </p>
 
-                    <p>Unlike traditional PKI systems, an SCMS must simultaneously satisfy strict cryptographic
-                        correctness, large-scale performance, and strong privacy requirements. In particular, the SCMS
-                        must enable authenticated and authorized communication between V2X end entities while preventing
-                        long-term tracking of vehicles and infrastructure nodes.</p>
+                    <h3 id="forking-the-repositories">Forking the repositories</h3>
+                    <p>
+                        If you wish to make code contributions, you will need to fork the entire set of repositories.
+                        This is due to the use of relative paths for the git submodules.
+                    </p>
+                    <p>
+                        If you have the <a href="https://cli.github.com/">Github CLI</a> installed, you can fork all of
+                        the code repositories, and clone them to your working directory, with the following commands
+                    </p>
 
-                    <p>The OpenSCMS addresses this challenge by providing a "minimum complete" implementation of the
-                        core SCMS workflows defined by IEEE 1609.2.1. The system supports enrollment certificate
-                        provisioning and authorization certificate provisioning, including butterfly key expansion to
-                        compose pseudonym certificate generation.</p>
+                    <pre><code class="language-bash">gh repo fork --clone https://github.com/OpenSCMS/oscms-codecs-bridge -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/oscms-asn1c-codecs -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/oscms-codecs-api -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/oscms-asn1c-generated -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/OpenSCMS -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/oscms-ci-docker -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/ieee1609dot2dot1-asn -- --recurse-submodules
+gh repo fork --clone https://github.com/OpenSCMS/etsi_ts103097-asn -- --recurse-submodules</code></pre>
 
-                    <p>From an engineering perspective, OpenSCMS is designed as a distributed, microservice-based system
-                        implemented primarily in Rust, with a dedicated cryptographic and protocol engine implemented in
-                        C. This separation allows the system to combine strong safety and concurrency guarantees at the
-                        service level with precise control over cryptographic operations and ASN.1 codecs operation at
-                        the protocol level.</p>
+                    <p>
+                        If you don't want to clone at the time of forking, use the following.
+                    </p>
+
+                    <pre><code class="language-bash">gh repo fork --clone=false https://github.com/OpenSCMS/oscms-codecs-bridge
+gh repo fork --clone=false https://github.com/OpenSCMS/oscms-asn1c-codecs
+gh repo fork --clone=false https://github.com/OpenSCMS/oscms-codecs-api
+gh repo fork --clone=false https://github.com/OpenSCMS/oscms-asn1c-generated
+gh repo fork --clone=false https://github.com/OpenSCMS/OpenSCMS
+gh repo fork --clone=false https://github.com/OpenSCMS/oscms-ci-docker
+gh repo fork --clone=false https://github.com/OpenSCMS/ieee1609dot2dot1-asn
+gh repo fork --clone=false https://github.com/OpenSCMS/etsi_ts103097-asn</code></pre>
                 </div>
             </div>
         </div>
