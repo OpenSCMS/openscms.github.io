@@ -32,75 +32,85 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Background</h2>
 
-                    <h3 id="introduction">Introduction</h3>
+                    <h3 id="introduction">The IEEE 1609.2.1 SCMS</h3>
                     <p>
                         Autonomous and connected vehicles depend on secure and reliable V2X (V2V/V2I) communication to
-                        enable cooperative awareness,
-                        coordinated maneuvers, traffic optimization, and improved road safety. In this context, security
-                        and privacy are foundational.
+                        enable cooperative awareness, coordinated maneuvers, traffic optimization, and improved road
+                        safety. In this context, security and privacy are foundational.
                     </p>
 
                     <p>
-                        The IEEE 1609.2 and IEEE 1609.2.1 standards define the security architecture for V2X. At its
-                        core is the
-                        <strong>Security Credential Management System (SCMS)</strong>, a PKI responsible for issuing and
-                        managing digital certificates
-                        for V2X end entities (e.g., OBUs and RSUs). These certificates encode application permissions
-                        via <strong>PSIDs</strong> and
-                        <strong>SSPs</strong> (IEEE 1609.12).
+                        The IEEE 1609.2.1 (2022) standard defines the Security Credential Management System (SCMS) for
+                        V2X: a Public-Key Infrastructure (PKI) responsible for issuing and managing digital
+                        certificates for V2X end entities (e.g., OBUs and RSUs). These certificates encode application
+                        permissions and used to sign message exchanged between end-entities.
                     </p>
 
                     <p>
-                        A key SCMS goal is <strong>privacy</strong>: vehicles must be able to authenticate messages
-                        without being trackable over time.
-                        This is typically achieved with <strong>pseudonym certificates</strong> that are rotated
-                        regularly.
+                        Despite its importance, implementing a correct SCMS presents multi-dimensional challenges. It
+                        requires secure coordination across distributed components with distinct trust models, must
+                        handle high volumes of cryptographic operations under strict latency and privacy constraints,
+                        needs to address critical systems concerns like parallelism and fault tolerance, and has
+                        historically suffered from limited accessibility due to proprietary implementations that
+                        hinder both research experimentation and industry prototyping.
                     </p>
 
-                    <p>
-                        Despite its importance, SCMS is difficult to implement: it is distributed,
-                        performance-sensitive, and operationally complex.
-                        Most existing implementations are proprietary, hard to audit, and expensive to extend—limiting
-                        innovation and research.
-                    </p>
+                    <h3 id="introduction">OpenSCMS</h3>
 
                     <p>
                         <strong>OpenSCMS </strong> addresses this gap with an open-source implementation of the core
-                        workflows of an
-                        IEEE 1609.2.1-compliant SCMS. It focuses on a "minimum complete" set of building blocks that
-                        enables real-world use while
-                        keeping the architecture clear and extensible.
+                        workflows of an IEEE 1609.2.1-compliant SCMS. It focuses on a "minimum complete" set of building
+                        blocks that enables real-world use while keeping the architecture clear and extensible.
+                    </p>
+
+                    <p>>OpenSCMS robustly implements the main workflows: </p>
+
+                    <ul>
+                        <li>
+                            <strong>Enrollment Certificate Provisioning</strong> End entities obtain enrollment (or
+                            successor Enrollment) certificates from an Enrollment Certificate Authority (ECA) to
+                            establish trust for secure SCMS communication;
+                        </li>
+                        <li>
+                            <strong> Authorization Certificate Provisioning</strong>: Enrolled entities request
+                            certificates for V2X applications through the Registration Authority (RA), fulfilled through
+                            coordinated interaction with the Authorization Certificate Authority (ACA) and
+                            Linkage Authorities to ensure no single party can associate certificates with specific
+                            devices.
+                        </li>
+                    </ul>
+
+                    <p>
+                        OpenSCMS prioritizes component isolation and independent scalability.
+                        It leverages a <strong>message-driven architecture</strong> where certificate requests
+                        are
+                        optimized through message queues, effectively decoupling service interactions from core
+                        processing. The backend is primarily written in <strong>Rust</strong>, ensuring memory
+                        safety,
+                        robust concurrency, and high performance.
                     </p>
 
                     <p>
-                        OpenSCMS follows a <strong>microservices</strong> approach, where each SCMS component is
-                        isolated and can scale independently.
-                        It uses a <strong>message-driven</strong> architecture (e.g., task queues such as MQTT) to
-                        parallelize certificate requests and
-                        cryptographic operations. The backend is primarily written in <strong>Rust</strong> for safety,
-                        concurrency, and performance.
+                        The Rust components interface with a low-level C libraries to deliver
+                        high-performance cryptographic operations with minimal overhead. The
+                        <strong>oscms-codecs-bridge</strong>, implements the critical cryptographic and protocol
+                        logic,
+                        including IEEE 1609.2.1 SPDU/ASN.1 encoding/decoding, signature verification,
+                        encryption/decryption operations, request/response handling,
+                        and the IEEE 1609.2.1 certificates issuance.
                     </p>
 
                     <p>
-                        At the core is <strong>oscms-codecs-bridge</strong>, a low-level C library implementing the
-                        critical cryptographic and protocol
-                        logic, including IEEE 1609.2.1 SPDU/ASN.1 encoding/decoding, signature verification, request
-                        decryption, response construction,
-                        and pseudonym certificate generation.
+                        Most notably, the <strong>oscms-codecs-bridge</strong> library is
+                        <strong>codec-agnostic</strong>: it abstracts the ASN.1 toolchain behind
+                        a clean API, reducing dependency on proprietary tooling and improving auditability and
+                        portability. The API and codecs abstraction provided can also be used independently of the Rust
+                        backend.
                     </p>
 
                     <p>
-                        The bridge is <strong>codec-agnostic</strong>: it abstracts the ASN.1 toolchain behind a clean
-                        API, reducing dependency on
-                        proprietary tooling and improving auditability and portability. It can also be used
-                        independently of the Rust backend.
-                    </p>
-
-                    <p>
-                        By providing an open, extensible, and production-oriented SCMS platform, OpenSCMS supports
-                        faster industrial prototyping and
-                        enables academic experimentation (e.g., post-quantum transitions, misbehavior reporting, and
-                        revocation strategies), while also
+                        By providing an open, extensible, and tested SCMS platform, OpenSCMS supports
+                        faster industrial prototyping and enables academic experimentation , while also
                         serving as a practical reference backend for V2X client testing.
                     </p>
                 </div>
