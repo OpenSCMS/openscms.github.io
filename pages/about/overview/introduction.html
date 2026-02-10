@@ -40,14 +40,14 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </p>
 
                     <p>
-                        The IEEE 1609.2.1 (2022) standard define the Security Credential Management System (SCMS) for
-                        V2X: a Public-Key Infraestructure (PKI) responsible for issuing and managing digital
+                        The IEEE 1609.2.1 (2022) standard defines the Security Credential Management System (SCMS) for
+                        V2X: a Public-Key Infrastructure (PKI) responsible for issuing and managing digital
                         certificates for V2X end entities (e.g., OBUs and RSUs). These certificates encode application
                         permissions and used to sign message exchanged between end-entities.
                     </p>
 
                     <p>
-                        Despite its importance, implementing a correct SCMS presents multi-dimensional challenges: it
+                        Despite its importance, implementing a correct SCMS presents multi-dimensional challenges. It
                         requires secure coordination across distributed components with distinct trust models, must
                         handle high volumes of cryptographic operations under strict latency and privacy constraints,
                         needs to address critical systems concerns like parallelism and fault tolerance, and has
@@ -68,15 +68,15 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <ul>
                         <li>
                             <strong>Enrollment Certificate Provisioning</strong> End entities obtain enrollment (or
-                            successor
-                            enrollment) certificates from an ECA
-                            (Enrollment Certificate Authority) to establish trust for secure SCMS communication;
+                            successor Enrollment) certificates from an Enrollment Certificate Authority (ECA) to
+                            establish trust for secure SCMS communication;
                         </li>
                         <li>
                             <strong> Authorization Certificate Provisioning</strong>: Enrolled entities request
-                            certificates for V2X applications through the RA (Registration Authority), fulfilled through
-                            coordinated interaction with the ACA (Authorization Certificate Authority) and
-                            Linkage Authorities to ensure no single party can link certificates to specific devices.
+                            certificates for V2X applications through the Registration Authority (RA), fulfilled through
+                            coordinated interaction with the Authorization Certificate Authority (ACA) and
+                            Linkage Authorities to ensure no single party can associate certificates with specific
+                            devices.
                         </li>
                     </ul>
 
@@ -91,7 +91,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     </p>
 
                     <p>
-                        The Rust components interfacing directly with a low-level C libraries to deliver
+                        The Rust components interface with a low-level C libraries to deliver
                         high-performance cryptographic operations with minimal overhead. The
                         <strong>oscms-codecs-bridge</strong>, implements the critical cryptographic and protocol
                         logic,
@@ -104,7 +104,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         Most notably, the <strong>oscms-codecs-bridge</strong> library is
                         <strong>codec-agnostic</strong>: it abstracts the ASN.1 toolchain behind
                         a clean API, reducing dependency on proprietary tooling and improving auditability and
-                        portability. It can also be used independently of the Rust backend.
+                        portability. The API and codecs abstraction provided can also be used independently of the Rust
+                        backend.
                     </p>
 
                     <p>
