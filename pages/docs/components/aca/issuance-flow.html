@@ -35,18 +35,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Authorization Certificate Authority (ACA)</h2>
 
-                    <h3 id="role">Role in Authorization Certificate Flows</h3>
-
-                    <p>Authorization certificate issuance is always initiated by the RA. When the RA receives an
-                        authorization certificate request from an EE, it validates the request, verifies the enrollment
-                        certificate, checks the EE lifecycle state, and extracts all parameters required for certificate
-                        issuance. The RA then constructs an internal task and forwards the relevant authorization
-                        issuance parameters to the ACA.</p>
-
-                    <p>The ACA generates the requested batch of authorization certificates and returns them to the RA.
-                        The RA persists the resulting certificates and makes them available to the client through the
-                        authorization download flow.</p>
-
                     <h3>Explicit and Implicit Certificates</h3>
 
                     <p>OpenSCMS supports the generation of both explicit and implicit authorization certificates, as
