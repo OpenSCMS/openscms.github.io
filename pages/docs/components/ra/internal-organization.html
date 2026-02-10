@@ -35,6 +35,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Registration Authority (RA)</h2>
 
+                    <h3>The Component Overview</h3>
+
                     <p>The Registration Authority (RA) is the primary front-end component of OpenSCMS and the main
                         interaction point for V2X clients. For architectural simplicity, the RA consolidates the roles
                         of the Device Configuration (DC) and Device Configuration Manager (DCM) defined in IEEE
@@ -59,6 +61,17 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>RA Workers monitor the task queue and execute tasks independently. They interact with internal
                         SCMS services such as the ACA and ECA, perform cryptographic processing, and persist results to
                         the database using the request hash as the primary correlation key.</p>
+
+                    <h3>Cryptographic Responsibilities and Trust Role</h3>
+
+                    <p>The RA is the only OpenSCMS component whose certificate includes a public encryption key intended
+                        for use by V2X clients. This design makes the RA the cryptographic ingress point for sensitive
+                        operations.</p>
+
+                    <p>Consequently, the RA decrypts and validates the majority of client-originated messages and
+                        verifies digital signatures across most protocol flows. During startup, the RA loads its own
+                        certificates as well as the certificates of other SCMS components from the <code>certs/</code>
+                        directory, enabling it to distribute trust material as part of its DC/DCM responsibilities.</p>
                 </div>
             </div>
         </div>

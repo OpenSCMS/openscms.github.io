@@ -35,6 +35,52 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <div class="docs-content">
                     <h2>Authorization Certificate Authority (ACA)</h2>
 
+                    <h3 id="role">Role in Authorization Certificate Flows</h3>
+
+                    <p>Authorization certificate issuance is always initiated by the RA. When the RA receives an
+                        authorization certificate request from an EE, it validates the request, verifies the enrollment
+                        certificate, checks the EE lifecycle state, and extracts all parameters required for certificate
+                        issuance. The RA then constructs an internal task and forwards the relevant authorization
+                        issuance parameters to the ACA.</p>
+
+                    <p>The ACA generates the requested batch of authorization certificates and returns them to the RA.
+                        The RA persists the resulting certificates and makes them available to the client through the
+                        authorization download flow.</p>
+
+                    <h3>Explicit and Implicit Certificates</h3>
+
+                    <p>OpenSCMS supports the generation of both explicit and implicit authorization certificates, as
+                        defined by IEEE 1609.2.1.</p>
+
+                    <p>Explicit certificates contain full public key material and signatures based on standard ECDSA
+                        over the P-256 curve. Implicit certificates rely on ECQV-style key derivation, significantly
+                        reducing certificate size by eliminating the need to transmit full public keys. Implicit
+                        certificates reduce the certificate size by approximately 64 bytes compared to their explicit
+                        counterparts.</p>
+
+                    <p>The choice between explicit and implicit certificates is driven by policy and configuration
+                        parameters evaluated by the RA and passed to the ACA as part of the issuance request.</p>
+
+                    <h3>Butterfly Key Expansion Mechanisms</h3>
+
+                    <p>Authorization certificate issuance in OpenSCMS supports multiple butterfly key expansion
+                        mechanisms, which allow efficient generation of large batches of pseudonym certificates from
+                        compact input material.</p>
+
+                    <p>The following butterfly mechanisms are supported:</p>
+
+                    <ul>
+                        <li><strong>Original Butterfly Keys (OBK)</strong></li>
+                        <li><strong>Unified Butterfly Keys (UBK)</strong></li>
+                        <li><strong>Compact Unified Butterfly Keys (CUBK)</strong></li>
+                    </ul>
+
+                    <p>In addition to the butterfly expansion mechanisms, OpenSCMS supports both unencrypted and
+                        encrypted non-butterfly variants. For encrypted inputs, the encryption key used to protect the
+                        butterfly material is the public encryption key of the RA. This ensures that only the RA is
+                        capable of decrypting sensitive key material received from the EE before it is forwarded for
+                        certificate generation.</p>
+
                     <h3 id="issuance-flow">Authorization Certificate Issuance Flow</h3>
 
                     <p>During authorization certificate issuance, the ACA receives a request from the RA containing:</p>
@@ -42,7 +88,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <ul>
                         <li>the selected certificate type (explicit or implicit),</li>
                         <li>the butterfly key expansion parameters,</li>
-                        <li>linkage values obtained from the LA,</li>
                         <li>validity and permission constraints derived from policy.</li>
                     </ul>
 

@@ -38,7 +38,7 @@ http://www.apache.org/licenses/LICENSE-2.0.
           <h3 id="authorization-flow">Authorization Certificate Provisioning Flow</h3>
 
           <p>The Authorization Certificate provisioning flow is responsible for issuing batches of
-            authorization (pseudonym) certificates that are used by V2X clients for authenticated
+            authorization certificates that are used by V2X clients for authenticated
             application-layer communication.</p>
 
           <p>This flow is intentionally split into two phases: a request phase and a download phase. The
@@ -47,12 +47,12 @@ http://www.apache.org/licenses/LICENSE-2.0.
             request volumes and batch-based issuance. The download phase allows the client to retrieve the
             generated certificates once processing has completed.</p>
 
-          <p>From an architectural perspective, the RA Frontend terminates the client connection, validates
-            and decrypts the request, and enqueues a task for asynchronous execution. One of the RA Worker
-            instances then processes the task by invoking the Authorization Certificate Authority (ACA),
+          <p>From an architectural perspective, the RA Frontend terminates the client connection by sending an ACK
+            response, validates and decrypts the request, and enqueues a task for asynchronous execution. One of the RA
+            Worker instances then processes the task by invoking the Authorization Certificate Authority (ACA),
             persists the generated certificates, and makes them available for download.</p>
 
-          <h3>Authorization Certificate Request</h3>
+          <h4>Authorization Certificate Request</h4>
 
           <p>The client submits an Authorization Certificate Request SPDU to the RA Frontend. The request
             contains cryptographic material and authorization parameters required to generate one or more
@@ -61,12 +61,12 @@ http://www.apache.org/licenses/LICENSE-2.0.
           <pre><code>POST /v3/authorization-certificate
 
 Description:
-  Submits a request for one or more authorization (pseudonym)
+  Submits a request for one or more authorization
   certificates.
 
 Input:
   - IEEE 1609.2.1 Authorization Certificate Request SPDU
-  - Contains enrollment reference, butterfly key parameters,
+  - Contains enrollment reference, butterfly key parameters (if requested),
     certificate permissions, and validity constraints
 
 Output:
@@ -80,7 +80,7 @@ Errors:
   - Decryption failure
   - Policy or parameter violations</code></pre>
 
-          <h3>Authorization Certificate Download</h3>
+          <h4>Authorization Certificate Download</h4>
 
           <pre><code>GET /v3/authorization-certificate
 
@@ -94,7 +94,7 @@ Input:
 
 Output:
   - Response SPDU containing a batch of authorization
-    (pseudonym) certificates
+    certificates
 
 Errors:
   - Unknown or expired request hash

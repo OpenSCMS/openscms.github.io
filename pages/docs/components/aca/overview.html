@@ -51,6 +51,64 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         implementation provided by the C-based <code>oscms-codecs-bridge</code>. All certificate
                         generation logic, including ASN.1 handling, IEEE 1609.2.1 encoding, and cryptographic
                         operations, is performed via this shared library.</p>
+
+                    <h3 id="role">Role in Authorization Certificate Flows</h3>
+
+                    <p>Authorization certificate issuance is always initiated by the RA. When the RA receives an
+                        authorization certificate request from an EE, it validates the request, verifies the enrollment
+                        certificate, checks the EE lifecycle state, and extracts all parameters required for certificate
+                        issuance. The RA then constructs an internal task and forwards the relevant authorization
+                        issuance parameters to the ACA.</p>
+
+                    <p>The ACA generates the requested batch of authorization certificates and returns them to the RA.
+                        The RA persists the resulting certificates and makes them available to the client through the
+                        authorization download flow.</p>
+
+                    <h3>Explicit and Implicit Certificates</h3>
+
+                    <p>OpenSCMS supports the generation of both explicit and implicit authorization certificates, as
+                        defined by IEEE 1609.2.1.</p>
+
+                    <p>Explicit certificates contain full public key material and signatures based on standard ECDSA
+                        over the P-256 curve. Implicit certificates rely on ECQV-style key derivation, significantly
+                        reducing certificate size by eliminating the need to transmit full public keys. Implicit
+                        certificates reduce the certificate size by approximately 64 bytes compared to their explicit
+                        counterparts.</p>
+
+                    <p>The choice between explicit and implicit certificates is driven by policy and configuration
+                        parameters evaluated by the RA and passed to the ACA as part of the issuance request.</p>
+
+                    <h3>Butterfly Key Expansion Mechanisms</h3>
+
+                    <p>Authorization certificate issuance in OpenSCMS supports multiple butterfly key expansion
+                        mechanisms, which allow efficient generation of large batches of pseudonym certificates from
+                        compact input material.</p>
+
+                    <p>The following butterfly mechanisms are supported:</p>
+
+                    <ul>
+                        <li><strong>Original Butterfly Keys (OBK)</strong></li>
+                        <li><strong>Unified Butterfly Keys (UBK)</strong></li>
+                        <li><strong>Compact Unified Butterfly Keys (CUBK)</strong></li>
+                    </ul>
+
+                    <p>In addition to the butterfly expansion mechanisms, OpenSCMS supports both unencrypted and
+                        encrypted non-butterfly variants. For encrypted inputs, the encryption key used to protect the
+                        butterfly material is the public encryption key of the RA. This ensures that only the RA is
+                        capable of decrypting sensitive key material received from the EE before it is forwarded for
+                        certificate generation.</p>
+
+                    <h3 id="security">Security and Architectural Considerations</h3>
+
+                    <p>The ACA is intentionally designed as a stateless and narrowly scoped service. It does not
+                        maintain EE lifecycle information, does not perform policy evaluation, and does not expose any
+                        externally accessible APIs. All trust decisions are delegated to the RA, which acts as the
+                        system's control plane.</p>
+
+                    <p>By centralizing cryptographic implementation in a shared low-level library and limiting the ACA's
+                        responsibilities to certificate generation, OpenSCMS reduces implementation complexity,
+                        minimizes the attack surface, and facilitates auditing and reuse of the cryptographic core
+                        across all SCMS components.</p>
                 </div>
             </div>
         </div>
