@@ -68,7 +68,7 @@ class SidebarTemplates {
           <h3 class="sidebar-section-title">Getting Started</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/guides/getting-started/overview.html" class="sidebar-nav-link">The OpenSCMS</a>
+              <a href="${basePath}pages/docs/guides/getting-started/overview.html" class="sidebar-nav-link">OpenSCMS Community</a>
             </li>
           </ul>
         </div>
@@ -87,16 +87,7 @@ class SidebarTemplates {
           <h3 class="sidebar-section-title">Code Structure</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/guides/code-structure/overview.html" class="sidebar-nav-link">Overview</a>
-            </li>
-            <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/guides/code-structure/workspace.html" class="sidebar-nav-link">Workspace Organization</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/guides/code-structure/oscms-bridge.html" class="sidebar-nav-link">oscms_bridge</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/guides/code-structure/dependencies.html" class="sidebar-nav-link">Dependency Model</a>
             </li>
           </ul>
         </div>
