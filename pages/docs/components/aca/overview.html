@@ -38,19 +38,34 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h3 id="overview">Overview</h3>
 
                     <p>The Authorization Certificate Authority (ACA) is responsible for issuing authorization
-                        certificates, also referred to as pseudonym certificates, which are used by End Entities (EEs)
+                        certificates which are used by End Entities (EEs)
                         to authenticate and sign V2X application-layer messages while preserving privacy.</p>
 
                     <p>In the OpenSCMS architecture, the ACA does not interact directly with clients. Instead, it is
                         invoked exclusively by the Registration Authority (RA) as part of the authorization certificate
-                        provisioning flows. This design ensures that all client-facing validation, lifecycle checks, and
-                        policy enforcement are centralized in the RA, while the ACA remains narrowly focused on
-                        certificate generation.</p>
+                        provisioning flows. The ACA generates the requested batch of authorization certificates and
+                        returns them to the RA. The RA persists the resulting certificates and makes them available to
+                        the client through the authorization download flow.This design ensures that all client-facing
+                        validation, lifecycle checks, and policy enforcement are centralized in the RA, while the ACA
+                        remains narrowly focused on certificate generation.</p>
 
                     <p>As with other SCMS components, the ACA relies on the shared low-level cryptographic and protocol
                         implementation provided by the C-based <code>oscms-codecs-bridge</code>. All certificate
                         generation logic, including ASN.1 handling, IEEE 1609.2.1 encoding, and cryptographic
                         operations, is performed via this shared library.</p>
+
+
+                    <h3 id="security">Security and Architectural Considerations</h3>
+
+                    <p>The ACA is intentionally designed as a stateless and narrowly scoped service. It does not
+                        maintain EE lifecycle information, does not perform policy evaluation, and does not expose any
+                        externally accessible APIs. All trust decisions are delegated to the RA, which acts as the
+                        system's control plane.</p>
+
+                    <p>By centralizing cryptographic implementation in a shared low-level library and limiting the ACA's
+                        responsibilities to certificate generation, OpenSCMS reduces implementation complexity,
+                        minimizes the attack surface, and facilitates auditing and reuse of the cryptographic core
+                        across all SCMS components.</p>
                 </div>
             </div>
         </div>

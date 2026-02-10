@@ -54,17 +54,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>These endpoints return protocol-compliant artifacts such as CA certificates, Certificate Trust
                         Lists (CTLs), and Certificate Revocation Lists (CRLs). Errors are reported using SCMS-defined
                         error semantics.</p>
-
-                    <h3>Cryptographic Responsibilities and Trust Role</h3>
-
-                    <p>The RA is the only OpenSCMS component whose certificate includes a public encryption key intended
-                        for use by V2X clients. This design makes the RA the cryptographic ingress point for sensitive
-                        operations.</p>
-
-                    <p>Consequently, the RA decrypts and validates the majority of client-originated messages and
-                        verifies digital signatures across most protocol flows. During startup, the RA loads its own
-                        certificates as well as the certificates of other SCMS components from the <code>certs/</code>
-                        directory, enabling it to distribute trust material as part of its DC/DCM responsibilities.</p>
                 </div>
             </div>
         </div>

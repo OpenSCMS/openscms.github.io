@@ -137,17 +137,17 @@ class SidebarTemplates {
               <a href="${basePath}pages/docs/components/ra/ee-registration.html" class="sidebar-nav-link">EE Registration</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/components/ra/trust-artifacts.html" class="sidebar-nav-link">Trust Artifacts Distribution</a>
+              <a href="${basePath}pages/docs/components/ra/lifecycle-management.html" class="sidebar-nav-link">EE Lifecycle</a>
             </li>
             <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/components/ra/authorization-flow.html" class="sidebar-nav-link">Authorization Flow</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/components/ra/lifecycle-management.html" class="sidebar-nav-link">Certificate Lifecycle</a>
-            </li>
-            <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/components/ra/successor-enrollment.html" class="sidebar-nav-link">Successor Enrollment</a>
             </li>
+            <li class="sidebar-nav-item">
+            <a href="${basePath}pages/docs/components/ra/trust-artifacts.html" class="sidebar-nav-link">Trust Artifacts Distribution</a>
+          </li>
           </ul>
         </div>
         <div class="sidebar-section">
@@ -159,9 +159,6 @@ class SidebarTemplates {
             <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/components/eca/initial-enrollment.html" class="sidebar-nav-link">Initial Enrollment</a>
             </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/components/eca/security.html" class="sidebar-nav-link">Security Considerations</a>
-            </li>
           </ul>
         </div>
         <div class="sidebar-section">
@@ -171,13 +168,7 @@ class SidebarTemplates {
               <a href="${basePath}pages/docs/components/aca/overview.html" class="sidebar-nav-link">The ACA</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/components/aca/role.html" class="sidebar-nav-link">Role in SCMS</a>
-            </li>
-            <li class="sidebar-nav-item">
               <a href="${basePath}pages/docs/components/aca/issuance-flow.html" class="sidebar-nav-link">Auth Certificate Issuance</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/components/aca/security.html" class="sidebar-nav-link">Security Considerations</a>
             </li>
           </ul>
         </div>

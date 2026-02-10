@@ -54,6 +54,17 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         constrained by lifecycle and policy checks enforced in coordination with the RA. This design
                         minimizes the ECA's exposure surface while preserving a clear separation of responsibilities
                         between identity issuance and lifecycle control.</p>
+
+                    <h3 id="security">Security and Trust Considerations</h3>
+
+                    <p>The ECA operates on highly sensitive identity data and is therefore designed to remain narrowly
+                        scoped. It does not perform EE registration, lifecycle persistence, or authorization policy
+                        enforcement directly. These responsibilities are delegated to the RA, which acts as the single
+                        source of truth for EE state and eligibility.</p>
+
+                    <p>By enforcing strict preconditions through RA coordination and limiting direct client interaction,
+                        the ECA ensures that enrollment certificates are issued only under well-defined, auditable
+                        conditions, preserving the security and privacy guarantees of the SCMS.</p>
                 </div>
             </div>
         </div>

@@ -38,12 +38,13 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h3 id="initial-enrollment">Initial Enrollment Certificate Flow</h3>
 
                     <p>The initial enrollment flow is responsible for issuing the first enrollment certificate for an
-                        EE. This operation represents a critical trust boundary within the SCMS, as enrollment
+                        End Entity (EE). This operation represents a critical trust boundary within the OpenSCMS, as
+                        enrollment
                         certificates embed long-term identity attributes that are later used to authorize all other
                         certificate provisioning activities.</p>
 
                     <p>From a cryptographic perspective, the initial enrollment request establishes the first
-                        authenticated link between the End Entity (EE) and the SCMS. The enrollment request submitted by
+                        authenticated link between the EE and the OpenSCMS. The enrollment request submitted by
                         the client must be digitally signed using the EE's <em>canonical private key</em>. This key
                         corresponds to the canonical public key previously provided during the EE registration process
                         and stored by the Registration Authority (RA).</p>

@@ -38,11 +38,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <h3 id="overview">Overview</h3>
 
                     <p>OpenSCMS implements the core functional entities defined by the IEEE 1609.2.1 Secure Credential
-                        Management System (SCMS) architecture. Each entity is realized as an independent Rust crate,
-                        deployed as a microservice, and responsible for a well-defined subset of the SCMS protocol
-                        flows.</p>
-
-                    <p>The primary SCMS components implemented in OpenSCMS are:</p>
+                        Management System (SCMS) architecture. The primary SCMS components implemented in OpenSCMS are:
+                    </p>
 
                     <ul>
                         <li><strong>Registration Authority (RA)</strong></li>
@@ -55,10 +52,6 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         V2X clients. The ACA and LA are internal infrastructure services that do not expose public APIs
                         and are accessed exclusively by other SCMS components.</p>
 
-                    <p>For each component, this section describes its architectural role, its responsibilities within
-                        the SCMS protocol, and the main operational flows in which it participates. The discussion
-                        starts with the Registration Authority (RA), which serves as the primary entry point into the
-                        SCMS ecosystem.</p>
                 </div>
             </div>
         </div>
