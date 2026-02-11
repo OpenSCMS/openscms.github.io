@@ -14,8 +14,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="OpenSCMS Codecs Bridge Overview">
     <title>Codecs Bridge Overview - OpenSCMS</title>
-    <link rel="icon" type="image/x-icon" href="../../../../favicon.ico">
-    <link rel="stylesheet" href="../../../../css/styles.css">
+    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../css/styles.css">
 </head>
 
 <body>
@@ -39,16 +39,15 @@ http://www.apache.org/licenses/LICENSE-2.0.
 
                     <p>The <code>oscms-codecs-bridge</code> library is the low-level cryptographic and protocol core of
                         OpenSCMS. It is implemented in C and provides all security-critical functionality, including
-                        cryptographic operations, ASN.1 encoding and decoding, and construction and verification of IEEE
-                        1609.2.1 SPDUs.</p>
+                        cryptographic operations (encryption and decryption) and IEEE 1609.2.1 ASN.1 SPDUs encoding and
+                        decoding.</p>
 
-                    <p>This library is designed as a standalone component, independent of the Rust backend and SCMS
+                    <p>This library is designed as a standalone component, independent of the Rust backend and OpenSCMS
                         service logic. Integration with the Rust-based services is performed transparently through Rust
                         bindings generated using <code>bindgen</code>. From the perspective of a Rust developer, the
                         library appears as a native Rust module, while all cryptographic and protocol complexity remains
                         encapsulated in C.</p>
 
-                    <h3>High-Level Architecture</h3>
 
                     <p>The architecture of <code>oscms-codecs-bridge</code> is layered to clearly separate
                         codec-specific logic from protocol processing and cryptographic operations.</p>
@@ -56,15 +55,28 @@ http://www.apache.org/licenses/LICENSE-2.0.
                     <p>At a high level, the library consists of:</p>
 
                     <ul>
-                        <li><strong>A codec abstraction layer (API)</strong></li>
-                        <li><strong>A concrete ASN.1 codec implementation (asn1c-based)</strong></li>
-                        <li><strong>A protocol bridge layer implementing IEEE 1609.2.1 semantics</strong></li>
-                        <li><strong>Cryptographic utilities and primitives</strong></li>
+                        <li><strong>Protocol and Cryptography Bridge Layer</strong>
+                        <li><strong>Codec Abstraction Layer</strong>
+                        <li><strong>Codec Implementation Layer</strong>
                     </ul>
+
+                    <p><b>See <a href="./layers.html">Library Layers</a></b>
+                        for more details.</p>
 
                     <p>This separation allows the library to remain codec-agnostic at higher layers, making it possible
                         to support alternative ASN.1 transpilers in the future without modifying protocol or
-                        cryptographic logic.</p>
+                        cryptographic logic.
+
+                    <h3>Development Overview</h3>
+
+                    <p>The <code>oscms-codecs-bridge</code> library follows a clean and consistent development style
+                        adapted from the Google C++ Style Guide. The C codebase is formatted with
+                        <code>clang-format</code> and structured to be readable, maintainable, and portable.
+                    </p>
+
+                    See the <a href="https://github.com/OpenSCMS/.github/blob/main/docs/C_CODING.md" target="_blank"
+                        rel="noopener noreferrer">Coding and Style Conventions</a> for details.
+
                 </div>
             </div>
         </div>
@@ -74,11 +86,11 @@ http://www.apache.org/licenses/LICENSE-2.0.
     <div id="footer-placeholder"></div>
 
     <!-- Component Loader -->
-    <script src="../../../../js/path-utils.js"></script>
-    <script src="../../../../js/sidebar-manager.js"></script>
-    <script src="../../../../js/breadcrumb.js"></script>
-    <script src="../../../../js/sidebar-templates.js"></script>
-    <script src="../../../../js/components.js"></script>
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
 
 </body>
 

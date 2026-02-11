@@ -111,7 +111,7 @@ class ComponentLoader {
               <a href="${docsBasePath}components/overview.html">SCMS Components</a>
             </li>
             <li class="submenu-tab ${isBridgePage ? "active" : ""}">
-              <a href="${docsBasePath}bridge/overview/overview.html">Codecs Bridge</a>
+              <a href="${docsBasePath}bridge/overview.html">Codecs Bridge</a>
             </li>
             <li class="submenu-tab ${isApiReferencePage ? "active" : ""}">
               <a href="${docsBasePath}api-reference.html">API Reference</a>

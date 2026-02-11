@@ -53,18 +53,6 @@ class BreadcrumbManager {
       }
     } else if (path.includes('/docs/bridge/')) {
       html += ' <span class="breadcrumb-separator">›</span> Codecs Bridge';
-
-      if (path.includes('/bridge/overview/')) {
-        html += ' <span class="breadcrumb-separator">›</span> Introduction';
-      } else if (path.includes('/bridge/build/')) {
-        html += ' <span class="breadcrumb-separator">›</span> Build & Structure';
-      } else if (path.includes('/bridge/library-layers/')) {
-        html += ' <span class="breadcrumb-separator">›</span> Library Layers';
-      } else if (path.includes('/bridge/utilities/')) {
-        html += ' <span class="breadcrumb-separator">›</span> Utilities';
-      } else if (path.includes('/bridge/development/')) {
-        html += ' <span class="breadcrumb-separator">›</span> Development';
-      }
     }
 
     return html + '</nav>';

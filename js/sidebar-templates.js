@@ -189,57 +189,19 @@ class SidebarTemplates {
     return `
       <aside class="docs-sidebar">
         <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Introduction</h3>
+          <h3 class="sidebar-section-title">The oscms-codecs-bridge</h3>
           <ul class="sidebar-nav">
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/overview/overview.html" class="sidebar-nav-link">General Information</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Library Layers</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/library-layers/codec-abstraction.html" class="sidebar-nav-link">Codec Abstraction</a>
+              <a href="${basePath}pages/docs/bridge/overview.html" class="sidebar-nav-link">About</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/library-layers/protocol-bridge.html" class="sidebar-nav-link">Protocol Bridge</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Utilities</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/utilities/cryptographic-primitives.html" class="sidebar-nav-link">Cryptographic Primitives</a>
+              <a href="${basePath}pages/docs/bridge/layers.html" class="sidebar-nav-link">Layers</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/utilities/memory-management.html" class="sidebar-nav-link">Memory Management</a>
+              <a href="${basePath}pages/docs/bridge/utilities.html" class="sidebar-nav-link">Utilities</a>
             </li>
             <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/utilities/logging.html" class="sidebar-nav-link">Logging</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/utilities/rust-integration.html" class="sidebar-nav-link">Rust Integration</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Development</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/development/overview.html" class="sidebar-nav-link">Development Guide</a>
-            </li>
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/development/extensibility.html" class="sidebar-nav-link">Extensibility</a>
-            </li>
-          </ul>
-        </div>
-        <div class="sidebar-section">
-          <h3 class="sidebar-section-title">Build & Structure</h3>
-          <ul class="sidebar-nav">
-            <li class="sidebar-nav-item">
-              <a href="${basePath}pages/docs/bridge/build/installation.html" class="sidebar-nav-link">How to Build</a>
+              <a href="${basePath}pages/docs/bridge/installation.html" class="sidebar-nav-link">How to Build</a>
             </li>
           </ul>
         </div>
