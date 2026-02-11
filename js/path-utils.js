@@ -24,11 +24,6 @@ class PathUtils {
       "/pages/docs/components/ra/",
       "/pages/docs/components/eca/",
       "/pages/docs/components/aca/",
-      "/pages/docs/bridge/overview/",
-      "/pages/docs/bridge/build/",
-      "/pages/docs/bridge/library-layers/",
-      "/pages/docs/bridge/utilities/",
-      "/pages/docs/bridge/development/"
     ];
     return fourLevelPaths.some(p => path.includes(p));
   }

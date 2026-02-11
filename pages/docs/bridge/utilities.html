@@ -1,0 +1,134 @@
+<!--
+SPDX-FileCopyrightText: © 2025 LG Electronics, Inc.
+SPDX-License-Identifier: Apache-2.0
+
+For the full license text, please see the accompanying LICENSE file or visit
+http://www.apache.org/licenses/LICENSE-2.0.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Integration with Rust">
+    <title>Integration with Rust - OpenSCMS</title>
+    <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <!-- Documentation Submenu -->
+    <div id="docs-submenu-placeholder"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="docs-layout">
+                <!-- Sidebar Navigation -->
+                <div id="docs-bridge-sidebar-placeholder"></div>
+
+                <!-- Main Content -->
+                <div class="docs-content">
+                    <h2>Utilities</h2>
+
+                    <h3>Cryptographic Primitives</h3>
+
+                    <p>The library implements cryptographic primitives required by IEEE 1609.2.1, including:</p>
+
+                    <ul>
+                        <li><strong>Elliptic curve operations:</strong> Support for NIST P-256 and Brainpool curves.
+                        </li>
+                        <li><strong>Signature generation and verification:</strong> ECDSA signing and verification using
+                            specified curves.</li>
+                        <li><strong>Key derivation:</strong> KDF functions for deriving symmetric keys from shared
+                            secrets.</li>
+                        <li><strong>Hashing:</strong> SHA-256 and SHA-384 implementations.</li>
+                        <li><strong>Symmetric encryption:</strong> AES-128-CCM for encrypting SPDUs.</li>
+                    </ul>
+
+                    <p>These primitives are implemented using OpenSSL and follow best practices for secure cryptographic
+                        operations.</p>
+
+                    <h3>Memory Management Utilities</h3>
+
+                    <p>The library provides a set of memory management utilities to ensure safe and consistent
+                        allocation and deallocation across the Rust-C boundary.</p>
+
+                    <h4>Key Utilities</h4>
+
+                    <ul>
+                        <li><strong>Allocation wrappers:</strong> Custom allocation functions ensure compatibility
+                            between Rust and C memory models.</li>
+                        <li><strong>Cleanup routines:</strong> Functions for deallocating complex ASN.1 structures and
+                            cryptographic key material.</li>
+                        <li><strong>Memory pools:</strong> Optional pooling mechanisms for frequently allocated types.
+                        </li>
+                    </ul>
+
+                    <p>All exported functions that allocate memory follow a consistent pattern: ownership is clearly
+                        documented, and corresponding cleanup functions are provided.</p>
+
+                    <h3>Integration with Rust</h3>
+
+                    <p>The C library is integrated into the Rust-based SCMS services using <code>bindgen</code>, which
+                        automatically generates Rust FFI bindings from the C header files.</p>
+
+                    <h4>Integration Approach</h4>
+
+                    <ul>
+                        <li><strong>Automatic binding generation:</strong> <code>bindgen</code> parses the public C
+                            headers and generates corresponding Rust types and function declarations.</li>
+                        <li><strong>Safe wrappers:</strong> A thin Rust wrapper layer provides safe, idiomatic Rust
+                            interfaces over the raw FFI bindings.</li>
+                        <li><strong>Memory safety:</strong> Ownership and lifetimes are carefully managed to ensure no
+                            memory leaks or use-after-free bugs.</li>
+                        <li><strong>Error handling:</strong> C error codes are converted to Rust <code>Result</code>
+                            types for consistent error handling.</li>
+                    </ul>
+
+                    <p>This integration approach allows Rust developers to work with the cryptographic and protocol
+                        functionality as if it were native Rust code, while benefiting from the performance and security
+                        characteristics of the C implementation.</p>
+
+                    <h3>Logging and Diagnostics</h3>
+
+                    <p>The library includes a logging and diagnostics framework to aid in debugging and operational
+                        monitoring.</p>
+
+                    <h4>Features</h4>
+
+                    <ul>
+                        <li><strong>Structured logging:</strong> Log messages include context such as function name,
+                            file, and line number.</li>
+                        <li><strong>Log levels:</strong> Support for debug, info, warning, and error levels.</li>
+                        <li><strong>Integration with Rust:</strong> Logs generated in C can be forwarded to Rust's
+                            logging infrastructure.</li>
+                        <li><strong>Diagnostic utilities:</strong> Functions for dumping ASN.1 structures, cryptographic
+                            keys, and protocol messages in human-readable formats.</li>
+                    </ul>
+
+                    <p>Logging can be configured at runtime to control verbosity and output destinations.</p>
+                </div>
+
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Component Loader -->
+    <script src="../../../js/path-utils.js"></script>
+    <script src="../../../js/sidebar-manager.js"></script>
+    <script src="../../../js/breadcrumb.js"></script>
+    <script src="../../../js/sidebar-templates.js"></script>
+    <script src="../../../js/components.js"></script>
+
+</body>
+
+</html>
