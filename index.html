@@ -32,8 +32,8 @@ http://www.apache.org/licenses/LICENSE-2.0.
                         <h1 class="hero-title">OpenSCMS</h1>
                         <p class="hero-subtitle">
                             An open-source, deployable <strong>Security Credential Management System (SCMS)</strong>
-                            aligned with <strong>IEEE 1609.2.1 (2022)</strong>—built for modularity, observability, and
-                            real-world scale.
+                            aligned with <strong>IEEE 1609.2.1 (2022)</strong>—built for modularity, observability,
+                            easy deployment and testing.
                         </p>
                         <div class="hero-tags">
                             <span class="tag">RA / ECA / ACA services</span>
@@ -46,70 +46,85 @@ http://www.apache.org/licenses/LICENSE-2.0.
             </div>
         </section>
 
-        <!-- Two Column Section -->
         <section class="two-column-section">
             <div class="container">
                 <div class="two-columns">
-                    <!-- Left Column: Key Capabilities -->
                     <div class="column">
-                        <h2>Key Capabilities</h2>
+                        <h2>Core Capabilities</h2>
                         <p class="column-intro">
-                            OpenSCMS implements core SCMS workflows with a focus on efficiency, scalability, and
-                            deployability. It supports provisioning certificates for both OBU and RSU clients, including
-                            pseudonym certificate issuance.
+                            OpenSCMS implements the complete server-side lifecycle defined by IEEE 1609.2.1,
+                            covering registration, enrollment, authorization provisioning and trust material
+                            distribution.
+                            The architecture is designed for correctness, parallelism, and responsabilities isolation.
                         </p>
 
                         <div class="capability-item">
-                            <h3>◆ Standards-Aligned APIs</h3>
-                            <p>Implements IEEE 1609.2.1 endpoint semantics per component, published as OpenAPI v3 specs.
+                            <h3><strong>Standards-Conformant Service Interfaces</strong></h3>
+                            <p>
+                                REST-based endpoints aligned with IEEE 1609.2.1 component semantics,
+                                published as OpenAPI v3 specifications. Following all the details presented
+                                in IEEE 1609.2.1 (2022) document.
                             </p>
                         </div>
 
                         <div class="capability-item">
-                            <h3>◆ High-Throughput Workflows</h3>
-                            <p>Uses task parallelism and asynchronous processing where required (e.g., authorization
-                                certificate generation).</p>
+                            <h3><strong>Asynchronous, High-Throughput Processing</strong></h3>
+                            <p>
+                                Authorization and successor-enrollment workflows leverage task queuing and
+                                parallel worker execution to support high-throughput certificate processing.
+                                Furthermore, the stateless architecture of the components allows for the
+                                enhancement and evolution of OpenSCMS to become a fully scalable architecture.</p>
                         </div>
 
                         <div class="capability-item">
-                            <h3>◆ OBU / RSU Provisioning</h3>
-                            <p>OBUs can request pseudonym or identification/application certificates. RSUs can request
-                                identification certificates.</p>
+                            <h3><strong>Full Device Lifecycle Management</strong></h3>
+                            <p>
+                                End Entities (OBU/RSU) progress through controlled states
+                                (Registered → Enrolled → Provisioning → Successor Enrolled),
+                                by the Registration Authority across all protocol flows.</p>
                         </div>
 
                         <div class="capability-item">
-                            <h3>◆ Implicit & Explicit Pseudonyms</h3>
-                            <p>Supports implicit (ECQV, smaller payloads) and explicit (ECDSA P-256) pseudonym
-                                certificates.</p>
+                            <h3><strong>Explicit & Implicit Certificate Support</strong></h3>
+                            <p>
+                                Supports both explicit (ECDSA P-256) and implicit (ECQV) certificates,
+                                including OBK, UBK, and CUBK butterfly expansion mechanisms for
+                                pseudonym provisioning.
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Right Column: Deployment & API Highlights -->
                     <div class="column">
                         <div class="highlight-box">
-                            <h2>Deployment & Ops</h2>
+                            <h2>Deployment & Operations</h2>
                             <ul class="highlight-list">
-                                <li><strong>Docker + Kubernetes</strong> deployment (local Minikube or production
-                                    clusters)</li>
-                                <li><strong>Operational features:</strong> logging, parameter customization, and fault
-                                    recovery mechanisms</li>
-                                <li><strong>Auxiliary scripts</strong> for bootstrapping artifacts: CTL, CCF payloads,
-                                    elector/root CA keys</li>
+                                <li><strong>Kubernetes-native architecture</strong> with Docker-based containerization
+                                </li>
+                                <li><strong>Unified deployment model</strong> using Helm and Skaffold</li>
+                                <li><strong>Configurable via environment parameters</strong> for flexible policy control
+                                </li>
+                                <li><strong>Integrated logging and deterministic failure handling</strong></li>
                             </ul>
-                            <p class="highlight-note">Designed to be deployable, observable, and scalable across
-                                different deployment sizes.</p>
+                            <p class="highlight-note">
+                                Designed for reproducible environments — from local Minikube clusters
+                                to production-grade Kubernetes infrastructure.
+                            </p>
                         </div>
 
                         <div class="highlight-box">
-                            <h2>API Highlights</h2>
+                            <h2>Component Architecture</h2>
                             <ul class="highlight-list">
-                                <li><strong>RA:</strong> registration, authorization cert request/download, CTL/CCF,
-                                    CRLs, CA cert download</li>
-                                <li><strong>ECA:</strong> enrollment cert issuance, successor enrollment responses</li>
-                                <li><strong>ACA:</strong> authorization support operations</li>
+                                <li><strong>RA:</strong> registration, lifecycle enforcement, authorization
+                                    orchestration</li>
+                                <li><strong>ECA:</strong> enrollment and successor enrollment certificate issuance</li>
+                                <li><strong>ACA:</strong> authorization certificate generation (butterfly +
+                                    non-butterfly)</li>
                             </ul>
-                            <p class="highlight-note">Many payloads are exchanged as binary encodings aligned with IEEE
-                                1609.2.1 conventions.</p>
+                            <p class="highlight-note">
+                                A modular microservice design separates cryptographic execution
+                                (C-based core) from orchestration logic (Rust backend),
+                                enabling safe concurrency and extensibility.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -136,37 +151,49 @@ http://www.apache.org/licenses/LICENSE-2.0.
                 <h2>Additional Highlights</h2>
                 <div class="features-grid">
                     <div class="feature-box">
-                        <h3>Certificates</h3>
+                        <h3>IEEE 1609.2.1 Certificate Support</h3>
                         <ul>
-                            <li>OBU: pseudonym + identification/app</li>
-                            <li>RSU: identification</li>
-                            <li>Implicit (ECQV) & explicit (ECDSA P-256)</li>
-                            <li>1609.2 format (non-X.509)</li>
+                            <li>Enrollment and Authorization certificate flows</li>
+                            <li>Implicit (ECQV) and Explicit (ECDSA P-256) certificates</li>
+                            <li>OBK, UBK, and CUBK butterfly mechanisms</li>
+                            <li>For application (non-butterfly): encrypted or plain-text</li>
                         </ul>
-                        <p class="feature-note">Designed for modularity: the ASN.1 codec layer is independent and can be
-                            swapped for alternative implementations.</p>
+                        <p class="feature-note">
+                            Designed specifically for V2X ecosystems, with full lifecycle handling
+                            of registration, enrollment, provisioning, revocation, and trust distribution..
+                        </p>
                     </div>
 
                     <div class="feature-box">
-                        <h3>Independent ASN.1 Codec</h3>
-                        <p>OpenSCMS uses an <strong>independent ASN.1 codec library</strong> for IEEE 1609.2
-                            encoding/decoding that will be released as open source.</p>
+                        <h3>Standalone Cryptographic & ASN.1 Engine</h3>
+                        <p>
+                            OpenSCMS includes a dedicated C-based cryptographic core
+                            (<strong>oscms-codecs-bridge</strong>) responsible for:</p>
                         <ul>
-                            <li><strong>License:</strong> Apache License 2.0</li>
-                            <li><strong>Org:</strong> GitHub organization with multiple repos </li>
+                            <li>ASN.1 SPDU encoding/decoding</li>
+                            <li>ECDSA signing and verification</li>
+                            <li>ECIES encryption/decryption</li>
+                            <li>Implicit certificate reconstruction</li>
                         </ul>
+                        <p class="feature-note">
+                            The codec abstraction layer is decoupled from service logic,
+                            allowing alternative ASN.1 implementations without impacting the backend.
+                        </p>
                     </div>
 
                     <div class="feature-box">
-                        <h3>Open Source</h3>
+                        <h3>Modular & Open Architecture</h3>
                         <ul>
-                            <li><strong>License:</strong> Apache License 2.0</li>
-                            <li><strong>Org:</strong> GitHub organization with multiple repos </li>
-                            <li><strong>Contribute:</strong> issues, PRs, and suggestions are welcome
-                            </li>
+                            <li>Microservices-based design aligned with REST-based standard flows</li>
+                            <li>Rust backend with safe C integration via bindgen</li>
+                            <li>Docker + Kubernetes unified deployment model</li>
+                            <li>Apache License 2.0</li>
                         </ul>
-                        <p class="feature-note">Goal: make SCMS implementations more transparent, reproducible, and
-                            easier to deploy and evaluate.</p>
+                        <p class="feature-note">
+                            Built for transparency, auditability, and extensibility —
+                            enabling researchers, OEMs, and infrastructure providers to
+                            evaluate and extend SCMS implementations with confidence.
+                        </p>
                     </div>
                 </div>
             </div>
