@@ -143,6 +143,22 @@ class ComponentLoader {
 
     if (headerPlaceholder) {
       headerPlaceholder.innerHTML = this.getHeaderTemplate();
+
+      const headerEl = headerPlaceholder.querySelector('.header');
+      if (headerEl) {
+        const syncHeaderHeight = () => {
+          const headerH = headerEl.offsetHeight;
+          document.body.style.paddingTop = headerH + 'px';
+
+          const submenuEl = document.querySelector('.docs-submenu');
+          if (submenuEl) {
+            submenuEl.style.top = headerH + 'px';
+            document.body.style.paddingTop = (headerH + submenuEl.offsetHeight) + 'px';
+          }
+        };
+        syncHeaderHeight();
+        new ResizeObserver(syncHeaderHeight).observe(headerEl);
+      }
     }
 
     if (footerPlaceholder) {
@@ -151,6 +167,19 @@ class ComponentLoader {
 
     if (docsSubmenuPlaceholder) {
       docsSubmenuPlaceholder.innerHTML = this.getDocsSubmenuTemplate();
+
+      // Keep submenu pinned below the fixed header and update body offset
+      const submenuEl = docsSubmenuPlaceholder.querySelector('.docs-submenu');
+      if (submenuEl) {
+        const syncSubmenu = () => {
+          const headerEl = document.querySelector('.header');
+          const headerH = headerEl ? headerEl.offsetHeight : 0;
+          submenuEl.style.top = headerH + 'px';
+          document.body.style.paddingTop = (headerH + submenuEl.offsetHeight) + 'px';
+        };
+        syncSubmenu();
+        new ResizeObserver(syncSubmenu).observe(submenuEl);
+      }
     }
 
     if (aboutSidebarPlaceholder) {
