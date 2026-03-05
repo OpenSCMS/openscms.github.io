@@ -993,6 +993,15 @@ body {
     font-size: 0.875rem;
     color: #e2e8f0;
     font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
 }
 
 .two-column-section {
@@ -1149,6 +1158,9 @@ body {
     border-radius: 12px;
     padding: 2rem;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .feature-box:hover {
