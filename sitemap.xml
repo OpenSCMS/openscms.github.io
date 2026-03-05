@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
+
+
+<url>
+  <loc>https://openscms.net/</loc>
+  <lastmod>2026-03-05T16:00:09+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/overview.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/about/overview/introduction.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/guides/getting-started/overview.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/components/overview.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/bridge/overview.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/api-reference.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://openscms.net/docs/OpenSCMS_WhitePaper.pdf</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/bridge/layers.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+<url>
+  <loc>https://openscms.net/pages/docs/guides/setup/kubernetes.html</loc>
+  <lastmod>2026-03-05T16:00:10+00:00</lastmod>
+  <priority>0.51</priority>
+</url>
+
+
+</urlset>
+

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Link to your sitemap to help Google find all pages faster
+Sitemap: https://openscms.net/sitemap.xml
+
