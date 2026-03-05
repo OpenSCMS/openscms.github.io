@@ -135,6 +135,12 @@ body {
     color: var(--primary-color);
 }
 
+.header-github-link {
+    display: flex !important;
+    align-items: center;
+    gap: 0.4rem;
+}
+
 /* Documentation Submenu */
 .docs-submenu {
     background-color: var(--bg-light);
