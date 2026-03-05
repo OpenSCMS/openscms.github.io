@@ -811,6 +811,9 @@ body {
     text-align: center;
     min-height: 260px;
     overflow: visible;
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
 }
 
 .doc-card:hover {
@@ -876,16 +879,21 @@ body {
     font-weight: 700;
 }
 
-.doc-card a {
-    color: var(--text-color);
+.doc-card-cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
     text-decoration: none;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 2px;
     transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
 }
 
-.doc-card a:hover {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+.doc-card:hover .doc-card-cta {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
 }
 
 /* Footer */
