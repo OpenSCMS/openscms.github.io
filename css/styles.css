@@ -56,8 +56,10 @@ body {
     padding: 0.5rem 0;
     box-shadow: var(--shadow-md);
     border-bottom: 3px solid var(--primary-color);
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 100;
 }
 
@@ -135,12 +137,20 @@ body {
     color: var(--primary-color);
 }
 
+.header-github-link {
+    display: flex !important;
+    align-items: center;
+    gap: 0.4rem;
+}
+
 /* Documentation Submenu */
 .docs-submenu {
     background-color: var(--bg-light);
     border-bottom: 2px solid var(--border-color);
-    position: sticky;
-    top: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     z-index: 90;
     box-shadow: var(--shadow);
 }
@@ -811,6 +821,9 @@ body {
     text-align: center;
     min-height: 260px;
     overflow: visible;
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
 }
 
 .doc-card:hover {
@@ -842,6 +855,7 @@ body {
     flex-grow: 1;
     display: flex;
     align-items: center;
+    text-align: left;
 }
 
 .doc-card .btn-secondary {
@@ -876,16 +890,21 @@ body {
     font-weight: 700;
 }
 
-.doc-card a {
-    color: var(--text-color);
+.doc-card-cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 0.9rem;
     text-decoration: none;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 2px;
     transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
 }
 
-.doc-card a:hover {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+.doc-card:hover .doc-card-cta {
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
 }
 
 /* Footer */
@@ -975,6 +994,15 @@ body {
     font-size: 0.875rem;
     color: #e2e8f0;
     font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+}
+
+.tag:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #fff;
 }
 
 .two-column-section {
@@ -1131,6 +1159,9 @@ body {
     border-radius: 12px;
     padding: 2rem;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .feature-box:hover {
